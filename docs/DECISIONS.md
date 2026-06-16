@@ -29,3 +29,9 @@ Add a dated entry when Rajon explicitly approves something not in the original b
 ### 2026-06-16 — Hallmark + Supabase skills
 - **Decision:** Install `nutlope/hallmark` and `supabase-postgres-best-practices` in `.agents/skills/`.
 - **Why:** Design quality and RLS/migration discipline from day one.
+
+### 2026-06-16 — Preserve legacy public site identity
+- **Proposal:** Keep [RajonDey/Music](https://github.com/RajonDey/Music) as historical source; extract SEO, favicon, social links, and AI discoverability into Music.v2 before Phase 3 public rebuild.
+- **Gate:** passed — migration prep on same domain; no new product behavior; protects existing Google presence.
+- **Decision:** Document in `docs/LEGACY_PUBLIC_SITE.md`; constants in `apps/web/lib/public-site-legacy.ts`; brand PNGs in `apps/web/public/brand/`; `/robots.txt`, `/sitemap.xml`, `/llms.txt`, JSON-LD wired in Next.js. Local WP clone at `.legacy/Music` (gitignored).
+- **Roadmap:** Phase 3 step 9 uses this reference for public home UI; GTM migration deferred until explicit approval.

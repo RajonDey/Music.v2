@@ -26,6 +26,8 @@ Build strictly in order. **Finish each phase before the next.**
 8. Mobile responsiveness pass.
 
 ## Phase 3 — Public home (same app, new route group)
+Reference: `docs/LEGACY_PUBLIC_SITE.md` (SEO, favicon, social, llms.txt from WordPress site).
+
 9. **`(public)/page.tsx`** at `/` — Hallmark **build** for macrostructure; no gradient hero, no fake stats.
 10. Wire current song + latest share from Supabase (`is_shared` later).
 11. Hallmark **audit** + design-review — public and private feel cohesive, warm editorial.
