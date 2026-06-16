@@ -1,0 +1,6 @@
+{
+  "name": "@music/config",
+  "version": "0.0.0",
+  "private": true,
+  "files": ["tsconfig.base.json", "eslint.base.js"]
+}

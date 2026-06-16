@@ -1,0 +1,52 @@
+---
+description: Mandatory gate before any new feature, integration, or scope change. Stops random ideas that harm the product.
+alwaysApply: true
+---
+
+# Feature guardrail — STOP before you build
+
+When the user OR the agent proposes **any new capability** — feature, tab, integration, chart,
+notification, auth provider, social share, analytics dashboard, gamification, third-party API,
+"quick addition", refactor that changes product behavior — **do not implement yet**.
+
+Run this gate first. Use the **AskQuestion** tool when available; otherwise ask in chat and wait.
+
+## Gate questions (all must pass)
+
+1. **Phase:** Is this in the current `docs/ROADMAP.md` phase/step, or should it be deferred to a
+   later phase with an explicit roadmap entry?
+2. **Courage:** Does this add pressure, judgment, or "falling behind" — or reduce courage?
+   (If pressure → **FAIL** unless user explicitly overrides with written reason.)
+3. **Habit tracker:** Is this a WeekOS-style pattern — scores, streaks, quotas (`X/wk`),
+   progress bars on practice, trend charts, reward tiers, completion rings, numeric targets?
+   (If yes → **FAIL**.)
+4. **Wrong app:** Is this really career/finance/gym/YouTube/life execution → belongs in WeekOS?
+   (If yes → **FAIL** — suggest Weekly OS instead.)
+5. **Privacy:** Could this expose session logs, reflections, or coach chat on public `/`?
+   (If yes → **FAIL** until architecture review.)
+6. **Simplicity:** Is there a simpler version that serves the same *emotional* goal?
+   (If yes → propose simpler version first; wait for approval.)
+7. **Approval:** Did Rajon **explicitly approve** this scope expansion in this conversation?
+   (If no → **STOP** and present summary.)
+
+## On FAIL — required behavior
+
+- Do **not** write code, scaffold, or install deps for the proposal.
+- Output a short **STOP** block: what was proposed, which question(s) failed, why it conflicts
+  with `docs/PROJECT_BRIEF.md` / `docs/GUARDRAILS.md`, and a recommended alternative (or "drop it").
+- Ask Rajon: *"Still want this? If yes, tell me which trade-off you're accepting."*
+- Only proceed after explicit yes. If approved, add a note to `docs/ROADMAP.md` or `docs/DECISIONS.md`.
+
+## Triggers (always run gate)
+
+- User says "add", "integrate", "what if we", "can we also", "quick feature", "while we're at it"
+- Agent thinks a feature would be "nice to have" or "helpful"
+- User says **"feature gate"** or **"run the guardrail"** (gate only, no build)
+
+## Exempt (no gate)
+
+- Bug fixes, typos, copy tweaks that don't change product meaning
+- Work explicitly requested as part of the current green-lit roadmap step
+- Docs/rules updates that encode existing decisions
+
+Full reference: @docs/GUARDRAILS.md

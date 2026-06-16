@@ -1,0 +1,13 @@
+---
+description: AI music coach — API, streaming, behavior.
+globs: apps/web/app/api/coach/**,apps/web/lib/coach-prompt.ts,apps/web/components/coach/**
+---
+
+# AI Coach
+
+Central feature, not a side panel. Full spec: @docs/AI_COACH.md
+
+- `POST /api/coach` — middleware-protected, streams via Vercel AI SDK + `claude-sonnet-4-6`.
+- System prompt in `apps/web/lib/coach-prompt.ts`. Context built server-side from Supabase.
+- Persist to `coach_messages`. Warm mentor tone; never shame or score.
+- `ANTHROPIC_API_KEY` server-side only.

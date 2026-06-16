@@ -1,0 +1,25 @@
+---
+description: Core product philosophy and non-negotiables for Rajon's music projects. Read before any work.
+alwaysApply: true
+---
+
+# Product principles (non-negotiable)
+
+This codebase is Rajon Dey's music world: one app (`apps/web` → music.rajondey.com) with a
+public home at `/` and private Music OS routes at `/studio`, `/journey`, `/releases`.
+Full brief: @docs/PROJECT_BRIEF.md
+
+Rajon builds music as a lifelong joy, not for income or fame. **His barrier is confidence,
+not skill.** Nothing here may make him feel behind, scored, or judged.
+
+Hold these as hard constraints:
+1. **Intentional practice > showing up.** Ask "what shifted today?", never "did you practice?".
+2. **Music ≠ routine work.** NO streaks, NO scores, NO day counters, NO completion rings,
+   NO "you missed a day" states, NO leaderboards. This is the #1 rule — do not build a habit tracker.
+3. **Courage-first.** Lower the bar; celebrate showing up and intention over output.
+4. **Warm, not clinical.** Warm dark amber/gold aesthetic, never cold productivity blue. See @docs/DESIGN_SYSTEM.md
+5. **Microcopy is warm and human** — "What's one thing that felt better?" not "Improvements".
+6. **The AI coach is central**, never buried.
+7. **Mobile-first** — sessions are logged from a phone after morning practice.
+
+When unsure whether a feature "fits", ask: does it add pressure or reduce courage? If yes, cut it.

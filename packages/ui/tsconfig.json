@@ -1,0 +1,8 @@
+{
+  "extends": "@music/config/tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "composite": true
+  },
+  "include": ["src/**/*.tsx"]
+}

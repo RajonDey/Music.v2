@@ -1,0 +1,24 @@
+---
+description: Warm dark design, journal UX (not WeekOS metrics), Hallmark for anti-slop. Apply to all UI.
+alwaysApply: true
+---
+
+# Design & voice
+
+Journal + creative space, NOT WeekOS-style metrics. Full spec: @docs/DESIGN_SYSTEM.md
+
+**WeekOS = borrow structure** (dark theme, tabs, spacing, auth). **Reject its soul** (scores,
+quotas, progress bars, pillar charts, "needs attention", checkbox review grids).
+
+Tokens in `packages/tokens` only — `bg-base`, `accent-primary`, `stage-*`, etc.
+
+**Typography:** paired display (warm serif-ish) + body sans. Not Inter for everything.
+
+**Voice:** "What shifted today?" · quality words (unfocused → in the zone) · feeling chips
+(nervous/neutral/excited). BANNED: streaks, % scores, X/wk targets, reward tiers, trend graphs.
+
+**UI surfaces:** Studio = notebook before/after practice; Journey = Sunday journal not scorecard;
+Releases = creative shelf not pipeline; Coach = mentor chat, always visible.
+
+**Hallmark** ([usehallmark.com](https://www.usehallmark.com/)): install with
+`npx skills add nutlope/hallmark`. Audit every major screen. Also use design-review skill.

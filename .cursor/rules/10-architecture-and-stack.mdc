@@ -1,0 +1,29 @@
+---
+description: Monorepo layout, tech stack, and build/deploy conventions for the music projects.
+alwaysApply: true
+---
+
+# Architecture & stack
+
+One Turborepo, **one Next.js app** (`apps/web`), route groups for public vs private. Details: @docs/ARCHITECTURE.md
+
+```
+apps/web        # Single app -> music.rajondey.com
+  (public)/     # / — public home
+  (private)/    # /studio, /journey, /releases — Music OS
+  login/        # password gate
+  api/coach/    # streaming AI (middleware-protected)
+packages/tokens # design tokens (CSS vars + Tailwind preset)
+packages/ui     # shared React primitives
+packages/types  # shared TS types
+packages/config # shared tsconfig + lint config
+supabase/       # migrations (tables + RLS) + seed
+```
+
+Conventions:
+- **pnpm** workspaces, **Turborepo**. Next.js 14+ App Router, **TypeScript strict**.
+- **middleware.ts** protects `(private)` routes and private API; httpOnly cookie auth (WeekOS pattern).
+- Public `/` never renders private session/reflection data.
+- Tailwind via `packages/tokens` preset — semantic utilities, no raw hex in app code.
+- Supabase writes server-side only. One Vercel deploy.
+- Build phases in order; see @docs/ROADMAP.md

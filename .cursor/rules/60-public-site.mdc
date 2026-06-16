@@ -1,0 +1,13 @@
+---
+description: Public home at / — music.rajondey.com landing page.
+globs: apps/web/app/(public)/**
+---
+
+# Public home — `/`
+
+One page in `(public)/page.tsx`. Dead simple. Full spec: @docs/PROJECT_BRIEF.md
+
+Hero: name + "Feel the Sound" + short bio; current song learning; SoundCloud + YouTube;
+latest share. Same warm tokens from `packages/tokens`. Mobile-first.
+
+**No private data here** — only published/shared content. Phase 3; see @docs/ROADMAP.md

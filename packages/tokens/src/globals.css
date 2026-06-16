@@ -1,0 +1,42 @@
+:root {
+  --bg-base: #0f0d0b;
+  --bg-card: #1a1612;
+  --bg-elevated: #231e18;
+  --border: #2e2720;
+
+  --accent-primary: #d4a84b;
+  --accent-secondary: #8b6914;
+  --accent-soft: #3d2f10;
+
+  --text-primary: #f0ebe3;
+  --text-secondary: #a89880;
+  --text-muted: #6b5d4f;
+
+  --stage-discovering: #4a7c59;
+  --stage-learning: #4a6b8a;
+  --stage-comfortable: #7a5c8a;
+  --stage-recorded: #8a6b3a;
+  --stage-shared: #d4a84b;
+
+  --font-display: var(--font-fraunces, ui-serif, Georgia, serif);
+  --font-body: var(--font-source-sans, ui-sans-serif, system-ui, sans-serif);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}

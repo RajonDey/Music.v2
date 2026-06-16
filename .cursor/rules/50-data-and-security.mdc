@@ -1,0 +1,14 @@
+---
+description: Supabase data model, RLS, security.
+globs: apps/web/**,supabase/**
+---
+
+# Data & security
+
+Schema: @docs/DATA_MODEL.md
+
+- Tables: `songs`, `sessions`, `weekly_reflections`, `coach_messages`.
+- RLS on every table from day one. Service role server-side only; middleware on private routes.
+- Never expose service role or Anthropic keys to the client.
+- Public `(public)/` routes must not query or render private practice data.
+- `songs.is_shared` drives future public home sync (Phase 4).

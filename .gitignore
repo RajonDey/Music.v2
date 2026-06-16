@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+
+# Env
+.env
+.env*.local
+.env.local
+
+# Supabase
+supabase/.branches
+supabase/.temp
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Editor / OS
+.DS_Store
+*.pem
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Legacy (old WordPress — not part of Music.v2)
+.legacy/
+
+# Vercel
+.vercel
+
+# Testing
+coverage/

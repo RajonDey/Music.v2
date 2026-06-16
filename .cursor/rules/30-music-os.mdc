@@ -1,0 +1,20 @@
+---
+description: Music OS private dashboard — Studio, Journey, Releases tabs, auth, data.
+globs: apps/web/app/(private)/**,apps/web/app/login/**
+---
+
+# Music OS (private routes)
+
+Private admin at `/studio`, `/journey`, `/releases`. Full spec: @docs/PROJECT_BRIEF.md · Data: @docs/DATA_MODEL.md
+
+**Auth:** `/login` + middleware (httpOnly cookie, `MUSIC_OS_PASSWORD`, ~1 year). WeekOS pattern.
+No sign-up, email, or OAuth.
+
+**`/studio`:** Intention block → Reflection block → AI Coach chat (always visible below).
+
+**`/journey`:** weekly focus + weekly reflection (tiny win required) + plain session list (no graphs).
+
+**`/releases`:** song cards with stages (discovering → shared), comfort level, notes, optional target.
+Pre-load "Knockin' on Heaven's Door" — Bob Dylan.
+
+Stages are states, not deadlines. No quantitative analytics. Coach: @docs/AI_COACH.md
