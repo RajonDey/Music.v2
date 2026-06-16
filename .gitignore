@@ -37,7 +37,7 @@ yarn-error.log*
 .idea/
 
 # Legacy (old WordPress — not part of Music.v2)
-.legacy/
+
 
 # Vercel
 .vercel
