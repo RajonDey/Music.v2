@@ -9,6 +9,19 @@ export function authToken(password: string): string {
     .digest("hex");
 }
 
+/**
+ * Edge-runtime-safe equivalent of {@link authToken}. Next.js middleware runs on
+ * the Edge runtime, which has no Node `crypto` module — so it must hash via the
+ * Web Crypto API. Produces the same SHA-256 hex digest as {@link authToken}.
+ */
+export async function authTokenEdge(password: string): Promise<string> {
+  const data = new TextEncoder().encode(`${password}:music-os-unlock`);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
 export function authCookieOptions() {
   return {
     httpOnly: true,

@@ -24,7 +24,13 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
     setLoading(false);
 
     if (!response.ok) {
-      setError("That password didn't work. Try again.");
+      if (response.status === 500) {
+        setError(
+          "Server can't read MUSIC_OS_PASSWORD. Put it in the repo root .env or apps/web/.env.local, then restart pnpm dev.",
+        );
+      } else {
+        setError("That password didn't work. Try again.");
+      }
       return;
     }
 

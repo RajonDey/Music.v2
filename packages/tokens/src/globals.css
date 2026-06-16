@@ -3,23 +3,38 @@
   --bg-card: #1a1612;
   --bg-elevated: #231e18;
   --border: #2e2720;
+  --border-strong: #3a3128;
 
   --accent-primary: #d4a84b;
   --accent-secondary: #8b6914;
   --accent-soft: #3d2f10;
+  --accent-strong: #e6bf63;
 
   --text-primary: #f0ebe3;
   --text-secondary: #a89880;
   --text-muted: #6b5d4f;
 
-  --stage-discovering: #4a7c59;
-  --stage-learning: #4a6b8a;
-  --stage-comfortable: #7a5c8a;
-  --stage-recorded: #8a6b3a;
+  --stage-discovering: #6fae82;
+  --stage-learning: #6f97c2;
+  --stage-comfortable: #a78bc0;
+  --stage-recorded: #c99a5a;
   --stage-shared: #d4a84b;
 
   --font-display: var(--font-fraunces, ui-serif, Georgia, serif);
   --font-body: var(--font-source-sans, ui-sans-serif, system-ui, sans-serif);
+
+  /* Depth — warm, soft shadows (never cold/black-blue) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px -12px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 24px 60px -24px rgba(0, 0, 0, 0.7);
+  --shadow-glow: 0 0 0 1px rgba(212, 168, 75, 0.18), 0 16px 48px -20px rgba(212, 168, 75, 0.18);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 140ms;
+  --dur-base: 220ms;
+  --dur-slow: 420ms;
 }
 
 *,
@@ -31,12 +46,60 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
   min-height: 100dvh;
+  overflow-x: clip;
   background-color: var(--bg-base);
+  /* Warm amber glow, top — gives the dark a candle-lit depth, not flat black */
+  background-image:
+    radial-gradient(120% 80% at 80% -10%, rgba(212, 168, 75, 0.1), transparent 55%),
+    radial-gradient(90% 60% at 0% 0%, rgba(139, 105, 20, 0.08), transparent 50%);
+  background-attachment: fixed;
   color: var(--text-primary);
   font-family: var(--font-body);
+  font-feature-settings: "kern";
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(212, 168, 75, 0.28);
+  color: var(--text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes hm-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hm-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

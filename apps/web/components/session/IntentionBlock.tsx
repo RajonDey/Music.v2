@@ -1,5 +1,18 @@
-import { Button, Card, FieldLabel, TextInput } from "@music/ui";
+"use client";
+
+import { useState } from "react";
+import {
+  Badge,
+  Button,
+  Card,
+  Chip,
+  FieldLabel,
+  SelectInput,
+  TextInput,
+} from "@music/ui";
 import { FEELING_BEFORE } from "@music/types";
+
+const songs = ["Knockin' on Heaven's Door — Bob Dylan", "Freestyle"];
 
 const feelings = FEELING_BEFORE.map((f) => ({
   value: f,
@@ -7,54 +20,68 @@ const feelings = FEELING_BEFORE.map((f) => ({
 }));
 
 export function IntentionBlock() {
+  const [feeling, setFeeling] = useState<string | null>(null);
+  const [started, setStarted] = useState(false);
+
   return (
-    <Card>
-      <h2 className="font-display text-lg text-primary">Before practice</h2>
+    <Card variant="elevated">
+      <div className="flex items-center justify-between">
+        <h2 className="font-display text-xl text-primary">Before practice</h2>
+        {started ? (
+          <Badge className="bg-stage-discovering/15 text-stage-discovering">
+            Session started
+          </Badge>
+        ) : null}
+      </div>
       <p className="mt-1 text-sm text-muted">Set a gentle intention — no pressure.</p>
 
-      <div className="mt-5 space-y-5">
+      <div className="mt-6 space-y-5">
         <div>
-          <FieldLabel htmlFor="intention-song">What song are you working on?</FieldLabel>
-          <select
-            id="intention-song"
-            disabled
-            className="w-full rounded-lg border border-border bg-elevated px-3 py-2.5 text-muted focus:outline-none"
-          >
-            <option>Knockin&apos; on Heaven&apos;s Door — Bob Dylan</option>
-            <option>Freestyle</option>
-          </select>
+          <FieldLabel htmlFor="intention-song">What are you playing today?</FieldLabel>
+          <SelectInput id="intention-song" defaultValue={songs[0]}>
+            {songs.map((song) => (
+              <option key={song}>{song}</option>
+            ))}
+          </SelectInput>
         </div>
 
         <div>
-          <FieldLabel htmlFor="intention-focus">
-            What&apos;s your one focus for this session?
+          <FieldLabel htmlFor="intention-focus" hint="optional">
+            What&apos;s your one focus?
           </FieldLabel>
           <TextInput
             id="intention-focus"
             placeholder="Just the chorus transition…"
-            disabled
           />
         </div>
 
         <div>
           <FieldLabel>How are you feeling about it?</FieldLabel>
-          <div className="flex flex-wrap gap-2" role="group" aria-label="Feeling before practice">
+          <div
+            className="flex flex-wrap gap-2"
+            role="group"
+            aria-label="Feeling before practice"
+          >
             {feelings.map((f) => (
-              <button
+              <Chip
                 key={f.value}
-                type="button"
-                disabled
-                className="rounded-full border border-border bg-elevated px-4 py-2 text-sm text-muted"
+                selected={feeling === f.value}
+                onClick={() => setFeeling(feeling === f.value ? null : f.value)}
               >
                 {f.label}
-              </button>
+              </Chip>
             ))}
           </div>
         </div>
 
-        <Button type="button" disabled className="w-full sm:w-auto">
-          Start session
-        </Button>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button type="button" onClick={() => setStarted(true)}>
+            {started ? "Session in progress" : "Start session"}
+          </Button>
+          {started ? (
+            <span className="text-sm text-secondary">Enjoy it — no clock running.</span>
+          ) : null}
+        </div>
       </div>
     </Card>
   );

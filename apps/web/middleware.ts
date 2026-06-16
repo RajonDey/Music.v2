@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { AUTH_COOKIE, authToken, isPrivatePath } from "@/lib/auth";
+import { AUTH_COOKIE, authTokenEdge, isPrivatePath } from "@/lib/auth";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (!isPrivatePath(pathname)) {
@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login?error=config", request.url));
   }
 
-  const expected = authToken(password);
+  const expected = await authTokenEdge(password);
   const cookie = request.cookies.get(AUTH_COOKIE)?.value;
 
   if (cookie !== expected) {

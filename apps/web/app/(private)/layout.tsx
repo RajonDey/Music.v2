@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Brand } from "@music/ui";
 import { PrivateNav } from "@/components/nav/PrivateNav";
+import { TodayLine } from "@/components/nav/TodayLine";
 
 export const metadata: Metadata = {
   robots: {
@@ -14,12 +17,27 @@ export default function PrivateLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto min-h-dvh max-w-2xl px-4 pb-8 pt-6">
+    <div className="mx-auto min-h-dvh max-w-2xl px-4 pb-28 pt-5 sm:pb-12 sm:pt-7">
       <header className="mb-8">
-        <p className="text-sm text-muted">Music OS</p>
-        <PrivateNav />
+        <div className="flex items-center justify-between">
+          <Link href="/studio" aria-label="Music OS home">
+            <Brand />
+          </Link>
+          <Link
+            href="/"
+            className="text-sm text-secondary transition hover:text-primary"
+          >
+            View site <span aria-hidden>&rarr;</span>
+          </Link>
+        </div>
+        <div className="mt-1.5 pl-[2.6rem]">
+          <TodayLine />
+        </div>
+        <div className="mt-5">
+          <PrivateNav />
+        </div>
       </header>
-      {children}
+      <main className="animate-fade">{children}</main>
     </div>
   );
 }

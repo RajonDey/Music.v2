@@ -16,8 +16,11 @@ pnpm install
 
 ## 3. Environment
 
+Copy env to the **repo root** (recommended) or `apps/web/.env.local`:
+
 ```bash
-cp .env.example apps/web/.env.local
+cp .env.example .env
+# or: cp .env.example apps/web/.env.local
 ```
 
 Fill in:
