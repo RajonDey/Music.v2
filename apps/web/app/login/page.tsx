@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Brand, Card, SectionLabel } from "@music/ui";
 import { LoginForm } from "@/components/auth/LoginForm";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export default async function LoginPage({
   searchParams,
@@ -11,13 +12,16 @@ export default async function LoginPage({
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-md flex-col px-6 py-8">
-      <header className="flex items-center justify-between">
+      <header className="flex items-center justify-between gap-3">
         <Link href="/" aria-label="Back to home">
           <Brand />
         </Link>
-        <Link href="/" className="text-sm text-secondary transition hover:text-primary">
-          <span aria-hidden>&larr;</span> Home
-        </Link>
+        <div className="flex items-center gap-2">
+          <ThemeToggle className="border-transparent px-2" />
+          <Link href="/" className="text-sm text-secondary transition hover:text-primary">
+            <span aria-hidden>&larr;</span> Home
+          </Link>
+        </div>
       </header>
 
       <div className="flex flex-1 flex-col justify-center py-12">

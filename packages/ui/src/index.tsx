@@ -99,18 +99,28 @@ export function Card({
 export function SectionLabel({
   children,
   className = "",
+  onDark = false,
 }: {
   children: ReactNode;
   className?: string;
+  /** Brighter accent + mark for text over photos/video */
+  onDark?: boolean;
 }) {
   return (
     <span
       className={cx(
-        "inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-accent",
+        "inline-flex items-center gap-2.5 text-xs font-medium uppercase tracking-[0.18em]",
+        onDark ? "text-accent-strong" : "text-accent",
         className,
       )}
     >
-      <span aria-hidden className="h-px w-5 bg-accent/50" />
+      <span
+        aria-hidden
+        className={cx(
+          "h-0.5 w-6 shrink-0 rounded-full",
+          onDark ? "bg-accent-strong" : "bg-accent/70",
+        )}
+      />
       {children}
     </span>
   );

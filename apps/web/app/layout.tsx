@@ -1,6 +1,12 @@
 import { Fraunces, Source_Sans_3 } from "next/font/google";
 import type { Metadata } from "next";
 import { PublicSiteJsonLd } from "@/components/public/PublicSiteJsonLd";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
+import { ThemeScript } from "@/components/theme/ThemeScript";
+import {
+  GoogleTagManagerHead,
+  GoogleTagManagerNoscript,
+} from "@/components/analytics/GoogleTagManager";
 import { PUBLIC_SITE } from "@/lib/public-site-legacy";
 import "@music/tokens/globals.css";
 import "./globals.css";
@@ -37,10 +43,10 @@ export const metadata: Metadata = {
     description: PUBLIC_SITE.ogDescription,
     images: [
       {
-        url: PUBLIC_SITE.assets.ogImage,
-        width: 500,
-        height: 500,
-        alt: "RD Music",
+        url: PUBLIC_SITE.assets.ogCover,
+        width: 1200,
+        height: 630,
+        alt: "Feel the Sound — Rajon Dey Music",
       },
     ],
   },
@@ -48,7 +54,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: PUBLIC_SITE.title,
     description: PUBLIC_SITE.ogDescription,
-    images: [PUBLIC_SITE.assets.ogImage],
+    images: [PUBLIC_SITE.assets.ogCover],
   },
   icons: {
     icon: [
@@ -65,10 +71,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${sourceSans.variable}`}>
+    <html
+      lang="en"
+      className={`${fraunces.variable} ${sourceSans.variable}`}
+      data-theme="light"
+      suppressHydrationWarning
+    >
+      <head>
+        <ThemeScript />
+        <GoogleTagManagerHead />
+      </head>
       <body className="font-body antialiased">
-        <PublicSiteJsonLd />
-        {children}
+        <GoogleTagManagerNoscript />
+        <ThemeProvider>
+          <PublicSiteJsonLd />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
