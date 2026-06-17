@@ -109,16 +109,16 @@ export function SectionLabel({
   return (
     <span
       className={cx(
-        "inline-flex items-center gap-2.5 text-xs font-medium uppercase tracking-[0.18em]",
-        onDark ? "text-accent-strong" : "text-accent",
+        "inline-flex items-center gap-2.5 text-sm font-medium",
+        onDark ? "text-accent-strong" : "text-muted",
         className,
       )}
     >
       <span
         aria-hidden
         className={cx(
-          "h-0.5 w-6 shrink-0 rounded-full",
-          onDark ? "bg-accent-strong" : "bg-accent/70",
+          "h-1 w-7 shrink-0 rounded-full",
+          onDark ? "bg-accent-strong" : "bg-accent",
         )}
       />
       {children}
