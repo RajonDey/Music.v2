@@ -10,10 +10,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.85",
+    "@ai-sdk/react": "^3.0.210",
     "@music/tokens": "workspace:*",
     "@music/types": "workspace:*",
     "@music/ui": "workspace:*",
     "@supabase/supabase-js": "^2.50.2",
+    "@tombatossals/chords-db": "^0.5.1",
+    "ai": "^6.0.208",
     "gray-matter": "^4.0.3",
     "next": "^15.3.4",
     "next-mdx-remote": "^6.0.0",

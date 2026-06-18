@@ -37,6 +37,10 @@ export function isPrivatePath(pathname: string): boolean {
     pathname.startsWith("/studio") ||
     pathname.startsWith("/journey") ||
     pathname.startsWith("/releases") ||
+    pathname.startsWith("/songs") ||
+    pathname.startsWith("/skills") ||
+    pathname.startsWith("/vocal") ||
+    pathname.startsWith("/report") ||
     pathname.startsWith("/api/coach")
   );
 }

@@ -15,6 +15,62 @@ Add a dated entry when Rajon explicitly approves something not in the original b
 
 ---
 
+## 2026-06-18 — Music OS Depth (v2): 5-screen system + metric override
+
+### 2026-06-18 — Expand Music OS from 3 tabs to a 5-screen practice system
+- **Proposal:** Replace the current Studio/Journey/Releases model with a connected
+  five-screen system: **Practice Room** (daily hub) → **Song Room** (per-song notebook) →
+  **Skills Lab** (80+ skills across 11 categories) → **Vocal Studio** → **Monthly Report**.
+  Core principle: one daily log fans out into every other screen — no double entry.
+  Full spec in `docs/MUSIC_OS_V2.md`.
+- **Gate:** Explicitly approved by Rajon in conversation. Major scope expansion of the private OS.
+- **Decision:** Build it as a new roadmap phase (Phase 5). Manual-entry first; free APIs
+  (MusicBrainz, chords-db, lyrics.ovh, Web Audio pitch, VexFlow) layered last.
+- **Roadmap:** New Phase 5 — Music OS Depth. Build order: Song Room → data-flow engine →
+  Skills Lab → Vocal Studio → Monthly Report → API enrichment.
+
+### 2026-06-18 — Metric/visualization guardrail override for Music OS v2
+- **Proposal:** v2 includes surfaces that conflict with the standing product principles:
+  Skills Lab **radar chart** (per-axis scores + month-vs-month overlay), **1–5 progress-skill
+  ratings**, **1–5 vocal confidence slider + confidence trend line**, and a Monthly Report
+  with **hero counts** (sessions/songs/recordings), **month calendar grid**, and
+  **12-month session-count year view**. These hit the permanent vetoes in
+  `00-product-principles.mdc` / `GUARDRAILS.md` (no scores, numeric confidence ratings,
+  trend charts on practice data, day-count calendars).
+- **Gate:** **Override** — Rajon's explicit written call. Reasoning: "Skip the guardrails here.
+  We're building it now and want it perfect and better; if we need charts/graphs we take them.
+  Guardrails are for future polish once it's fully built."
+- **Decision:** Charts, radar, numeric ratings, and counts are **approved for v2**. The
+  confidence-first guardrails remain the default for any *future* feature, but are explicitly
+  lifted for the v2 surfaces listed above. Trade-off accepted: these surfaces can introduce
+  comparison/pressure; revisit during a later polish pass if any feel discouraging in use.
+- **Roadmap:** Applies to Phase 5 (Song Room excluded — it had no conflicts).
+
+### 2026-06-18 — Retire the weekly Journey model
+- **Proposal:** The existing `/journey` weekly-reflection design (weekly focus + tiny win +
+  weekly session list) does not fit the v2 system, which has a daily layer (Practice Room) and
+  a monthly layer (Monthly Report) but no weekly layer.
+- **Decision:** Rethink/retire the weekly Journey tab and its UI. The monthly reflection moves
+  to the Monthly Report. `weekly_reflections` table is deprecated for v2 (kept for back-compat
+  until migration). New IA + UI/UX to be designed for the v2 navigation.
+- **Roadmap:** Phase 5. Navigation redesign tracked in `docs/MUSIC_OS_V2.md`.
+
+---
+
+## 2026-06-18 — Phase 6: Daily UX & trust
+
+### 2026-06-18 — Post-v2 UX polish (morning readiness, CRUD, real coach)
+- **Proposal:** After Phase 5 v2 depth, improve daily use: Studio “continue” + cheat sheet,
+  song delete/edit gaps, paste-your-own lyrics (Bangla/Hindi primary), MusicBrainz confirm step,
+  real AI coach (Phase 1 step 4 never shipped), chord shape cycling, capo field.
+- **Gate:** Explicitly approved by Rajon (“Proceed”) in conversation after UX review.
+- **Decision:** New Phase 6 in `docs/ROADMAP.md`. Build 6A→6E in order; 6F/6G deferred.
+  Practice tips that imply habit trackers (daily minimums, weekly check-offs) rejected.
+  Metronome/session-shape copy approved as optional tools, not streaks.
+- **Roadmap:** Phase 6 steps 22–28.
+
+---
+
 ## 2026-06-17 decisions — Public face redesign
 
 ### 2026-06-17 — Public site scope expanded

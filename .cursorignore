@@ -1,0 +1,31 @@
+# Cursor context filter — keeps token use down without blocking real work.
+# Only generated, installed, or secret files. All source, docs, migrations stay indexed.
+
+# Dependencies (never edit by hand)
+node_modules/
+.pnpm-store/
+
+# Build & cache outputs (generated)
+.next/
+out/
+dist/
+build/
+.turbo/
+.vercel/
+*.tsbuildinfo
+
+# Lockfiles (large, reproducible — mention explicitly if a dep debug is needed)
+pnpm-lock.yaml
+
+# Secrets (security + tokens)
+.env
+.env*.local
+
+# Logs, OS noise, test artifacts
+*.log
+.DS_Store
+coverage/
+
+# Supabase local temp
+supabase/.branches/
+supabase/.temp/

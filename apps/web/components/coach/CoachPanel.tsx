@@ -5,34 +5,79 @@ import { Button, Card, TextArea } from "@music/ui";
 
 type Msg = { role: "coach" | "you"; text: string };
 
-const seed: Msg[] = [
-  {
-    role: "coach",
-    text: "What's on your mind after practice? We can talk through a song, a rough moment, or just what to reach for next time.",
-  },
-];
-
-const gentleReplies = [
-  "That's worth noticing. What made it feel that way?",
-  "Showing up and paying attention is the whole game today. Want to set a tiny focus for tomorrow?",
-  "Sounds like real progress, even if it's quiet. Let's keep it light.",
-];
+const seed: Msg = {
+  role: "coach",
+  text: "What's on your mind after practice? We can talk through a song, a rough moment, or just what to reach for next time.",
+};
 
 export function CoachPanel() {
-  const [messages, setMessages] = useState<Msg[]>(seed);
+  const [messages, setMessages] = useState<Msg[]>([seed]);
   const [draft, setDraft] = useState("");
-  const replyIndex = useRef(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const streamIndex = useRef<number | null>(null);
 
-  function send() {
+  async function send() {
     const text = draft.trim();
-    if (!text) return;
-    const reply = gentleReplies[replyIndex.current % gentleReplies.length];
-    replyIndex.current += 1;
-    setMessages((prev) => [...prev, { role: "you", text }]);
+    if (!text || loading) return;
+
+    setError(null);
+    setLoading(true);
     setDraft("");
-    setTimeout(() => {
-      setMessages((prev) => [...prev, { role: "coach", text: reply }]);
-    }, 500);
+
+    const history: Msg[] = [...messages, { role: "you", text }];
+    setMessages(history);
+
+    const apiMessages = history.slice(1).map((m) => ({
+      role: (m.role === "you" ? "user" : "assistant") as "user" | "assistant",
+      content: m.text,
+    }));
+
+    setMessages((prev) => [...prev, { role: "coach", text: "" }]);
+    streamIndex.current = history.length;
+
+    try {
+      const res = await fetch("/api/coach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: apiMessages }),
+      });
+
+      if (!res.ok) {
+        const data = (await res.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(data?.error ?? "Coach unavailable right now.");
+      }
+
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error("No response stream.");
+
+      const decoder = new TextDecoder();
+      let assistantText = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        assistantText += decoder.decode(value, { stream: true });
+        const snapshot = assistantText;
+        setMessages((prev) => {
+          const next = [...prev];
+          const idx = streamIndex.current;
+          if (idx == null || !next[idx]) return prev;
+          next[idx] = { role: "coach", text: snapshot };
+          return next;
+        });
+      }
+
+      if (!assistantText.trim()) {
+        throw new Error("Empty response — try again.");
+      }
+    } catch (err) {
+      setMessages((prev) => prev.slice(0, -1));
+      setError(err instanceof Error ? err.message : "Something went wrong.");
+    } finally {
+      streamIndex.current = null;
+      setLoading(false);
+    }
   }
 
   return (
@@ -60,24 +105,26 @@ export function CoachPanel() {
         </div>
       </div>
 
-      <div className="mt-5 space-y-3">
+      <div className="mt-5 max-h-[min(420px,50vh)] space-y-3 overflow-y-auto">
         {messages.map((m, i) => (
           <div
             key={i}
             className={`flex animate-rise ${m.role === "you" ? "justify-end" : "justify-start"}`}
           >
             <p
-              className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+              className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                 m.role === "you"
                   ? "rounded-br-sm bg-accent-soft text-primary"
                   : "rounded-bl-sm bg-elevated text-secondary"
               }`}
             >
-              {m.text}
+              {m.text || (loading && i === messages.length - 1 ? "…" : "")}
             </p>
           </div>
         ))}
       </div>
+
+      {error ? <p className="mt-3 text-xs text-muted">{error}</p> : null}
 
       <div className="mt-4 flex items-end gap-2">
         <TextArea
@@ -87,13 +134,19 @@ export function CoachPanel() {
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
               e.preventDefault();
-              send();
+              void send();
             }
           }}
           placeholder="Ask anything — music check, plan the week, I sound bad…"
           className="min-h-[2.75rem] flex-1"
+          disabled={loading}
         />
-        <Button type="button" onClick={send} className="shrink-0">
+        <Button
+          type="button"
+          onClick={() => void send()}
+          className="shrink-0"
+          disabled={loading || !draft.trim()}
+        >
           Send
         </Button>
       </div>
