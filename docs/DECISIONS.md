@@ -15,6 +15,23 @@ Add a dated entry when Rajon explicitly approves something not in the original b
 
 ---
 
+## 2026-06-23 — Phase 7: Execution mode (Session Stand + anchors)
+
+### 2026-06-23 — Session Stand and anchor-based practice flow
+- **Proposal:** Redesign Studio around execution, not management. One **anchor** per session
+  (song, guitar skill, vocal, or freestyle). Fullscreen **Stand** while practicing (chords,
+  lyrics, warm-ups — read-only). Reflection only after "End session." Songs and skills stay
+  parallel; optional `song_focus` (guitar / vocal / both) on song anchors. Continue card
+  starts a session in one tap instead of linking to the song notebook.
+- **Gate:** Explicitly approved by Rajon ("Proceed one by one") after architecture review.
+  Finishes the stated product purpose (low-friction creative execution); no habit-tracker
+  patterns. Nav demotion / Library hub deferred.
+- **Decision:** Phase 7 in `docs/ROADMAP.md`. Build 7A→7G in order. Schema additive only;
+  backward-compat via `anchor_type` backfill from `song_id`.
+- **Roadmap:** Phase 7 steps 29–35.
+
+---
+
 ## 2026-06-18 — Music OS Depth (v2): 5-screen system + metric override
 
 ### 2026-06-18 — Expand Music OS from 3 tabs to a 5-screen practice system

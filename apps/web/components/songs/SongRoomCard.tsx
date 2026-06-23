@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Badge, Card } from "@music/ui";
 import { learningStageLabel, type Song } from "@music/types";
+import { SongCardMenu } from "@/components/songs/SongCardMenu";
 
 function lastWorkedLabel(iso: string | null): string | null {
   if (!iso) return null;
@@ -19,17 +20,17 @@ export function SongRoomCard({ song }: { song: Song }) {
   const lastWorked = lastWorkedLabel(song.last_worked_at);
 
   return (
-    <Link href={`/songs/${song.id}`} className="group block">
-      <Card interactive className="flex h-full flex-col gap-3">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <h3 className="font-display text-xl leading-snug text-primary">
-              {song.name}
-            </h3>
-            {song.artist ? (
-              <p className="mt-0.5 text-sm text-secondary">{song.artist}</p>
-            ) : null}
-          </div>
+    <Card interactive className="group flex h-full flex-col gap-3">
+      <div className="flex items-start gap-2">
+        <Link href={`/songs/${song.id}`} className="min-w-0 flex-1">
+          <h3 className="font-display text-xl leading-snug text-primary transition group-hover:text-accent">
+            {song.name}
+          </h3>
+          {song.artist ? (
+            <p className="mt-0.5 text-sm text-secondary">{song.artist}</p>
+          ) : null}
+        </Link>
+        <div className="flex shrink-0 items-start gap-1">
           {song.learning_stage ? (
             <Badge className="bg-accent-soft text-accent">
               {learningStageLabel(song.learning_stage)}
@@ -37,25 +38,30 @@ export function SongRoomCard({ song }: { song: Song }) {
           ) : (
             <Badge className="bg-elevated text-muted">Not started</Badge>
           )}
+          <SongCardMenu songId={song.id} songName={song.name} />
         </div>
+      </div>
 
-        {song.notes ? (
-          <p className="line-clamp-2 border-t border-border pt-3 text-sm leading-relaxed text-secondary">
-            {song.notes}
-          </p>
-        ) : null}
+      {song.notes ? (
+        <Link
+          href={`/songs/${song.id}`}
+          className="line-clamp-2 border-t border-border pt-3 text-sm leading-relaxed text-secondary transition hover:text-primary"
+        >
+          {song.notes}
+        </Link>
+      ) : null}
 
-        <div className="mt-auto flex items-center justify-between gap-3 pt-1">
-          {lastWorked ? (
-            <p className="text-xs text-muted">Last played {lastWorked}</p>
-          ) : (
-            <span className="text-xs text-muted">No sessions yet</span>
-          )}
-          <span className="text-xs text-accent opacity-0 transition group-hover:opacity-100">
-            Open notebook &rarr;
-          </span>
-        </div>
-      </Card>
-    </Link>
+      <Link
+        href={`/songs/${song.id}`}
+        className="mt-auto flex items-center justify-between gap-3 pt-1"
+      >
+        {lastWorked ? (
+          <p className="text-xs text-muted">Last played {lastWorked}</p>
+        ) : (
+          <span className="text-xs text-muted">No sessions yet</span>
+        )}
+        <span className="text-xs text-accent">Open notebook &rarr;</span>
+      </Link>
+    </Card>
   );
 }

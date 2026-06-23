@@ -1,6 +1,77 @@
+"use client";
+
 import { Button, Card, FieldLabel, TextInput } from "@music/ui";
 import type { VocalExercise } from "@music/types";
-import { addExercise, deleteExercise } from "@/app/(private)/vocal/actions";
+import { addExercise, deleteExercise, updateExercise } from "@/app/(private)/vocal/actions";
+import { ConfirmRemoveForm } from "@/components/ui/ConfirmRemoveForm";
+
+function ExerciseEditor({ exercise }: { exercise: VocalExercise }) {
+  return (
+    <details className="rounded-lg border border-border bg-elevated">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3.5 py-2.5 [&::-webkit-details-marker]:hidden">
+        <a
+          href={exercise.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="min-w-0 flex-1 truncate text-sm text-accent underline-offset-4 hover:underline"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {exercise.label}
+        </a>
+        {exercise.problem_tag ? (
+          <span className="shrink-0 rounded-full bg-card px-2 py-0.5 text-[0.65rem] text-muted">
+            {exercise.problem_tag}
+          </span>
+        ) : null}
+      </summary>
+      <form
+        action={updateExercise.bind(null, exercise.id)}
+        className="space-y-3 border-t border-border px-3.5 py-3"
+      >
+        <div>
+          <FieldLabel htmlFor={`ex-label-${exercise.id}`}>Name</FieldLabel>
+          <TextInput
+            id={`ex-label-${exercise.id}`}
+            name="label"
+            required
+            defaultValue={exercise.label}
+          />
+        </div>
+        <div>
+          <FieldLabel htmlFor={`ex-url-${exercise.id}`}>Link</FieldLabel>
+          <TextInput
+            id={`ex-url-${exercise.id}`}
+            name="url"
+            type="url"
+            required
+            defaultValue={exercise.url}
+          />
+        </div>
+        <div>
+          <FieldLabel htmlFor={`ex-tag-${exercise.id}`} hint="optional">
+            What it helps with
+          </FieldLabel>
+          <TextInput
+            id={`ex-tag-${exercise.id}`}
+            name="problem_tag"
+            defaultValue={exercise.problem_tag ?? ""}
+          />
+        </div>
+        <Button type="submit" size="sm">
+          Save
+        </Button>
+      </form>
+      <div className="border-t border-border px-3.5 py-3">
+        <ConfirmRemoveForm
+          action={deleteExercise.bind(null, exercise.id)}
+          confirmMessage={`Remove "${exercise.label}" from your exercises dock?\n\nThis cannot be undone.`}
+        >
+          Remove exercise…
+        </ConfirmRemoveForm>
+      </div>
+    </details>
+  );
+}
 
 export function ExercisesDock({ exercises }: { exercises: VocalExercise[] }) {
   return (
@@ -12,39 +83,11 @@ export function ExercisesDock({ exercises }: { exercises: VocalExercise[] }) {
       </p>
 
       {exercises.length > 0 ? (
-        <ul className="space-y-2">
-          {exercises.map((ex) => (
-            <li
-              key={ex.id}
-              className="flex items-center gap-3 border-b border-border pb-2 last:border-0 last:pb-0"
-            >
-              <div className="min-w-0 flex-1">
-                <a
-                  href={ex.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-accent underline-offset-4 hover:underline"
-                >
-                  {ex.label}
-                </a>
-                {ex.problem_tag ? (
-                  <span className="ml-2 rounded-full bg-elevated px-2 py-0.5 text-[0.65rem] text-muted">
-                    {ex.problem_tag}
-                  </span>
-                ) : null}
-              </div>
-              <form action={deleteExercise.bind(null, ex.id)}>
-                <button
-                  type="submit"
-                  aria-label={`Remove ${ex.label}`}
-                  className="text-xs text-muted transition hover:text-secondary"
-                >
-                  Remove
-                </button>
-              </form>
-            </li>
+        <div className="space-y-2">
+          {exercises.map((exercise) => (
+            <ExerciseEditor key={exercise.id} exercise={exercise} />
           ))}
-        </ul>
+        </div>
       ) : (
         <p className="text-sm text-muted">No exercises yet — add your first below.</p>
       )}

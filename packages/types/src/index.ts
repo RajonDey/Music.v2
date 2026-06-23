@@ -20,6 +20,17 @@ export type ComfortLevel = (typeof COMFORT_LEVELS)[number];
 export const FEELING_BEFORE = ["nervous", "neutral", "excited"] as const;
 export type FeelingBefore = (typeof FEELING_BEFORE)[number];
 
+export const SESSION_ANCHOR_TYPES = [
+  "song",
+  "guitar_skill",
+  "vocal",
+  "freestyle",
+] as const;
+export type SessionAnchorType = (typeof SESSION_ANCHOR_TYPES)[number];
+
+export const SONG_FOCUS = ["guitar", "vocal", "both"] as const;
+export type SongFocus = (typeof SONG_FOCUS)[number];
+
 export const QUALITY_LABELS = [
   "unfocused",
   "okay",
@@ -247,6 +258,9 @@ export type Session = {
   created_at: string;
   date: string;
   song_id: string | null;
+  anchor_type: SessionAnchorType | null;
+  anchor_skill_id: string | null;
+  song_focus: SongFocus | null;
   intention: string | null;
   feeling_before: FeelingBefore | null;
   what_worked_on: string | null;

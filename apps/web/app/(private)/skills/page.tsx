@@ -3,6 +3,7 @@ import { getSkillsData } from "@/lib/skills";
 import { SkillsRadar } from "@/components/skills/SkillsRadar";
 import { ScaleReference } from "@/components/skills/ScaleReference";
 import { SkillRow } from "@/components/skills/SkillRow";
+import { MomentRow } from "@/components/skills/MomentRow";
 import { DbSetupNotice } from "@/components/songs/DbSetupNotice";
 
 export const dynamic = "force-dynamic";
@@ -47,20 +48,11 @@ export default async function SkillsPage() {
                 <h2 className="font-display text-lg text-primary">Recent moments</h2>
                 <ul className="space-y-2">
                   {moments.map((moment) => (
-                    <li
+                    <MomentRow
                       key={moment.id}
-                      className="border-b border-border pb-2 text-sm last:border-0 last:pb-0"
-                    >
-                      <div className="flex items-baseline justify-between gap-3">
-                        <span className="text-accent">{moment.skill_name ?? "Moment"}</span>
-                        <span className="shrink-0 text-xs text-muted">
-                          {timeAgo(moment.created_at)}
-                        </span>
-                      </div>
-                      {moment.note ? (
-                        <p className="mt-0.5 leading-relaxed text-secondary">{moment.note}</p>
-                      ) : null}
-                    </li>
+                      moment={moment}
+                      timeLabel={timeAgo(moment.created_at)}
+                    />
                   ))}
                 </ul>
               </Card>

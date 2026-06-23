@@ -92,3 +92,22 @@ export async function deleteExercise(id: string): Promise<void> {
   if (error) throw error;
   revalidatePath("/vocal");
 }
+
+export async function updateExercise(id: string, formData: FormData): Promise<void> {
+  const label = str(formData, "label");
+  const url = str(formData, "url");
+  const problemTag = str(formData, "problem_tag");
+  if (!label || !url) return;
+
+  const supabase = createServiceClient();
+  const { error } = await supabase
+    .from("vocal_exercises")
+    .update({
+      label,
+      url,
+      problem_tag: problemTag || null,
+    })
+    .eq("id", id);
+  if (error) throw error;
+  revalidatePath("/vocal");
+}

@@ -16,11 +16,19 @@ export type SkillGroup = { category: string; skills: Skill[] };
 
 export type RecentSkill = Pick<Skill, "id" | "name" | "category">;
 
+export type RecentLoggedSession = {
+  id: string;
+  date: string;
+  intention: string | null;
+  what_worked_on: string | null;
+};
+
 export type StudioData = {
   songs: Song[];
   skillGroups: SkillGroup[];
   recentSkills: RecentSkill[];
   openSession: Session | null;
+  recentLoggedSessions: RecentLoggedSession[];
   dbReady: boolean;
   continueSongs: Song[];
   pinnedSongs: Song[];
@@ -51,6 +59,7 @@ export async function getStudioData(): Promise<StudioData> {
         skillGroups: [],
         recentSkills: [],
         openSession: null,
+        recentLoggedSessions: [],
         dbReady: false,
         continueSongs: [],
         pinnedSongs: [],
@@ -69,7 +78,8 @@ export async function getStudioData(): Promise<StudioData> {
 
   const today = new Date().toISOString().slice(0, 10);
 
-  const [skillsRes, openRes, lastSessionRes, recentSkillsRes] = await Promise.all([
+  const [skillsRes, openRes, lastSessionRes, recentSkillsRes, recentLoggedRes] =
+    await Promise.all([
     supabase
       .from("skills")
       .select("*")
@@ -95,6 +105,12 @@ export async function getStudioData(): Promise<StudioData> {
       .select("skill:skills(id, name, category)")
       .order("created_at", { ascending: false })
       .limit(40),
+    supabase
+      .from("sessions")
+      .select("id, date, intention, what_worked_on")
+      .not("logged_at", "is", null)
+      .order("logged_at", { ascending: false })
+      .limit(5),
   ]);
 
   type RecentRow = { skill: RecentSkill | null };
@@ -118,6 +134,7 @@ export async function getStudioData(): Promise<StudioData> {
     skillGroups: groupSkills((skillsRes.data ?? []) as Skill[]),
     recentSkills,
     openSession: (openRes.data ?? null) as Session | null,
+    recentLoggedSessions: (recentLoggedRes.data ?? []) as RecentLoggedSession[],
     dbReady: true,
     continueSongs,
     pinnedSongs,

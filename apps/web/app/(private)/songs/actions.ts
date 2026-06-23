@@ -148,6 +148,71 @@ export async function deletePart(partId: string, songId: string): Promise<void> 
   revalidatePath(`/songs/${songId}`);
 }
 
+async function swapOrderedItem(
+  table: "song_parts" | "song_resources",
+  songId: string,
+  itemId: string,
+  direction: "up" | "down",
+): Promise<void> {
+  const supabase = createServiceClient();
+  const { data: rows, error } = await supabase
+    .from(table)
+    .select("id, position")
+    .eq("song_id", songId)
+    .order("position", { ascending: true })
+    .order("created_at", { ascending: true });
+
+  if (error) throw error;
+
+  const items = rows ?? [];
+  const idx = items.findIndex((row) => row.id === itemId);
+  if (idx < 0) return;
+
+  const swapIdx = direction === "up" ? idx - 1 : idx + 1;
+  if (swapIdx < 0 || swapIdx >= items.length) return;
+
+  const current = items[idx];
+  const neighbor = items[swapIdx];
+
+  const { error: firstError } = await supabase
+    .from(table)
+    .update({ position: neighbor.position })
+    .eq("id", current.id);
+  if (firstError) throw firstError;
+
+  const { error: secondError } = await supabase
+    .from(table)
+    .update({ position: current.position })
+    .eq("id", neighbor.id);
+  if (secondError) throw secondError;
+}
+
+export async function movePartUp(partId: string, songId: string): Promise<void> {
+  await swapOrderedItem("song_parts", songId, partId, "up");
+  revalidatePath(`/songs/${songId}`);
+}
+
+export async function movePartDown(partId: string, songId: string): Promise<void> {
+  await swapOrderedItem("song_parts", songId, partId, "down");
+  revalidatePath(`/songs/${songId}`);
+}
+
+export async function moveResourceUp(
+  resourceId: string,
+  songId: string,
+): Promise<void> {
+  await swapOrderedItem("song_resources", songId, resourceId, "up");
+  revalidatePath(`/songs/${songId}`);
+}
+
+export async function moveResourceDown(
+  resourceId: string,
+  songId: string,
+): Promise<void> {
+  await swapOrderedItem("song_resources", songId, resourceId, "down");
+  revalidatePath(`/songs/${songId}`);
+}
+
 export async function addResource(
   songId: string,
   formData: FormData,

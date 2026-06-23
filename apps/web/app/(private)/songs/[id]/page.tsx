@@ -3,12 +3,11 @@ import { notFound } from "next/navigation";
 import { Card } from "@music/ui";
 import { learningStageLabel, qualityLabel } from "@music/types";
 import { getSongDetail } from "@/lib/songs";
-import { SongHeaderEditor } from "@/components/songs/SongHeaderEditor";
 import { LearningStagePipeline } from "@/components/songs/LearningStagePipeline";
 import { PartsMap } from "@/components/songs/PartsMap";
 import { ResourcesDock } from "@/components/songs/ResourcesDock";
 import { LyricsCard } from "@/components/songs/LyricsCard";
-import { DeleteSongButton } from "@/components/songs/DeleteSongButton";
+import { SongNotebookSettings } from "@/components/songs/SongNotebookSettings";
 
 export const dynamic = "force-dynamic";
 
@@ -85,9 +84,6 @@ export default async function SongNotebookPage({
             North star: <span className="text-secondary">{song.target}</span>
           </p>
         ) : null}
-
-        <SongHeaderEditor song={song} />
-        <DeleteSongButton songId={song.id} songName={song.name} />
       </header>
 
       <LearningStagePipeline songId={song.id} current={song.learning_stage} />
@@ -126,14 +122,22 @@ export default async function SongNotebookPage({
                         : null;
                     return (
                       <li
-                        key={entry.id}
+                        key={entry.sessionId}
                         className="border-b border-border pb-2 text-sm last:border-0 last:pb-0"
                       >
                         <div className="flex items-baseline justify-between gap-3">
                           <span className="text-muted">{formatDate(entry.date)}</span>
-                          {quality ? (
-                            <span className="text-xs text-accent">{quality}</span>
-                          ) : null}
+                          <div className="flex shrink-0 items-center gap-2">
+                            {quality ? (
+                              <span className="text-xs text-accent">{quality}</span>
+                            ) : null}
+                            <Link
+                              href={`/studio/session/${entry.sessionId}`}
+                              className="text-xs text-secondary transition hover:text-primary"
+                            >
+                              Edit
+                            </Link>
+                          </div>
                         </div>
                         {entry.what_worked_on ? (
                           <p className="mt-0.5 leading-relaxed text-secondary">
@@ -174,6 +178,8 @@ export default async function SongNotebookPage({
           ) : null}
         </div>
       </div>
+
+      <SongNotebookSettings song={song} />
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Card } from "@music/ui";
 import { qualityLabel } from "@music/types";
 import type { MonthSessionNote } from "@/lib/report";
@@ -63,6 +64,12 @@ export function MonthSessionNotes({ sessions }: { sessions: MonthSessionNote[] }
                       Felt better: {session.what_felt_better}
                     </p>
                   ) : null}
+                  <Link
+                    href={`/studio/session/${session.id}`}
+                    className="mt-2 inline-block text-xs text-secondary transition hover:text-primary"
+                  >
+                    Edit entry
+                  </Link>
                 </div>
               ))}
             </li>

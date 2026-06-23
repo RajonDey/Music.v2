@@ -1,25 +1,15 @@
 "use client";
 
-import { Button } from "@music/ui";
+import { ConfirmRemoveForm } from "@/components/ui/ConfirmRemoveForm";
 import { deleteSong } from "@/app/(private)/songs/actions";
 
 export function DeleteSongButton({ songId, songName }: { songId: string; songName: string }) {
   return (
-    <form
+    <ConfirmRemoveForm
       action={deleteSong.bind(null, songId)}
-      onSubmit={(e) => {
-        if (
-          !window.confirm(
-            `Remove "${songName}" and its notebook? This cannot be undone.`,
-          )
-        ) {
-          e.preventDefault();
-        }
-      }}
+      confirmMessage={`Remove "${songName}" from your song list?\n\nIts parts, chords, lyrics, and resources will be removed. Past practice sessions stay in your journal — they just won't link to this song anymore.\n\nThis cannot be undone.`}
     >
-      <Button type="submit" variant="link" className="text-xs text-muted">
-        Remove song
-      </Button>
-    </form>
+      Remove this song…
+    </ConfirmRemoveForm>
   );
 }

@@ -27,7 +27,10 @@ writes server-side (route handlers / server actions).
 | id | uuid pk default gen_random_uuid() | |
 | created_at | timestamptz default now() | |
 | date | date not null default current_date | |
-| song_id | uuid references songs(id) on delete set null | null = freestyle |
+| song_id | uuid references songs(id) on delete set null | primary song when anchor is song; drives `last_worked_at` trigger |
+| anchor_type | text | `song` / `guitar_skill` / `vocal` / `freestyle` — what the session Stand shows |
+| anchor_skill_id | uuid references skills(id) on delete set null | set when anchor is `guitar_skill` |
+| song_focus | text | `guitar` / `vocal` / `both` — optional focus when anchor is song |
 | intention | text | session focus |
 | feeling_before | text | nervous / neutral / excited |
 | what_worked_on | text | |

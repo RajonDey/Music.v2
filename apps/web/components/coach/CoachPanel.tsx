@@ -1,7 +1,10 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button, Card, TextArea } from "@music/ui";
+import type { CoachHistoryMessage } from "@/lib/coach";
+import { clearCoachMessages } from "@/app/(private)/coach/actions";
 
 type Msg = { role: "coach" | "you"; text: string };
 
@@ -10,8 +13,29 @@ const seed: Msg = {
   text: "What's on your mind after practice? We can talk through a song, a rough moment, or just what to reach for next time.",
 };
 
-export function CoachPanel() {
-  const [messages, setMessages] = useState<Msg[]>([seed]);
+function historyToMessages(history: CoachHistoryMessage[]): Msg[] {
+  if (history.length === 0) return [seed];
+  return history.map((m) => ({
+    role: m.role === "user" ? "you" : "coach",
+    text: m.content,
+  }));
+}
+
+function toApiMessages(msgs: Msg[]): { role: "user" | "assistant"; content: string }[] {
+  const hasOnlySeed = msgs.length === 1 && msgs[0]?.role === "coach";
+  if (hasOnlySeed) return [];
+
+  return msgs
+    .filter((m, i) => !(i === 0 && m.role === "coach" && m.text === seed.text))
+    .map((m) => ({
+      role: (m.role === "you" ? "user" : "assistant") as "user" | "assistant",
+      content: m.text,
+    }));
+}
+
+export function CoachPanel({ history }: { history: CoachHistoryMessage[] }) {
+  const router = useRouter();
+  const [messages, setMessages] = useState<Msg[]>(() => historyToMessages(history));
   const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,16 +49,16 @@ export function CoachPanel() {
     setLoading(true);
     setDraft("");
 
-    const history: Msg[] = [...messages, { role: "you", text }];
-    setMessages(history);
+    const nextMessages: Msg[] = [...messages, { role: "you", text }];
+    setMessages(nextMessages);
 
-    const apiMessages = history.slice(1).map((m) => ({
-      role: (m.role === "you" ? "user" : "assistant") as "user" | "assistant",
-      content: m.text,
-    }));
+    const apiMessages = [
+      ...toApiMessages(messages),
+      { role: "user" as const, content: text },
+    ];
 
     setMessages((prev) => [...prev, { role: "coach", text: "" }]);
-    streamIndex.current = history.length;
+    streamIndex.current = nextMessages.length;
 
     try {
       const res = await fetch("/api/coach", {
@@ -71,6 +95,8 @@ export function CoachPanel() {
       if (!assistantText.trim()) {
         throw new Error("Empty response — try again.");
       }
+
+      router.refresh();
     } catch (err) {
       setMessages((prev) => prev.slice(0, -1));
       setError(err instanceof Error ? err.message : "Something went wrong.");
@@ -80,29 +106,55 @@ export function CoachPanel() {
     }
   }
 
+  async function startFresh() {
+    if (
+      !window.confirm(
+        "Start a fresh coach chat for today?\n\nToday's saved messages will be cleared from your journal.",
+      )
+    ) {
+      return;
+    }
+
+    await clearCoachMessages();
+    setMessages([seed]);
+    setError(null);
+    router.refresh();
+  }
+
+  const hasSavedHistory = history.length > 0;
+
   return (
     <Card variant="accent">
-      <div className="flex items-center gap-3">
-        <span
-          aria-hidden
-          className="grid h-9 w-9 place-items-center rounded-full bg-accent text-base shadow-glow"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            className="h-4 w-4"
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <span
+            aria-hidden
+            className="grid h-9 w-9 place-items-center rounded-full bg-accent text-base shadow-glow"
           >
-            <path d="M9 18V5l11-2v13" strokeLinecap="round" strokeLinejoin="round" />
-            <circle cx="6" cy="18" r="3" />
-            <circle cx="17" cy="16" r="3" />
-          </svg>
-        </span>
-        <div>
-          <h2 className="font-display text-xl text-primary">Coach</h2>
-          <p className="text-sm text-muted">Your mentor — always here.</p>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              className="h-4 w-4"
+            >
+              <path d="M9 18V5l11-2v13" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="6" cy="18" r="3" />
+              <circle cx="17" cy="16" r="3" />
+            </svg>
+          </span>
+          <div>
+            <h2 className="font-display text-xl text-primary">Coach</h2>
+            <p className="text-sm text-muted">
+              {hasSavedHistory ? "Picked up today's thread." : "Your mentor — always here."}
+            </p>
+          </div>
         </div>
+        {messages.length > 1 || hasSavedHistory ? (
+          <Button type="button" variant="ghost" size="sm" onClick={() => void startFresh()}>
+            Start fresh…
+          </Button>
+        ) : null}
       </div>
 
       <div className="mt-5 max-h-[min(420px,50vh)] space-y-3 overflow-y-auto">

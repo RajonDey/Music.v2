@@ -4,7 +4,9 @@ import { useState } from "react";
 import { Button, Card, FieldLabel, SelectInput, TextArea, TextInput } from "@music/ui";
 import { PART_PRESETS } from "@music/types";
 import type { SongPart } from "@music/types";
-import { addPart, deletePart, updatePart } from "@/app/(private)/songs/actions";
+import { addPart, deletePart, movePartDown, movePartUp, updatePart } from "@/app/(private)/songs/actions";
+import { ConfirmRemoveForm } from "@/components/ui/ConfirmRemoveForm";
+import { ReorderButtons } from "@/components/songs/ReorderButtons";
 import { ChordRow } from "./ChordRow";
 
 function PartNameFields({
@@ -58,11 +60,29 @@ function PartNameFields({
   );
 }
 
-function PartEditor({ part, songId }: { part: SongPart; songId: string }) {
+function PartEditor({
+  part,
+  songId,
+  index,
+  total,
+}: {
+  part: SongPart;
+  songId: string;
+  index: number;
+  total: number;
+}) {
   return (
     <details className="rounded-lg border border-border bg-elevated">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
-        <span className="font-display text-base text-primary">{part.name}</span>
+      <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 [&::-webkit-details-marker]:hidden">
+        <ReorderButtons
+          songId={songId}
+          itemId={part.id}
+          index={index}
+          total={total}
+          moveUp={movePartUp}
+          moveDown={movePartDown}
+        />
+        <span className="min-w-0 flex-1 font-display text-base text-primary">{part.name}</span>
         {part.chords ? (
           <span className="truncate font-mono text-xs text-accent">{part.chords}</span>
         ) : null}
@@ -104,11 +124,14 @@ function PartEditor({ part, songId }: { part: SongPart; songId: string }) {
           </Button>
         </form>
 
-        <form action={deletePart.bind(null, part.id, songId)}>
-          <Button type="submit" variant="link" className="text-xs text-muted">
-            Remove part
-          </Button>
-        </form>
+        <div className="border-t border-border pt-4">
+          <ConfirmRemoveForm
+            action={deletePart.bind(null, part.id, songId)}
+            confirmMessage={`Remove "${part.name}" from this song's parts map?\n\nThis cannot be undone.`}
+          >
+            Remove part…
+          </ConfirmRemoveForm>
+        </div>
       </div>
     </details>
   );
@@ -132,8 +155,14 @@ export function PartsMap({
 
       {parts.length > 0 ? (
         <div className="space-y-2">
-          {parts.map((part) => (
-            <PartEditor key={part.id} part={part} songId={songId} />
+          {parts.map((part, index) => (
+            <PartEditor
+              key={part.id}
+              part={part}
+              songId={songId}
+              index={index}
+              total={parts.length}
+            />
           ))}
         </div>
       ) : (

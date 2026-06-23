@@ -49,3 +49,27 @@ export async function addMoment(
   if (error) throw error;
   revalidatePath("/skills");
 }
+
+export async function updateMoment(
+  momentId: string,
+  formData: FormData,
+): Promise<void> {
+  const raw = formData.get("note");
+  const note = typeof raw === "string" ? raw.trim() : "";
+  if (!note) return;
+
+  const supabase = createServiceClient();
+  const { error } = await supabase
+    .from("skill_moments")
+    .update({ note })
+    .eq("id", momentId);
+  if (error) throw error;
+  revalidatePath("/skills");
+}
+
+export async function deleteMoment(momentId: string): Promise<void> {
+  const supabase = createServiceClient();
+  const { error } = await supabase.from("skill_moments").delete().eq("id", momentId);
+  if (error) throw error;
+  revalidatePath("/skills");
+}

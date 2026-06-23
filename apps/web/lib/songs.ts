@@ -21,7 +21,7 @@ function isMissingTable(error: { code?: string; message?: string } | null): bool
 }
 
 export type PracticeLogEntry = {
-  id: string;
+  sessionId: string;
   date: string;
   what_worked_on: string | null;
   quality_rating: number | null;
@@ -193,7 +193,7 @@ export async function getSongDetail(id: string): Promise<SongDetail | null> {
   )
     .filter((row) => row.session)
     .map((row) => ({
-      id: row.id,
+      sessionId: row.session!.id,
       date: row.session!.date,
       what_worked_on: row.session!.what_worked_on,
       quality_rating: row.session!.quality_rating,

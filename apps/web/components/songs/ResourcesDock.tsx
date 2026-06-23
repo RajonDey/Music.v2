@@ -5,8 +5,12 @@ import { RESOURCE_KINDS, type SongResource } from "@music/types";
 import {
   addResource,
   deleteResource,
+  moveResourceDown,
+  moveResourceUp,
   updateResource,
 } from "@/app/(private)/songs/actions";
+import { ConfirmRemoveForm } from "@/components/ui/ConfirmRemoveForm";
+import { ReorderButtons } from "@/components/songs/ReorderButtons";
 
 const kindLabels: Record<string, string> = {
   youtube: "YouTube",
@@ -19,13 +23,25 @@ const kindLabels: Record<string, string> = {
 function ResourceEditor({
   resource,
   songId,
+  index,
+  total,
 }: {
   resource: SongResource;
   songId: string;
+  index: number;
+  total: number;
 }) {
   return (
     <details className="rounded-lg border border-border bg-elevated">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3.5 py-2.5 [&::-webkit-details-marker]:hidden">
+      <summary className="flex cursor-pointer list-none items-center gap-2 px-3.5 py-2.5 [&::-webkit-details-marker]:hidden">
+        <ReorderButtons
+          songId={songId}
+          itemId={resource.id}
+          index={index}
+          total={total}
+          moveUp={moveResourceUp}
+          moveDown={moveResourceDown}
+        />
         <a
           href={resource.url}
           target="_blank"
@@ -76,11 +92,14 @@ function ResourceEditor({
           Save
         </Button>
       </form>
-      <form action={deleteResource.bind(null, resource.id, songId)} className="px-3.5 pb-3">
-        <Button type="submit" variant="link" className="text-xs text-muted">
-          Remove
-        </Button>
-      </form>
+      <div className="border-t border-border px-3.5 py-3">
+        <ConfirmRemoveForm
+          action={deleteResource.bind(null, resource.id, songId)}
+          confirmMessage={`Remove "${resource.label}" from your resources dock?\n\nThis cannot be undone.`}
+        >
+          Remove resource…
+        </ConfirmRemoveForm>
+      </div>
     </details>
   );
 }
@@ -103,8 +122,14 @@ export function ResourcesDock({
 
       {resources.length > 0 ? (
         <div className="space-y-2">
-          {resources.map((resource) => (
-            <ResourceEditor key={resource.id} resource={resource} songId={songId} />
+          {resources.map((resource, index) => (
+            <ResourceEditor
+              key={resource.id}
+              resource={resource}
+              songId={songId}
+              index={index}
+              total={resources.length}
+            />
           ))}
         </div>
       ) : (

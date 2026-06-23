@@ -78,6 +78,20 @@ session fan-out contract. Manual-first for Bangla/Hindi; APIs stay enrichment.
 27. ✅ **6F Secondary polish** — recent skills strip, vocal→session link, auto radar snapshot, calendar session notes.
 28. 🔶 **6G Tools + closeout** — ✅ metronome, ✅ scale reference; Hallmark audit _(optional pass)_.
 
+## Phase 7 — Execution mode (Session Stand)
+
+Approved 2026-06-23 (see `docs/DECISIONS.md`). Shifts Studio from journal-first to
+execution-first: one anchor per session, fullscreen Stand while practicing, reflection only
+after "End session." Songs and skills are parallel anchors, not a hierarchy.
+
+29. ✅ **7A Schema** — `sessions.anchor_type`, `anchor_skill_id`, `song_focus`; types + backfill.
+30. ✅ **7B Stand loaders** — `lib/stand.ts`; song/skill/vocal/freestyle payloads.
+31. ✅ **7C Stand UI** — read-only Stand components (parts, lyrics, chords, warm-ups).
+32. ✅ **7D Anchor picker** — replace intention form; Continue card one-tap start.
+33. ✅ **7E Phase machine** — stand → end → reflect; hide nav chrome via fullscreen overlay.
+34. ✅ **7F Reflection simplify** — auto-tags from anchor; collapse skill browser.
+35. ✅ **7G Polish** — edit-session shows anchor; regression pass.
+
 ## Definition of done (every phase)
 - Mobile-first, warm, no habit-tracker patterns.
 - Middleware protects all private routes; no private data on `/`.
