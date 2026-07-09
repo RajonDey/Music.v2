@@ -72,7 +72,7 @@ Never expose `SUPABASE_SERVICE_ROLE_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` to th
 - **Framework:** Next.js 14+ App Router, TypeScript strict, RSC by default.
 - **Styling:** Tailwind via `packages/tokens` preset — semantic utilities, no raw hex in app code.
 - **Data:** Supabase (Postgres), RLS from day one. All writes server-side.
-- **AI:** Google `gemini-2.0-flash` (AI Studio free tier) via Vercel AI SDK, streaming.
+- **AI:** Google `gemini-2.5-flash` (AI Studio free tier) via Vercel AI SDK.
 
 ## Deploy (Vercel)
 
