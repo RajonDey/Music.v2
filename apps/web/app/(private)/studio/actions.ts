@@ -4,10 +4,15 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
   FEELING_BEFORE,
+  RIYAZ_ANCHOR_TYPES,
+  RIYAZ_FEEL_GUITAR,
+  RIYAZ_FEEL_VOCAL,
   SESSION_ANCHOR_TYPES,
   SONG_FOCUS,
   type FeelingBefore,
   type LearningStage,
+  type RiyazAnchorType,
+  type RiyazFeel,
   type SessionAnchorType,
   type SongFocus,
 } from "@music/types";
@@ -109,6 +114,117 @@ async function syncSessionTags(
   }
 }
 
+function parseRiyazFeel(
+  raw: string | null,
+  anchorType: RiyazAnchorType,
+): RiyazFeel | null {
+  if (!raw) return null;
+  if (anchorType === "vocal" && (RIYAZ_FEEL_VOCAL as readonly string[]).includes(raw)) {
+    return raw as RiyazFeel;
+  }
+  if (anchorType === "guitar_skill" && (RIYAZ_FEEL_GUITAR as readonly string[]).includes(raw)) {
+    return raw as RiyazFeel;
+  }
+  return null;
+}
+
+function parseRiyazAnchor(raw: string | null): RiyazAnchorType | null {
+  if (raw && RIYAZ_ANCHOR_TYPES.includes(raw as RiyazAnchorType)) {
+    return raw as RiyazAnchorType;
+  }
+  return null;
+}
+
+async function syncRiyazSkillTag(
+  sessionId: string,
+  skillId: string | null,
+): Promise<void> {
+  const supabase = createServiceClient();
+
+  const { error: clearError } = await supabase
+    .from("session_skills")
+    .delete()
+    .eq("session_id", sessionId);
+  if (clearError) throw clearError;
+
+  if (skillId) {
+    const { error } = await supabase
+      .from("session_skills")
+      .insert({ session_id: sessionId, skill_id: skillId });
+    if (error) throw error;
+  }
+}
+
+export async function startRiyaz(formData: FormData): Promise<void> {
+  const supabase = createServiceClient();
+
+  const sameAsYesterday = formData.get("same_as_yesterday") === "1";
+  let anchorType = parseRiyazAnchor(str(formData, "riyaz_anchor"));
+  let anchorSkillId = str(formData, "skill_id") ?? str(formData, "anchor_skill_id");
+
+  if (sameAsYesterday) {
+    const { data: last } = await supabase
+      .from("sessions")
+      .select("anchor_type, anchor_skill_id")
+      .eq("practice_kind", "riyaz")
+      .not("logged_at", "is", null)
+      .in("anchor_type", ["vocal", "guitar_skill"])
+      .order("logged_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (!last?.anchor_type) return;
+    anchorType = last.anchor_type as RiyazAnchorType;
+    anchorSkillId = (last.anchor_skill_id as string | null) ?? null;
+  }
+
+  if (!anchorType) return;
+
+  const { error } = await supabase.from("sessions").insert({
+    practice_kind: "riyaz",
+    anchor_type: anchorType,
+    anchor_skill_id: anchorSkillId,
+    started_at: new Date().toISOString(),
+  });
+
+  if (error) throw error;
+  revalidatePath("/studio");
+}
+
+export async function logRiyaz(sessionId: string, formData: FormData): Promise<void> {
+  const supabase = createServiceClient();
+
+  const { data: sessionRow, error: fetchError } = await supabase
+    .from("sessions")
+    .select("practice_kind, anchor_type, anchor_skill_id")
+    .eq("id", sessionId)
+    .maybeSingle();
+
+  if (fetchError) throw fetchError;
+  if (!sessionRow || sessionRow.practice_kind !== "riyaz") return;
+
+  const anchorType = parseRiyazAnchor(sessionRow.anchor_type as string | null);
+  const riyazFeel = anchorType
+    ? parseRiyazFeel(str(formData, "riyaz_feel"), anchorType)
+    : null;
+
+  const { error: updateError } = await supabase
+    .from("sessions")
+    .update({
+      riyaz_feel: riyazFeel,
+      logged_at: new Date().toISOString(),
+    })
+    .eq("id", sessionId);
+
+  if (updateError) throw updateError;
+
+  const skillId = (sessionRow.anchor_skill_id as string | null) ?? null;
+  await syncRiyazSkillTag(sessionId, skillId);
+  await revalidateSessionPaths(sessionId, []);
+
+  redirect("/studio?riyaz=1");
+}
+
 export async function startSession(formData: FormData): Promise<void> {
   const supabase = createServiceClient();
 
@@ -139,12 +255,14 @@ export async function startSession(formData: FormData): Promise<void> {
       if (!anchorSkillId) return;
       break;
     }
-    case "vocal":
-    case "freestyle":
+    case "vocal": {
+      anchorSkillId = str(formData, "skill_id") ?? str(formData, "anchor_skill_id");
       break;
+    }
   }
 
   const { error } = await supabase.from("sessions").insert({
+    practice_kind: "session",
     song_id: songId,
     anchor_type: anchorType,
     anchor_skill_id: anchorSkillId,

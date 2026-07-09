@@ -52,7 +52,7 @@ export default async function SongsPage({
             </div>
           ) : (
             <p className="rounded-2xl border border-dashed border-border bg-card/50 px-5 py-8 text-center text-sm text-secondary">
-              No songs yet — add the one on your mind right now.
+              No songs yet. Add the one on your mind right now.
             </p>
           )}
 

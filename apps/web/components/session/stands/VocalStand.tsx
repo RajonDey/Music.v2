@@ -1,4 +1,15 @@
+import Link from "next/link";
 import type { VocalStandPayload } from "@/lib/stand";
+
+const kindLabels: Record<string, string> = {
+  tutorial: "Tutorial",
+  exercise: "Exercise",
+  youtube: "YouTube",
+  backing: "Backing",
+  reference: "Reference",
+  tab: "Tab",
+  other: "Link",
+};
 
 function formatDuration(seconds: number | null): string {
   if (!seconds) return "";
@@ -8,16 +19,33 @@ function formatDuration(seconds: number | null): string {
 }
 
 export function VocalStand({ payload }: { payload: VocalStandPayload }) {
-  const { warmups, exercises } = payload;
+  const { warmups, exercises, focusSkill } = payload;
   const total = warmups.reduce((sum, w) => sum + (w.duration_seconds ?? 0), 0);
+  const note = focusSkill?.practice_note?.trim();
 
   return (
     <div className="space-y-8">
       <header className="space-y-1">
-        <h1 className="font-display text-2xl tracking-tightish text-primary sm:text-3xl">
-          Vocal warm-up
-        </h1>
-        <p className="text-sm text-secondary">Gentle on-ramp — tap each step as you go.</p>
+        {focusSkill ? (
+          <>
+            <p className="text-xs uppercase tracking-wide text-muted">
+              {focusSkill.skill.category}
+            </p>
+            <h1 className="font-display text-2xl tracking-tightish text-primary sm:text-3xl">
+              {focusSkill.skill.name}
+            </h1>
+            <p className="text-sm text-secondary">
+              Warm up first, then work the focus below.
+            </p>
+          </>
+        ) : (
+          <>
+            <h1 className="font-display text-2xl tracking-tightish text-primary sm:text-3xl">
+              Vocal warm-up
+            </h1>
+            <p className="text-sm text-secondary">Tap each step as you go.</p>
+          </>
+        )}
       </header>
 
       {warmups.length > 0 ? (
@@ -54,7 +82,53 @@ export function VocalStand({ payload }: { payload: VocalStandPayload }) {
         </section>
       ) : null}
 
-      {exercises.length > 0 ? (
+      {focusSkill ? (
+        <section className="space-y-4">
+          {note ? (
+            <div className="rounded-xl border border-border bg-elevated px-4 py-3">
+              <p className="text-xs uppercase tracking-wide text-muted">Practice note</p>
+              <p className="mt-2 whitespace-pre-line text-base leading-relaxed text-primary">
+                {note}
+              </p>
+            </div>
+          ) : null}
+
+          {focusSkill.resources.length > 0 ? (
+            <ul className="flex flex-wrap gap-2">
+              {focusSkill.resources.map((resource) => (
+                <li key={resource.id}>
+                  <a
+                    href={resource.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-elevated px-3.5 py-2 text-sm text-secondary transition hover:border-border-strong hover:text-primary"
+                  >
+                    <span aria-hidden>▶</span>
+                    <span className="text-xs text-muted">
+                      {kindLabels[resource.kind] ?? "Link"} ·
+                    </span>
+                    {resource.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : !note ? (
+            <p className="text-sm text-muted">
+              No material saved for this technique yet. Add notes or links in Skills Lab when
+              you&apos;re done.
+            </p>
+          ) : null}
+
+          <Link
+            href={`/skills/${focusSkill.skill.id}`}
+            className="inline-flex text-sm text-accent transition hover:text-accent-strong"
+          >
+            Open skill notebook →
+          </Link>
+        </section>
+      ) : null}
+
+      {!focusSkill && exercises.length > 0 ? (
         <section className="space-y-2">
           <h2 className="font-display text-lg text-primary">Exercises</h2>
           <ul className="space-y-2">

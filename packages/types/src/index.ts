@@ -31,6 +31,20 @@ export type SessionAnchorType = (typeof SESSION_ANCHOR_TYPES)[number];
 export const SONG_FOCUS = ["guitar", "vocal", "both"] as const;
 export type SongFocus = (typeof SONG_FOCUS)[number];
 
+export const PRACTICE_KINDS = ["riyaz", "session"] as const;
+export type PracticeKind = (typeof PRACTICE_KINDS)[number];
+
+export const RIYAZ_FEEL_VOCAL = ["good", "okay", "rough"] as const;
+export type RiyazFeelVocal = (typeof RIYAZ_FEEL_VOCAL)[number];
+
+export const RIYAZ_FEEL_GUITAR = ["loose", "normal", "tight"] as const;
+export type RiyazFeelGuitar = (typeof RIYAZ_FEEL_GUITAR)[number];
+
+export type RiyazFeel = RiyazFeelVocal | RiyazFeelGuitar;
+
+export const RIYAZ_ANCHOR_TYPES = ["vocal", "guitar_skill"] as const;
+export type RiyazAnchorType = (typeof RIYAZ_ANCHOR_TYPES)[number];
+
 export const QUALITY_LABELS = [
   "unfocused",
   "okay",
@@ -57,6 +71,9 @@ export type LearningStage = (typeof LEARNING_STAGES)[number];
 export const SKILL_TIERS = ["milestone", "progress", "evergreen"] as const;
 export type SkillTier = (typeof SKILL_TIERS)[number];
 
+export const SKILL_DOMAINS = ["guitar", "vocal"] as const;
+export type SkillDomain = (typeof SKILL_DOMAINS)[number];
+
 export const RADAR_AXES = [
   "Rhythm",
   "Chords",
@@ -66,6 +83,18 @@ export const RADAR_AXES = [
   "Ear",
 ] as const;
 export type RadarAxis = (typeof RADAR_AXES)[number];
+
+export const VOCAL_RADAR_AXES = [
+  "Breath",
+  "Range",
+  "Pitch",
+  "Tone",
+  "Technique",
+  "Expression",
+] as const;
+export type VocalRadarAxis = (typeof VOCAL_RADAR_AXES)[number];
+
+export type SkillRadarAxis = RadarAxis | VocalRadarAxis;
 
 export const SKILL_CATEGORIES = [
   "Rhythm & Timing",
@@ -82,6 +111,22 @@ export const SKILL_CATEGORIES = [
 ] as const;
 export type SkillCategory = (typeof SKILL_CATEGORIES)[number];
 
+export const VOCAL_SKILL_CATEGORIES = [
+  "Breath & Support",
+  "Registers & Range",
+  "Pitch & Ear Training",
+  "Tone & Resonance",
+  "Vocal Techniques",
+  "Diction & Lyrics",
+  "Style & Genre",
+  "Harmony & Ensemble",
+  "Performance & Stage Presence",
+  "Vocal Health & Physical",
+  "Reading & Notation",
+  "Recording & Mic Craft",
+] as const;
+export type VocalSkillCategory = (typeof VOCAL_SKILL_CATEGORIES)[number];
+
 export const RESOURCE_KINDS = [
   "youtube",
   "backing",
@@ -90,6 +135,18 @@ export const RESOURCE_KINDS = [
   "other",
 ] as const;
 export type ResourceKind = (typeof RESOURCE_KINDS)[number];
+
+/** Skill dock kinds — superset of song kinds with craft-specific labels. */
+export const SKILL_RESOURCE_KINDS = [
+  "tutorial",
+  "exercise",
+  "youtube",
+  "backing",
+  "reference",
+  "tab",
+  "other",
+] as const;
+export type SkillResourceKind = (typeof SKILL_RESOURCE_KINDS)[number];
 
 export const PART_PRESETS = [
   "Intro",
@@ -179,10 +236,11 @@ export type SessionSkill = {
 export type Skill = {
   id: string;
   created_at: string;
-  category: SkillCategory;
+  domain: SkillDomain;
+  category: string;
   name: string;
   tier: SkillTier;
-  radar_axis: RadarAxis;
+  radar_axis: SkillRadarAxis;
   position: number;
 };
 
@@ -191,7 +249,18 @@ export type SkillState = {
   skill_id: string;
   milestone_done: boolean;
   progress_value: number | null;
+  practice_note: string | null;
   updated_at: string;
+};
+
+export type SkillResource = {
+  id: string;
+  created_at: string;
+  skill_id: string;
+  position: number;
+  label: string;
+  url: string;
+  kind: SkillResourceKind;
 };
 
 export type SkillMoment = {
@@ -206,7 +275,8 @@ export type SkillSnapshot = {
   id: string;
   created_at: string;
   month_label: string;
-  axis: RadarAxis;
+  domain: SkillDomain;
+  axis: SkillRadarAxis;
   value: number;
 };
 
@@ -258,9 +328,11 @@ export type Session = {
   created_at: string;
   date: string;
   song_id: string | null;
+  practice_kind: PracticeKind;
   anchor_type: SessionAnchorType | null;
   anchor_skill_id: string | null;
   song_focus: SongFocus | null;
+  riyaz_feel: RiyazFeel | null;
   intention: string | null;
   feeling_before: FeelingBefore | null;
   what_worked_on: string | null;

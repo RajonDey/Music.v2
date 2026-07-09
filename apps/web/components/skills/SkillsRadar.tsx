@@ -137,8 +137,7 @@ export function SkillsRadar({
       ) : null}
       {!hasShape ? (
         <p className="mt-2 text-center text-sm text-muted">
-          Your shape fills in as you confirm milestones, rate progress, and log
-          moments — there&apos;s no grade here, just your current shape.
+          Fills in as you confirm milestones, rate progress, and log moments.
         </p>
       ) : null}
     </div>

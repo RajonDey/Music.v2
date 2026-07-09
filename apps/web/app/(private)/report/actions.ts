@@ -35,9 +35,11 @@ export async function saveReflection(formData: FormData): Promise<void> {
 export async function captureSnapshot(): Promise<void> {
   const monthLabel = currentMonthLabel();
   const { radar } = await getSkillsData();
+  if (!radar) return;
 
   const rows = RADAR_AXES.map((axis) => ({
     month_label: monthLabel,
+    domain: "guitar" as const,
     axis,
     value: radar[axis],
   }));
@@ -45,7 +47,7 @@ export async function captureSnapshot(): Promise<void> {
   const supabase = createServiceClient();
   const { error } = await supabase
     .from("skill_snapshots")
-    .upsert(rows, { onConflict: "month_label,axis" });
+    .upsert(rows, { onConflict: "month_label,axis,domain" });
   if (error) throw error;
   revalidatePath("/report");
 }

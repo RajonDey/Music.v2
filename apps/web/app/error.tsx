@@ -21,8 +21,8 @@ export default function Error({
         Something went out of tune
       </h1>
       <p className="mt-4 max-w-md leading-relaxed text-secondary">
-        An unexpected error came up on our end. Try again — and if it keeps
-        happening, it&apos;s us, not you.
+        An unexpected error came up on our end. Try again. If it keeps happening,
+        it&apos;s us, not you.
       </p>
 
       <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">

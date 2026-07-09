@@ -55,7 +55,7 @@ export function Metronome({ defaultBpm }: { defaultBpm?: number | null }) {
     <Card className="space-y-3">
       <div>
         <h3 className="font-display text-base text-primary">Metronome</h3>
-        <p className="mt-0.5 text-xs text-muted">A gentle pulse — not a target to hit.</p>
+        <p className="mt-0.5 text-xs text-muted">A gentle pulse, not a target to hit.</p>
       </div>
       <div className="flex flex-wrap items-end gap-3">
         <div className="w-24">

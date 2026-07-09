@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "freeze-check": "node scripts/freeze-check.mjs --url=http://localhost:3000"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.85",

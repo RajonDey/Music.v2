@@ -141,7 +141,18 @@ the `session_songs` join (keep the column nullable for back-compat / "primary so
 | skill_id | uuid fk → skills | unique |
 | milestone_done | boolean default false | for `milestone` tier |
 | progress_value | int | 1–5, for `progress` tier (override-approved) |
+| practice_note | text | what to run on the Stand (optional) |
 | updated_at | timestamptz | |
+
+### 3.9b `skill_resources` **(new)** — per-skill resources dock
+| column | type | notes |
+|---|---|---|
+| id | uuid pk | |
+| skill_id | uuid fk → skills | any catalogue skill |
+| position | int | order on Stand (top 3 shown) |
+| label | text | display name |
+| url | text | link |
+| kind | text | `tutorial` / `exercise` / `youtube` / `backing` / `reference` / `tab` / `other` |
 
 ### 3.10 `skill_moments` **(new)** — evidence log + auto-capture
 | column | type | notes |
@@ -217,6 +228,8 @@ Seeded from the 80+ skills across 11 categories. Three tiers:
 Training skill — it tracks itself through behavior.
 
 **Radar chart — six axes:** Rhythm · Chords · Theory · Lead · Performance · Ear.
+- **Skill notebook** (`/skills/[id]`) — practice note + resources dock (any catalogue skill;
+  saved backstage, read-only on Stand). Quiet ◆ on list rows when material exists.
 - **Category → axis mapping:** Rhythm←(1 Rhythm & Timing); Chords←(2 Chords);
   Theory←(3 Fretboard, 4 Scales & Modes, 7 Music Theory, 8 Reading & Notation);
   Lead←(5 Lead Techniques, 6 Improvisation); Performance←(9 Repertoire & Performance,

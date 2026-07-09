@@ -27,7 +27,7 @@ export default function BlogIndexPage() {
         </p>
 
         {posts.length === 0 ? (
-          <p className="mt-14 text-secondary">Nothing here yet — soon.</p>
+          <p className="mt-14 text-secondary">Nothing here yet.</p>
         ) : (
           <ul className="mt-14">
             {posts.map((post, i) => (

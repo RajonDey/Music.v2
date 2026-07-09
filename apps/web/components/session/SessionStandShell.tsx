@@ -29,11 +29,13 @@ export function SessionStandShell({
   payload,
   onEndSession,
   footer,
+  endLabel = "End session",
 }: {
   sessionId: string;
   payload: StandPayload;
   onEndSession: () => void;
   footer?: ReactNode;
+  endLabel?: string;
 }) {
   const [mounted, setMounted] = useState(false);
   const defaultBpm = payload.kind === "song" ? payload.song.bpm : null;
@@ -56,7 +58,7 @@ export function SessionStandShell({
     >
       <header className="flex shrink-0 items-center justify-between gap-3 border-b border-border bg-base px-4 py-3 sm:px-6">
         <Button type="button" size="sm" onClick={onEndSession}>
-          End session
+          {endLabel}
         </Button>
         <details className="relative">
           <summary className="cursor-pointer list-none rounded-lg border border-border bg-elevated px-4 py-2 text-sm text-secondary transition hover:border-border-strong hover:text-primary [&::-webkit-details-marker]:hidden">
@@ -76,7 +78,7 @@ export function SessionStandShell({
 
       <footer className="shrink-0 space-y-3 border-t border-border bg-base px-4 py-3 sm:px-6 lg:hidden">
         <Button type="button" className="w-full" onClick={onEndSession}>
-          End session
+          {endLabel}
         </Button>
         <div className="flex justify-center">
           <DiscardSessionButton sessionId={sessionId} />

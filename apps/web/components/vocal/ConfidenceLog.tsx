@@ -19,12 +19,12 @@ export function ConfidenceLog({ logs }: { logs: VocalLog[] }) {
 
   return (
     <Card className="space-y-4">
-      <h2 className="font-display text-lg text-primary">How did singing feel?</h2>
+      <h2 className="font-display text-lg text-primary">Monthly confidence check-in</h2>
 
       {trendValues.length >= 2 ? (
         <div className="space-y-1">
           <ConfidenceTrend values={trendValues} />
-          <p className="text-xs text-muted">The shape over time — not a score to chase.</p>
+          <p className="text-xs text-muted">How it felt over time.</p>
         </div>
       ) : null}
 
@@ -76,7 +76,8 @@ export function ConfidenceLog({ logs }: { logs: VocalLog[] }) {
         <Button type="submit">Save how it felt</Button>
       </form>
       <p className="text-xs text-muted">
-        If a Studio session is open today, this links to it quietly in the background.
+        A monthly check-in, not something to log after every riyaz. After riyaz, use the voice-day
+        chip on Studio instead.
       </p>
 
       {recent.length > 0 ? (

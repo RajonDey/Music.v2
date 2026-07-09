@@ -30,8 +30,7 @@ export default async function LoginPage({
           Welcome back
         </h1>
         <p className="mt-4 leading-relaxed text-secondary">
-          A warm room for practice, reflection, and your coach — never a habit
-          tracker. Unlock to step inside.
+          Practice, reflection, and your coach. Not a habit tracker. Unlock to step inside.
         </p>
 
         {params.error === "config" ? (

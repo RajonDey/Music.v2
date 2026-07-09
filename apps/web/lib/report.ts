@@ -46,6 +46,7 @@ export type ReportData = {
   monthLabel: string; // "2026-06"
   monthTitle: string; // "June 2026"
   sessionsThisMonth: number;
+  riyazMorningsThisMonth: number;
   songsTouched: number;
   recordingsMade: number;
   calendar: CalendarCell[];
@@ -78,12 +79,13 @@ async function ensureCurrentMonthSnapshot(
   const supabase = createServiceClient();
   const rows = RADAR_AXES.map((axis) => ({
     month_label: monthLabel,
+    domain: "guitar" as const,
     axis,
     value: radar[axis],
   }));
   await supabase
     .from("skill_snapshots")
-    .upsert(rows, { onConflict: "month_label,axis" });
+    .upsert(rows, { onConflict: "month_label,axis,domain" });
 }
 
 export async function getReportData(): Promise<ReportData> {
@@ -103,12 +105,13 @@ export async function getReportData(): Promise<ReportData> {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const monthEndIso = `${monthPrefix}-${pad(daysInMonth)}`;
 
-  // Year's sessions cover: year-view counts, this-month count, and the calendar.
+  // Year's logged practice — split riyaz vs full sessions.
   const sessionsRes = await supabase
     .from("sessions")
-    .select("id, date")
+    .select("id, date, practice_kind")
     .gte("date", `${year}-01-01`)
-    .lte("date", `${year}-12-31`);
+    .lte("date", `${year}-12-31`)
+    .not("logged_at", "is", null);
 
   if (sessionsRes.error) {
     if (isMissingTable(sessionsRes.error)) {
@@ -117,17 +120,25 @@ export async function getReportData(): Promise<ReportData> {
     throw sessionsRes.error;
   }
 
-  const sessions = (sessionsRes.data ?? []) as { id: string; date: string }[];
-  const monthSessions = sessions.filter((s) => s.date.startsWith(monthPrefix));
+  type SessionRow = { id: string; date: string; practice_kind: string | null };
+  const sessions = (sessionsRes.data ?? []) as SessionRow[];
+  const isSession = (s: SessionRow) => s.practice_kind !== "riyaz";
+  const isRiyaz = (s: SessionRow) => s.practice_kind === "riyaz";
 
-  // Year view counts
+  const monthAll = sessions.filter((s) => s.date.startsWith(monthPrefix));
+  const monthSessions = monthAll.filter(isSession);
+  const monthRiyaz = monthAll.filter(isRiyaz);
+
+  // Year view counts — full sessions only
   const yearView: YearMonth[] = MONTH_ABBR.map((label, m) => ({
     month: m,
     label,
-    count: sessions.filter((s) => s.date.startsWith(`${year}-${pad(m + 1)}`)).length,
+    count: sessions
+      .filter((s) => s.date.startsWith(`${year}-${pad(m + 1)}`) && isSession(s))
+      .length,
   }));
 
-  // Calendar grid for current month
+  // Calendar grid — full session days only
   const firstWeekday = new Date(year, month, 1).getDay(); // 0=Sun
   const activeDays = new Set(
     monthSessions.map((s) => Number(s.date.slice(8, 10))),
@@ -158,12 +169,14 @@ export async function getReportData(): Promise<ReportData> {
       supabase
         .from("skill_snapshots")
         .select("axis, value")
-        .eq("month_label", lastMonthLabel),
+        .eq("month_label", lastMonthLabel)
+        .eq("domain", "guitar"),
       supabase
         .from("sessions")
         .select(
           "id, date, intention, what_worked_on, what_felt_better, quality_rating",
         )
+        .eq("practice_kind", "session")
         .gte("date", monthStartIso)
         .lte("date", monthEndIso)
         .not("logged_at", "is", null)
@@ -219,7 +232,9 @@ export async function getReportData(): Promise<ReportData> {
   const reflection =
     reflectionHistory.find((r) => r.month_label === monthLabel) ?? null;
 
-  await ensureCurrentMonthSnapshot(skillsData.radar, monthLabel);
+  if (skillsData.radar) {
+    await ensureCurrentMonthSnapshot(skillsData.radar, monthLabel);
+  }
 
   const monthSessionNotes = (sessionNotesRes.data ?? []) as MonthSessionNote[];
 
@@ -227,10 +242,17 @@ export async function getReportData(): Promise<ReportData> {
     monthLabel,
     monthTitle,
     sessionsThisMonth: monthSessions.length,
+    riyazMorningsThisMonth: monthRiyaz.length,
     songsTouched: touched.size,
     recordingsMade,
     calendar,
-    radar: skillsData.radar,
+    radar: skillsData.radar ?? RADAR_AXES.reduce(
+      (acc, axis) => {
+        acc[axis] = 0;
+        return acc;
+      },
+      {} as Record<RadarAxis, number>,
+    ),
     lastMonthRadar,
     lastMonthTitle,
     stageWins,
@@ -262,6 +284,7 @@ function blankReport(
     monthLabel,
     monthTitle,
     sessionsThisMonth: 0,
+    riyazMorningsThisMonth: 0,
     songsTouched: 0,
     recordingsMade: 0,
     calendar: [],

@@ -30,6 +30,37 @@ Add a dated entry when Rajon explicitly approves something not in the original b
   backward-compat via `anchor_type` backfill from `song_id`.
 - **Roadmap:** Phase 7 steps 29–35.
 
+### 2026-07-09 — Skill resources dock + practice notes
+- **Proposal:** Per-skill resources dock (mirror `song_resources`) and `practice_note` on
+  `skill_states`. Any catalogue skill can store material; Stand shows note + top 3 links.
+  Skill notebook at `/skills/[id]` for backstage curation.
+- **Gate:** Approved implicitly via brainstorm + "Proceed — step by step." Aligns with
+  execution-first Stand philosophy; no completion pressure or habit-tracker patterns.
+- **Decision:** Migration `20260624000000_skill_resources.sql`; roadmap step 36 (7H).
+- **Roadmap:** Phase 7 step 36.
+
+### 2026-07-09 — Vocal Skills Lab (domain-split catalogue)
+- **Proposal:** 83-skill vocal catalogue on the same skills spine (`skills.domain = 'vocal'`).
+  Skills Lab gets Guitar | Vocal tabs; `/vocal` keeps warm-ups, range, confidence. Vocal
+  Stand: warm-ups always + optional technique note/links via `anchor_skill_id`. Vocal radar
+  deferred to a later pass.
+- **Gate:** Explicitly approved by Rajon ("Proceed"). Parallels approved guitar Skills Lab;
+  no new habit-tracker patterns; warm-up catalogue row dropped (ritual stays on Vocal Studio).
+- **Decision:** Migration `20260625000000_skill_domain.sql`; seed vocal catalogue; Phase 8
+  steps 37–41 in `docs/ROADMAP.md`.
+- **Roadmap:** Phase 8.
+
+### 2026-07-09 — Phase 9: Two rhythms (Riyaz + Session)
+- **Proposal:** Split daily morning riyaz (~15 min vocal or guitar warm-up) from full practice
+  sessions (4–5×/week). Riyaz: Stand → Done + optional feel chip; no reflection form. Report:
+  sessions on calendar; riyaz as soft count only. Demote `/vocal` nav → Voice profile on
+  Skills (Vocal tab). Redirect dead `/releases`, `/journey`.
+- **Gate:** Explicitly approved by Rajon ("Proceed") after architecture review. Reduces daily
+  friction and vocal IA confusion; no streaks or daily confidence logging.
+- **Decision:** Migration `20260626000000_practice_kind.sql`; Phase 9 steps 42–50 in
+  `docs/ROADMAP.md`.
+- **Roadmap:** Phase 9.
+
 ---
 
 ## 2026-06-18 — Music OS Depth (v2): 5-screen system + metric override

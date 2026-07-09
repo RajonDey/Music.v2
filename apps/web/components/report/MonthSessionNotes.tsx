@@ -26,7 +26,6 @@ export function MonthSessionNotes({ sessions }: { sessions: MonthSessionNote[] }
     <Card className="space-y-3">
       <div>
         <h2 className="font-display text-lg text-primary">Session notes this month</h2>
-        <p className="mt-1 text-sm text-muted">What you logged — a quiet journal, not a score.</p>
       </div>
       <ul className="space-y-3">
         {[...byDate.entries()].map(([date, daySessions]) => {

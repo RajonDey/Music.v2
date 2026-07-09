@@ -149,7 +149,7 @@ export function PartsMap({
       <div>
         <h2 className="font-display text-lg text-primary">Parts map</h2>
         <p className="mt-1 text-sm text-muted">
-          Lay out the song&apos;s shape — verse, chorus, the tricky bridge.
+          Lay out the song&apos;s shape: verse, chorus, the tricky bridge.
         </p>
       </div>
 

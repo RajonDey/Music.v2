@@ -4,6 +4,7 @@ import type {
   LearningStage,
   Session,
   Skill,
+  SkillResource,
   Song,
   SongFocus,
   SongPart,
@@ -11,9 +12,9 @@ import type {
   VocalExercise,
   VocalWarmup,
 } from "@music/types";
-import { createServiceClient } from "./supabase";
 import { getSongDetail } from "./songs";
-import { resolveSessionAnchor } from "./session";
+import { getSkillDetail } from "./skills";
+import { resolveSessionAnchor } from "./session-utils";
 import { getVocalData } from "./vocal";
 
 export type SongStandPayload = {
@@ -27,12 +28,21 @@ export type SongStandPayload = {
 export type SkillStandPayload = {
   kind: "guitar_skill";
   skill: Skill;
+  practice_note: string | null;
+  resources: SkillResource[];
+};
+
+export type VocalFocusSkill = {
+  skill: Skill;
+  practice_note: string | null;
+  resources: SkillResource[];
 };
 
 export type VocalStandPayload = {
   kind: "vocal";
   warmups: VocalWarmup[];
   exercises: VocalExercise[];
+  focusSkill: VocalFocusSkill | null;
 };
 
 export type FreestyleStandPayload = {
@@ -75,22 +85,40 @@ export async function getSongStandPayload(
 export async function getSkillStandPayload(
   skillId: string,
 ): Promise<SkillStandPayload | null> {
-  const supabase = createServiceClient();
-  const { data, error } = await supabase
-    .from("skills")
-    .select("*")
-    .eq("id", skillId)
-    .maybeSingle();
+  const detail = await getSkillDetail(skillId);
+  if (!detail) return null;
 
-  if (error) throw error;
-  if (!data) return null;
-
-  return { kind: "guitar_skill", skill: data as Skill };
+  return {
+    kind: "guitar_skill",
+    skill: detail.skill,
+    practice_note: detail.practice_note,
+    resources: detail.resources.slice(0, 3),
+  };
 }
 
-export async function getVocalStandPayload(): Promise<VocalStandPayload> {
+async function loadVocalFocusSkill(skillId: string): Promise<VocalFocusSkill | null> {
+  const detail = await getSkillDetail(skillId);
+  if (!detail || detail.skill.domain !== "vocal") return null;
+
+  return {
+    skill: detail.skill,
+    practice_note: detail.practice_note,
+    resources: detail.resources.slice(0, 3),
+  };
+}
+
+export async function getVocalStandPayload(
+  skillId?: string | null,
+): Promise<VocalStandPayload> {
   const { warmups, exercises } = await getVocalData();
-  return { kind: "vocal", warmups, exercises };
+  const focusSkill = skillId ? await loadVocalFocusSkill(skillId) : null;
+
+  return {
+    kind: "vocal",
+    warmups,
+    exercises: focusSkill ? [] : exercises,
+    focusSkill,
+  };
 }
 
 export function getFreestyleStandPayload(session: Session): FreestyleStandPayload {
@@ -111,7 +139,7 @@ export async function getStandPayload(session: Session): Promise<StandPayload | 
       return getSkillStandPayload(session.anchor_skill_id);
     }
     case "vocal":
-      return getVocalStandPayload();
+      return getVocalStandPayload(session.anchor_skill_id);
     case "freestyle":
       return getFreestyleStandPayload(session);
   }

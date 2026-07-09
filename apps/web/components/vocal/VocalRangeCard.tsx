@@ -93,8 +93,8 @@ export function VocalRangeCard({
         <RangeBar low={lowMidi} high={highMidi} />
       ) : (
         <p className="text-sm text-muted">
-          No range recorded yet. Find your lowest and highest comfortable notes —
-          the ones that feel easy, not strained.
+          No range recorded yet. Find your lowest and highest comfortable notes, the ones that
+          feel easy, not strained.
         </p>
       )}
 

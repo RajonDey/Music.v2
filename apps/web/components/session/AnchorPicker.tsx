@@ -16,7 +16,7 @@ import {
   type Song,
   type SongFocus,
 } from "@music/types";
-import type { RecentSkill } from "@/lib/practice";
+import type { RecentSkill, SkillGroup } from "@/lib/practice";
 import { startSession } from "@/app/(private)/studio/actions";
 
 const ANCHOR_OPTIONS: { value: SessionAnchorType; label: string; hint: string }[] = [
@@ -38,18 +38,26 @@ function feelingLabel(value: string): string {
 
 export function AnchorPicker({
   songs,
-  recentSkills,
+  pickerSkills,
+  skillGroups,
+  vocalPickerSkills,
+  vocalSkillGroups,
 }: {
   songs: Song[];
-  recentSkills: RecentSkill[];
+  pickerSkills: RecentSkill[];
+  skillGroups: SkillGroup[];
+  vocalPickerSkills: RecentSkill[];
+  vocalSkillGroups: SkillGroup[];
 }) {
   const [anchor, setAnchor] = useState<SessionAnchorType>("song");
+  const [skillId, setSkillId] = useState("");
+  const [vocalSkillId, setVocalSkillId] = useState("");
   const activeSongs = songs.filter((s) => s.learning_stage !== "complete");
 
   return (
     <Card variant="elevated">
       <h2 className="font-display text-xl text-primary">What are you sitting for?</h2>
-      <p className="mt-1 text-sm text-muted">One anchor — then the stand opens when you start.</p>
+      <p className="mt-1 text-sm text-muted">Pick one anchor. The stand opens when you start.</p>
 
       <form action={startSession} className="mt-6 space-y-5">
         <input type="hidden" name="anchor_type" value={anchor} />
@@ -87,7 +95,7 @@ export function AnchorPicker({
                 {activeSongs.map((song) => (
                   <option key={song.id} value={song.id}>
                     {song.name}
-                    {song.artist ? ` — ${song.artist}` : ""}
+                    {song.artist ? ` · ${song.artist}` : ""}
                   </option>
                 ))}
               </SelectInput>
@@ -124,54 +132,127 @@ export function AnchorPicker({
         ) : null}
 
         {anchor === "guitar_skill" ? (
-          <div>
+          <div className="space-y-3">
+            <input type="hidden" name="skill_id" value={skillId} />
             <FieldLabel>Which skill?</FieldLabel>
-            {recentSkills.length > 0 ? (
-              <div className="flex flex-wrap gap-2" role="radiogroup">
-                {recentSkills.map((skill) => (
-                  <label key={skill.id} className="cursor-pointer">
-                    <input
-                      type="radio"
-                      name="skill_id"
-                      value={skill.id}
-                      required
-                      className="peer sr-only"
-                    />
-                    <span className="inline-block rounded-full border border-border bg-elevated px-3.5 py-1.5 text-sm text-secondary transition peer-checked:border-accent peer-checked:bg-accent-soft peer-checked:text-primary">
-                      {skill.name}
-                    </span>
-                  </label>
+            {pickerSkills.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {pickerSkills.map((skill) => (
+                  <button
+                    key={skill.id}
+                    type="button"
+                    onClick={() => setSkillId(skill.id)}
+                    className={`rounded-full border px-3.5 py-1.5 text-sm transition duration-fast ${
+                      skillId === skill.id
+                        ? "border-accent bg-accent-soft text-primary"
+                        : "border-border bg-elevated text-secondary hover:border-border-strong"
+                    }`}
+                  >
+                    {skill.name}
+                  </button>
                 ))}
               </div>
-            ) : (
-              <p className="text-sm text-secondary">
-                No recent skills yet — pick one from{" "}
-                <Link href="/skills" className="text-accent hover:text-accent-strong">
-                  Skills Lab
-                </Link>
-                .
-              </p>
-            )}
-            {recentSkills.length > 0 ? (
-              <p className="mt-2 text-xs text-muted">
-                More in{" "}
-                <Link href="/skills" className="text-accent hover:text-accent-strong">
-                  Skills Lab
-                </Link>
-              </p>
             ) : null}
+            <div>
+              <FieldLabel htmlFor="anchor-skill" hint={pickerSkills.length > 0 ? "or pick any" : undefined}>
+                {pickerSkills.length > 0 ? "Full catalogue" : "Pick a skill"}
+              </FieldLabel>
+              <SelectInput
+                id="anchor-skill"
+                value={skillId}
+                onChange={(e) => setSkillId(e.target.value)}
+                required
+              >
+                <option value="" disabled>
+                  Pick a skill…
+                </option>
+                {skillGroups.map((group) => (
+                  <optgroup key={group.category} label={group.category}>
+                    {group.skills.map((skill) => (
+                      <option key={skill.id} value={skill.id}>
+                        {skill.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </SelectInput>
+            </div>
+            <p className="text-xs text-muted">
+              Skills with saved notes or links appear as quick picks.{" "}
+              <Link href="/skills" className="text-accent hover:text-accent-strong">
+                Open Skills Lab
+              </Link>{" "}
+              to curate material.
+            </p>
           </div>
         ) : null}
 
         {anchor === "vocal" ? (
-          <p className="text-sm text-secondary">
-            Your warm-up routine and exercises will be on the stand — no extra setup.
-          </p>
+          <div className="space-y-3">
+            <input type="hidden" name="skill_id" value={vocalSkillId} />
+            <p className="text-sm text-secondary">
+              Your warm-up routine is always on the stand. Optionally pick a technique to
+              focus on.
+            </p>
+            {vocalPickerSkills.length > 0 ? (
+              <div className="flex flex-wrap gap-2">
+                {vocalPickerSkills.map((skill) => (
+                  <button
+                    key={skill.id}
+                    type="button"
+                    onClick={() =>
+                      setVocalSkillId((current) => (current === skill.id ? "" : skill.id))
+                    }
+                    className={`rounded-full border px-3.5 py-1.5 text-sm transition duration-fast ${
+                      vocalSkillId === skill.id
+                        ? "border-accent bg-accent-soft text-primary"
+                        : "border-border bg-elevated text-secondary hover:border-border-strong"
+                    }`}
+                  >
+                    {skill.name}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+            {vocalSkillGroups.length > 0 ? (
+              <div>
+                <FieldLabel
+                  htmlFor="anchor-vocal-skill"
+                  hint={vocalPickerSkills.length > 0 ? "optional" : undefined}
+                >
+                  {vocalPickerSkills.length > 0 ? "Or pick from catalogue" : "Focus technique"}
+                </FieldLabel>
+                <SelectInput
+                  id="anchor-vocal-skill"
+                  value={vocalSkillId}
+                  onChange={(e) => setVocalSkillId(e.target.value)}
+                >
+                  <option value="">Warm-up only</option>
+                  {vocalSkillGroups.map((group) => (
+                    <optgroup key={group.category} label={group.category}>
+                      {group.skills.map((skill) => (
+                        <option key={skill.id} value={skill.id}>
+                          {skill.name}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </SelectInput>
+              </div>
+            ) : null}
+            <p className="text-xs text-muted">
+              Skills with saved notes or links appear as quick picks.{" "}
+              <Link href="/skills?tab=vocal" className="text-accent hover:text-accent-strong">
+                Open Vocal Skills Lab
+              </Link>{" "}
+              to curate material.
+            </p>
+          </div>
         ) : null}
 
         {anchor === "freestyle" ? (
           <p className="text-sm text-secondary">
-            Metronome and an optional intention — nothing else required.
+            Metronome and an optional intention. That&apos;s all.
           </p>
         ) : null}
 
@@ -187,7 +268,9 @@ export function AnchorPicker({
                 ? "Just the chorus transition…"
                 : anchor === "guitar_skill"
                   ? "Clean barre changes…"
-                  : "Whatever comes to mind…"
+                  : anchor === "vocal"
+                    ? "Mixed voice on the chorus…"
+                    : "Whatever comes to mind…"
             }
           />
         </div>

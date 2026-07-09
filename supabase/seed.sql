@@ -17,8 +17,8 @@ where not exists (
 -- Re-runnable: unique (category, name) guards against duplicates.
 -- skill_states rows are created automatically by the skills_create_state trigger.
 -- ---------------------------------------------------------------------------
-insert into public.skills (category, name, tier, radar_axis, position)
-select v.category, v.name, v.tier, v.radar_axis, row_number() over ()
+insert into public.skills (domain, category, name, tier, radar_axis, position)
+select 'guitar', v.category, v.name, v.tier, v.radar_axis, row_number() over ()
 from (values
   -- 1. Rhythm & Timing -> Rhythm
   ('Rhythm & Timing', 'Strumming with a steady pulse', 'milestone', 'Rhythm'),
@@ -142,7 +142,112 @@ from (values
   ('Ear & Creativity', 'Arranging for solo guitar', 'evergreen', 'Ear'),
   ('Ear & Creativity', 'Producing/recording basics', 'progress', 'Ear')
 ) as v(category, name, tier, radar_axis)
-on conflict (category, name) do nothing;
+on conflict (domain, category, name) do nothing;
+
+-- ---------------------------------------------------------------------------
+-- Vocal skills catalogue (Phase 8). 12 categories, 83 skills.
+-- Warm-up ritual lives on /vocal — not duplicated here.
+-- ---------------------------------------------------------------------------
+insert into public.skills (domain, category, name, tier, radar_axis, position)
+select 'vocal', v.category, v.name, v.tier, v.radar_axis, row_number() over ()
+from (values
+  -- Breath & Support -> Breath
+  ('Breath & Support', 'Diaphragmatic (low) breathing', 'milestone', 'Breath'),
+  ('Breath & Support', 'Breath control / management', 'progress', 'Breath'),
+  ('Breath & Support', 'Sustained airflow on long phrases', 'progress', 'Breath'),
+  ('Breath & Support', 'Breath support without tension', 'progress', 'Breath'),
+  ('Breath & Support', 'Staggered breathing (ensemble / long phrases)', 'progress', 'Breath'),
+  ('Breath & Support', 'Fast / silent catch breaths', 'progress', 'Breath'),
+  ('Breath & Support', 'Appoggio technique', 'milestone', 'Breath'),
+  -- Registers & Range -> Range
+  ('Registers & Range', 'Chest voice', 'milestone', 'Range'),
+  ('Registers & Range', 'Head voice', 'milestone', 'Range'),
+  ('Registers & Range', 'Mixed voice (blending chest / head)', 'progress', 'Range'),
+  ('Registers & Range', 'Falsetto', 'progress', 'Range'),
+  ('Registers & Range', 'Vocal fry (M0)', 'progress', 'Range'),
+  ('Registers & Range', 'Whistle register', 'progress', 'Range'),
+  ('Registers & Range', 'Navigating the passaggio', 'progress', 'Range'),
+  ('Registers & Range', 'Extending range (top & bottom)', 'progress', 'Range'),
+  -- Pitch & Ear Training -> Pitch
+  ('Pitch & Ear Training', 'Singing in tune unaccompanied', 'progress', 'Pitch'),
+  ('Pitch & Ear Training', 'Matching pitch with an instrument', 'milestone', 'Pitch'),
+  ('Pitch & Ear Training', 'Interval recognition by ear', 'progress', 'Pitch'),
+  ('Pitch & Ear Training', 'Recognizing chord tones while singing', 'progress', 'Pitch'),
+  ('Pitch & Ear Training', 'Hearing harmony intervals by ear', 'progress', 'Pitch'),
+  ('Pitch & Ear Training', 'Self-correcting pitch mid-note', 'progress', 'Pitch'),
+  -- Tone & Resonance -> Tone
+  ('Tone & Resonance', 'Forward placement (''mask'' resonance)', 'progress', 'Tone'),
+  ('Tone & Resonance', 'Open throat / relaxed larynx', 'progress', 'Tone'),
+  ('Tone & Resonance', 'Vowel modification on high notes', 'progress', 'Tone'),
+  ('Tone & Resonance', 'Nasal vs. oral resonance balance', 'progress', 'Tone'),
+  ('Tone & Resonance', 'Singer''s formant ("ring")', 'progress', 'Tone'),
+  ('Tone & Resonance', 'Warm vs. bright tone control', 'progress', 'Tone'),
+  ('Tone & Resonance', 'Vibrato (natural, controlled)', 'progress', 'Tone'),
+  ('Tone & Resonance', 'Straight tone', 'progress', 'Tone'),
+  -- Vocal Techniques -> Technique
+  ('Vocal Techniques', 'Belting (safe)', 'progress', 'Technique'),
+  ('Vocal Techniques', 'Twang', 'progress', 'Technique'),
+  ('Vocal Techniques', 'Vocal runs / riffs / melisma', 'progress', 'Technique'),
+  ('Vocal Techniques', 'Growl / rasp / distortion (safe use)', 'progress', 'Technique'),
+  ('Vocal Techniques', 'Falsetto flips / yodels', 'progress', 'Technique'),
+  ('Vocal Techniques', 'Trills', 'progress', 'Technique'),
+  ('Vocal Techniques', 'Onsets (glottal, breathy, clean)', 'progress', 'Technique'),
+  ('Vocal Techniques', 'Offsets / releases', 'progress', 'Technique'),
+  ('Vocal Techniques', 'Dynamics / messa di voce', 'progress', 'Technique'),
+  ('Vocal Techniques', 'Staccato vs. legato phrasing', 'progress', 'Technique'),
+  -- Diction & Lyrics -> Technique
+  ('Diction & Lyrics', 'Vowel purity', 'progress', 'Technique'),
+  ('Diction & Lyrics', 'Consonant articulation / clarity', 'progress', 'Technique'),
+  ('Diction & Lyrics', 'IPA basics for singers', 'milestone', 'Technique'),
+  ('Diction & Lyrics', 'Diphthong handling', 'progress', 'Technique'),
+  ('Diction & Lyrics', 'Language-specific diction', 'evergreen', 'Technique'),
+  ('Diction & Lyrics', 'Phrasing for meaning / storytelling', 'evergreen', 'Technique'),
+  -- Style & Genre -> Expression
+  ('Style & Genre', 'Pop vocal styling', 'evergreen', 'Expression'),
+  ('Style & Genre', 'Rock / belt-driven styling', 'evergreen', 'Expression'),
+  ('Style & Genre', 'R&B / soul riffing & runs', 'progress', 'Expression'),
+  ('Style & Genre', 'Jazz phrasing & scatting', 'evergreen', 'Expression'),
+  ('Style & Genre', 'Classical / legit technique', 'progress', 'Expression'),
+  ('Style & Genre', 'Musical theater legit vs. belt', 'evergreen', 'Expression'),
+  ('Style & Genre', 'Folk / acoustic intimacy', 'evergreen', 'Expression'),
+  ('Style & Genre', 'Genre-appropriate ornamentation', 'progress', 'Expression'),
+  -- Harmony & Ensemble -> Expression
+  ('Harmony & Ensemble', 'Singing harmony parts', 'progress', 'Expression'),
+  ('Harmony & Ensemble', 'Blending with other voices', 'progress', 'Expression'),
+  ('Harmony & Ensemble', 'Call and response', 'evergreen', 'Expression'),
+  ('Harmony & Ensemble', 'Tuning to match a group', 'progress', 'Expression'),
+  ('Harmony & Ensemble', 'Layering recorded harmonies', 'evergreen', 'Expression'),
+  -- Performance & Stage Presence -> Expression
+  ('Performance & Stage Presence', 'Live mic technique (distance & angle)', 'progress', 'Expression'),
+  ('Performance & Stage Presence', 'Stage movement / presence', 'evergreen', 'Expression'),
+  ('Performance & Stage Presence', 'Eye contact / audience connection', 'evergreen', 'Expression'),
+  ('Performance & Stage Presence', 'Performing with a backing track', 'milestone', 'Expression'),
+  ('Performance & Stage Presence', 'Handling nerves / performance anxiety', 'evergreen', 'Expression'),
+  ('Performance & Stage Presence', 'Emotional connection / interpretation', 'evergreen', 'Expression'),
+  ('Performance & Stage Presence', 'Memorizing lyrics', 'evergreen', 'Expression'),
+  ('Performance & Stage Presence', 'Adapting energy to venue size', 'evergreen', 'Expression'),
+  -- Vocal Health & Physical -> Breath
+  ('Vocal Health & Physical', 'Cool-down routines', 'milestone', 'Breath'),
+  ('Vocal Health & Physical', 'Posture for singing', 'milestone', 'Breath'),
+  ('Vocal Health & Physical', 'Hydration & vocal care', 'milestone', 'Breath'),
+  ('Vocal Health & Physical', 'Recognizing strain vs. healthy effort', 'progress', 'Breath'),
+  ('Vocal Health & Physical', 'Vocal rest practices', 'milestone', 'Breath'),
+  ('Vocal Health & Physical', 'SOVT exercises (straw, lip trills)', 'milestone', 'Breath'),
+  ('Vocal Health & Physical', 'Avoiding fatigue on heavy-use days', 'evergreen', 'Breath'),
+  -- Reading & Notation -> Technique
+  ('Reading & Notation', 'Reading vocal sheet music (treble clef)', 'progress', 'Technique'),
+  ('Reading & Notation', 'Lead sheets / lyrics with chords', 'milestone', 'Technique'),
+  ('Reading & Notation', 'Following a click track', 'progress', 'Technique'),
+  ('Reading & Notation', 'Sight-singing', 'progress', 'Technique'),
+  ('Reading & Notation', 'Rhythm reading', 'progress', 'Technique'),
+  -- Recording & Mic Craft -> Technique
+  ('Recording & Mic Craft', 'Studio mic technique', 'progress', 'Technique'),
+  ('Recording & Mic Craft', 'Comping vocal takes', 'evergreen', 'Technique'),
+  ('Recording & Mic Craft', 'Doubling / harmony stacking', 'evergreen', 'Technique'),
+  ('Recording & Mic Craft', 'Riding dynamics for the mic', 'progress', 'Technique'),
+  ('Recording & Mic Craft', 'Basic vocal editing awareness', 'milestone', 'Technique')
+) as v(category, name, tier, radar_axis)
+on conflict (domain, category, name) do nothing;
 
 -- ---------------------------------------------------------------------------
 -- Default vocal warm-up routine (pitch accuracy + confidence focus).

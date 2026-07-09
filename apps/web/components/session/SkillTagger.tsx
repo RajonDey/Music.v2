@@ -21,7 +21,7 @@ export function SkillTagger({
     <div className="space-y-3">
       {visibleRecent.length > 0 ? (
         <div>
-          <p className="mb-2 text-xs text-muted">Recent — tap if you touched more</p>
+          <p className="mb-2 text-xs text-muted">Recent. Tap if you touched more.</p>
           <div className="flex flex-wrap gap-2">
             {visibleRecent.map((skill) => (
               <label key={skill.id} className="cursor-pointer">

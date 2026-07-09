@@ -46,7 +46,7 @@ export function SongNotebookSettings({ song }: { song: Song }) {
           <div className="space-y-3 border-t border-border pt-5">
             <p className="text-sm text-secondary">
               Remove this song from your list. Its parts, chords, lyrics, and resources
-              will go — past practice sessions stay in your journal, just unlinked.
+              will go. Past practice sessions stay in your journal, just unlinked.
             </p>
             <DeleteSongButton songId={song.id} songName={song.name} />
           </div>

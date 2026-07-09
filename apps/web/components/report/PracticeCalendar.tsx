@@ -61,7 +61,7 @@ export function PracticeCalendar({
         </p>
       ) : (
         <p className="text-xs text-muted">
-          No sessions logged yet this month — whenever you sit down, it&apos;ll show here.
+          No sessions logged yet this month. Whenever you sit down, it&apos;ll show here.
         </p>
       )}
     </Card>

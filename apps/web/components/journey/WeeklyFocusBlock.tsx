@@ -4,7 +4,7 @@ export function WeeklyFocusBlock() {
   return (
     <Card variant="elevated">
       <h2 className="font-display text-xl text-primary">This week&apos;s focus</h2>
-      <p className="mt-1 text-sm text-muted">Set once — no targets, just direction.</p>
+      <p className="mt-1 text-sm text-muted">Set once. No targets, just direction.</p>
 
       <div className="mt-6 space-y-5">
         <div>

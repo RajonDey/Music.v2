@@ -6,6 +6,7 @@ import { AnchorPicker } from "@/components/session/AnchorPicker";
 import { SessionFlow } from "@/components/session/SessionFlow";
 import { ContinueCard } from "@/components/session/ContinueCard";
 import { PinnedSongsRow } from "@/components/session/PinnedSongsRow";
+import { RiyazEntry } from "@/components/session/RiyazEntry";
 import { CoachPanel } from "@/components/coach/CoachPanel";
 import { Metronome } from "@/components/tools/Metronome";
 import { DbSetupNotice } from "@/components/songs/DbSetupNotice";
@@ -16,11 +17,16 @@ export default async function StudioPage() {
   const {
     songs,
     skillGroups,
+    vocalSkillGroups,
+    allSkillGroups,
     recentSkills,
+    pickerSkills,
+    vocalPickerSkills,
     openSession,
     dbReady,
     continueSongs,
     pinnedSongs,
+    lastRiyaz,
     lastIntention,
   } = await getStudioData();
   const coachHistory = await getTodayCoachMessages();
@@ -32,7 +38,7 @@ export default async function StudioPage() {
         session={openSession}
         standPayload={standPayload}
         songs={songs}
-        skillGroups={skillGroups}
+        skillGroups={allSkillGroups}
         recentSkills={recentSkills}
       />
     );
@@ -46,7 +52,7 @@ export default async function StudioPage() {
           The studio&apos;s open
         </h1>
         <p className="mt-3 max-w-prose leading-relaxed text-secondary">
-          Pick what you&apos;re sitting for, play on the stand, then look back honestly.
+          Morning riyaz to wake up voice or fingers. Full sessions when you sit down to learn.
           Your coach is here when you want to talk it through.
         </p>
       </div>
@@ -56,21 +62,32 @@ export default async function StudioPage() {
       ) : (
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
           <div className="space-y-6">
+            <RiyazEntry
+              lastRiyaz={lastRiyaz}
+              vocalPickerSkills={vocalPickerSkills}
+              pickerSkills={pickerSkills}
+            />
+
+            <div className="space-y-3">
+              <h2 className="font-display text-lg text-primary">Full session</h2>
+              <p className="text-sm text-muted">
+                Song work, technique, or open practice with a fuller look-back after.
+              </p>
+            </div>
             <ContinueCard songs={continueSongs} lastIntention={lastIntention} />
             <PinnedSongsRow songs={pinnedSongs} />
-            <AnchorPicker songs={songs} recentSkills={recentSkills} />
+            <AnchorPicker
+              songs={songs}
+              pickerSkills={pickerSkills}
+              skillGroups={skillGroups}
+              vocalPickerSkills={vocalPickerSkills}
+              vocalSkillGroups={vocalSkillGroups}
+            />
           </div>
 
-          <div className="lg:sticky lg:top-10 space-y-4">
+          <div className="space-y-4 lg:sticky lg:top-10">
             <CoachPanel history={coachHistory} />
-            <details>
-              <summary className="cursor-pointer list-none text-sm text-secondary transition hover:text-primary [&::-webkit-details-marker]:hidden">
-                Metronome
-              </summary>
-              <div className="mt-3">
-                <Metronome />
-              </div>
-            </details>
+            <Metronome />
           </div>
         </div>
       )}

@@ -42,16 +42,6 @@ export const NAV_ITEMS: NavItem[] = [
     ),
   },
   {
-    href: "/vocal",
-    label: "Vocal",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
-        <rect x="9" y="2.5" width="6" height="12" rx="3" />
-        <path d="M5 11a7 7 0 0 0 14 0M12 18v3" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    ),
-  },
-  {
     href: "/report",
     label: "Report",
     icon: (

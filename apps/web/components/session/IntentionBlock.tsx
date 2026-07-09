@@ -25,7 +25,7 @@ export function IntentionBlock({
   return (
     <Card variant="elevated">
       <h2 className="font-display text-xl text-primary">Before practice</h2>
-      <p className="mt-1 text-sm text-muted">Set a gentle intention — no pressure.</p>
+      <p className="mt-1 text-sm text-muted">Set an intention if you want one.</p>
 
       <form action={startSession} className="mt-6 space-y-5">
         <div>
@@ -35,7 +35,7 @@ export function IntentionBlock({
             {songs.map((song) => (
               <option key={song.id} value={song.id}>
                 {song.name}
-                {song.artist ? ` — ${song.artist}` : ""}
+                {song.artist ? ` · ${song.artist}` : ""}
               </option>
             ))}
           </SelectInput>

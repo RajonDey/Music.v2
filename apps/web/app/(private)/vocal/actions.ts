@@ -9,6 +9,11 @@ function str(formData: FormData, key: string): string {
   return typeof v === "string" ? v.trim() : "";
 }
 
+function revalidateVocalPaths(): void {
+  revalidateVocalPaths();
+  revalidatePath("/skills");
+}
+
 async function openSessionId(): Promise<string | null> {
   const supabase = createServiceClient();
   const today = new Date().toISOString().slice(0, 10);
@@ -35,7 +40,7 @@ export async function recordRange(formData: FormData): Promise<void> {
     .from("vocal_range")
     .insert({ low_note: low, high_note: high });
   if (error) throw error;
-  revalidatePath("/vocal");
+  revalidateVocalPaths();
 }
 
 export async function logVocal(formData: FormData): Promise<void> {
@@ -62,7 +67,7 @@ export async function logVocal(formData: FormData): Promise<void> {
     note: note || null,
   });
   if (error) throw error;
-  revalidatePath("/vocal");
+  revalidateVocalPaths();
 }
 
 export async function addExercise(formData: FormData): Promise<void> {
@@ -83,14 +88,14 @@ export async function addExercise(formData: FormData): Promise<void> {
     position: (countRes.count ?? 0) + 1,
   });
   if (error) throw error;
-  revalidatePath("/vocal");
+  revalidateVocalPaths();
 }
 
 export async function deleteExercise(id: string): Promise<void> {
   const supabase = createServiceClient();
   const { error } = await supabase.from("vocal_exercises").delete().eq("id", id);
   if (error) throw error;
-  revalidatePath("/vocal");
+  revalidateVocalPaths();
 }
 
 export async function updateExercise(id: string, formData: FormData): Promise<void> {
@@ -109,5 +114,5 @@ export async function updateExercise(id: string, formData: FormData): Promise<vo
     })
     .eq("id", id);
   if (error) throw error;
-  revalidatePath("/vocal");
+  revalidateVocalPaths();
 }

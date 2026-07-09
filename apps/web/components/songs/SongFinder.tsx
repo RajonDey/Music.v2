@@ -55,7 +55,7 @@ export function SongFinder({
               Search
             </Button>
             <p className="text-xs text-muted">
-              Best for English catalogues. Bangla/Hindi — add by hand works just as well.
+              Best for English catalogues. Bangla/Hindi: add by hand works just as well.
             </p>
           </div>
         </form>

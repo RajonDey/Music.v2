@@ -91,6 +91,36 @@ after "End session." Songs and skills are parallel anchors, not a hierarchy.
 33. ✅ **7E Phase machine** — stand → end → reflect; hide nav chrome via fullscreen overlay.
 34. ✅ **7F Reflection simplify** — auto-tags from anchor; collapse skill browser.
 35. ✅ **7G Polish** — edit-session shows anchor; regression pass.
+36. ✅ **7H Skill resources** — `skill_resources` + `skill_states.practice_note`; `/skills/[id]`
+    notebook; Stand shows note + top 3 links; search filter; anchor picker catalogue;
+    visible resource remove; 5-link soft cap.
+
+## Phase 8 — Vocal Skills Lab
+
+Approved 2026-07-09 (see `docs/DECISIONS.md`). Extends the skills spine with a vocal
+catalogue without touching guitar Skills Lab behaviour.
+
+37. ✅ **8A Schema** — `skills.domain`; unique `(domain, category, name)`; vocal radar axes on
+    `skills` / `skill_snapshots.domain`.
+38. ✅ **8B Seed** — 83 vocal skills (12 categories); warm-up ritual stays on `/vocal` only.
+39. ✅ **8C–8D Skills Lab** — Guitar | Vocal tabs; vocal radar deferred (placeholder card).
+40. ✅ **8E Stand** — Vocal anchor + optional `anchor_skill_id`; warm-ups always + skill note/links.
+41. ✅ **8F Fan-out** — Reflection tags guitar + vocal skills; cross-links `/vocal` ↔ Skills Lab.
+
+## Phase 9 — Two rhythms (Riyaz + Session)
+
+Approved 2026-07-09 (see `docs/DECISIONS.md`). Matches daily morning riyaz vs 4–5×/week full
+sessions. No habit-tracker patterns; riyaz excluded from calendar.
+
+42. ✅ **9A Schema** — `sessions.practice_kind`, `sessions.riyaz_feel`; types in `packages/types`.
+43. ✅ **9B Lib** — `session-utils.ts`; `lastRiyaz` in studio data; report split queries.
+44. ✅ **9C Actions** — `startRiyaz`, `logRiyaz`; full sessions set `practice_kind = 'session'`.
+45. ✅ **9D Riyaz end** — `RiyazEndSheet` (Done + optional chip); `SessionFlow` branch.
+46. ✅ **9E Studio** — `RiyazEntry` (vocal/guitar/same-as-yesterday) above full session block.
+47. ✅ **9F Report** — sessions vs riyaz counts; calendar = sessions only.
+48. ✅ **9G Vocal demotion** — nav 4 tabs; voice profile on Skills (Vocal); `/vocal` redirects.
+49. ✅ **9H Cleanup** — `/releases` → `/songs`; `/journey` → `/report`.
+50. ✅ **9I Docs** — ROADMAP, DECISIONS, DATA_MODEL.
 
 ## Definition of done (every phase)
 - Mobile-first, warm, no habit-tracker patterns.

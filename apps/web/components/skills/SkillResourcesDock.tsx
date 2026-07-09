@@ -1,20 +1,22 @@
 "use client";
 
 import { Button, Card, FieldLabel, SelectInput, TextInput } from "@music/ui";
-import { RESOURCE_KINDS, type SongResource } from "@music/types";
+import { SKILL_RESOURCE_KINDS, type SkillResource } from "@music/types";
 import {
-  addResource,
-  deleteResource,
-  moveResourceDown,
-  moveResourceUp,
-  updateResource,
-} from "@/app/(private)/songs/actions";
+  addSkillResource,
+  deleteSkillResource,
+  moveSkillResourceDown,
+  moveSkillResourceUp,
+  updateSkillResource,
+} from "@/app/(private)/skills/actions";
 import { ConfirmRemoveForm } from "@/components/ui/ConfirmRemoveForm";
-import { ReorderButtons } from "@/components/songs/ReorderButtons";
+import { SkillReorderButtons } from "@/components/skills/SkillReorderButtons";
 
 const MAX_RESOURCES = 5;
 
 const kindLabels: Record<string, string> = {
+  tutorial: "Tutorial",
+  exercise: "Exercise",
   youtube: "YouTube",
   backing: "Backing track",
   reference: "Reference",
@@ -24,25 +26,25 @@ const kindLabels: Record<string, string> = {
 
 function ResourceEditor({
   resource,
-  songId,
+  skillId,
   index,
   total,
 }: {
-  resource: SongResource;
-  songId: string;
+  resource: SkillResource;
+  skillId: string;
   index: number;
   total: number;
 }) {
   return (
     <div className="rounded-lg border border-border bg-elevated">
       <div className="flex items-center gap-2 px-3.5 py-2.5">
-        <ReorderButtons
-          songId={songId}
+        <SkillReorderButtons
+          skillId={skillId}
           itemId={resource.id}
           index={index}
           total={total}
-          moveUp={moveResourceUp}
-          moveDown={moveResourceDown}
+          moveUp={moveSkillResourceUp}
+          moveDown={moveSkillResourceDown}
         />
         <a
           href={resource.url}
@@ -56,7 +58,7 @@ function ResourceEditor({
           {resource.label}
         </a>
         <ConfirmRemoveForm
-          action={deleteResource.bind(null, resource.id, songId)}
+          action={deleteSkillResource.bind(null, resource.id, skillId)}
           confirmMessage={`Remove "${resource.label}" from your resources dock?\n\nThis cannot be undone.`}
           aria-label={`Remove ${resource.label}`}
         >
@@ -68,22 +70,22 @@ function ResourceEditor({
           Edit label or link
         </summary>
         <form
-          action={updateResource.bind(null, resource.id, songId)}
+          action={updateSkillResource.bind(null, resource.id, skillId)}
           className="space-y-3 border-t border-border px-3.5 py-3"
         >
           <div>
-            <FieldLabel htmlFor={`res-label-${resource.id}`}>Label</FieldLabel>
+            <FieldLabel htmlFor={`skill-res-label-${resource.id}`}>Label</FieldLabel>
             <TextInput
-              id={`res-label-${resource.id}`}
+              id={`skill-res-label-${resource.id}`}
               name="label"
               required
               defaultValue={resource.label}
             />
           </div>
           <div>
-            <FieldLabel htmlFor={`res-url-${resource.id}`}>Link</FieldLabel>
+            <FieldLabel htmlFor={`skill-res-url-${resource.id}`}>Link</FieldLabel>
             <TextInput
-              id={`res-url-${resource.id}`}
+              id={`skill-res-url-${resource.id}`}
               name="url"
               type="url"
               required
@@ -91,9 +93,13 @@ function ResourceEditor({
             />
           </div>
           <div>
-            <FieldLabel htmlFor={`res-kind-${resource.id}`}>Type</FieldLabel>
-            <SelectInput id={`res-kind-${resource.id}`} name="kind" defaultValue={resource.kind}>
-              {RESOURCE_KINDS.map((kind) => (
+            <FieldLabel htmlFor={`skill-res-kind-${resource.id}`}>Type</FieldLabel>
+            <SelectInput
+              id={`skill-res-kind-${resource.id}`}
+              name="kind"
+              defaultValue={resource.kind}
+            >
+              {SKILL_RESOURCE_KINDS.map((kind) => (
                 <option key={kind} value={kind}>
                   {kindLabels[kind]}
                 </option>
@@ -109,12 +115,12 @@ function ResourceEditor({
   );
 }
 
-export function ResourcesDock({
-  songId,
+export function SkillResourcesDock({
+  skillId,
   resources,
 }: {
-  songId: string;
-  resources: SongResource[];
+  skillId: string;
+  resources: SkillResource[];
 }) {
   const atCap = resources.length >= MAX_RESOURCES;
 
@@ -123,7 +129,7 @@ export function ResourcesDock({
       <div>
         <h2 className="font-display text-lg text-primary">Resources</h2>
         <p className="mt-1 text-sm text-muted">
-          A tutorial, a backing track, a voice memo. Kept close.
+          Tutorials, exercises, backing tracks. Saved for when you sit down.
         </p>
       </div>
 
@@ -133,7 +139,7 @@ export function ResourcesDock({
             <ResourceEditor
               key={resource.id}
               resource={resource}
-              songId={songId}
+              skillId={skillId}
               index={index}
               total={resources.length}
             />
@@ -154,21 +160,26 @@ export function ResourcesDock({
             <span aria-hidden>+</span> Add a resource
           </summary>
           <form
-            action={addResource.bind(null, songId)}
+            action={addSkillResource.bind(null, skillId)}
             className="mt-3 space-y-4 rounded-lg border border-border bg-elevated p-4"
           >
             <div>
-              <FieldLabel htmlFor="res-label">Label</FieldLabel>
-              <TextInput id="res-label" name="label" required placeholder="Tutorial by …" />
+              <FieldLabel htmlFor="skill-res-label">Label</FieldLabel>
+              <TextInput
+                id="skill-res-label"
+                name="label"
+                required
+                placeholder="Tutorial by …"
+              />
             </div>
             <div>
-              <FieldLabel htmlFor="res-url">Link</FieldLabel>
-              <TextInput id="res-url" name="url" type="url" required placeholder="https://…" />
+              <FieldLabel htmlFor="skill-res-url">Link</FieldLabel>
+              <TextInput id="skill-res-url" name="url" type="url" required placeholder="https://…" />
             </div>
             <div>
-              <FieldLabel htmlFor="res-kind">Type</FieldLabel>
-              <SelectInput id="res-kind" name="kind" defaultValue="youtube">
-                {RESOURCE_KINDS.map((kind) => (
+              <FieldLabel htmlFor="skill-res-kind">Type</FieldLabel>
+              <SelectInput id="skill-res-kind" name="kind" defaultValue="tutorial">
+                {SKILL_RESOURCE_KINDS.map((kind) => (
                   <option key={kind} value={kind}>
                     {kindLabels[kind]}
                   </option>

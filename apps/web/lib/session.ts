@@ -1,14 +1,8 @@
 import "server-only";
 
-import type { Session, SessionAnchorType } from "@music/types";
+import type { Session } from "@music/types";
 import { createServiceClient } from "./supabase";
-
-/** Infer anchor when `anchor_type` is null (pre-migration or legacy rows). */
-export function resolveSessionAnchor(session: Session): SessionAnchorType {
-  if (session.anchor_type) return session.anchor_type;
-  if (session.song_id) return "song";
-  return "freestyle";
-}
+import { normalizePracticeKind } from "./session-utils";
 
 export type LoggedSessionDetail = {
   session: Session;
@@ -49,7 +43,10 @@ export async function getLoggedSession(
   }
 
   return {
-    session: session as Session,
+    session: {
+      ...(session as Session),
+      practice_kind: normalizePracticeKind((session as Session).practice_kind),
+    },
     songIds,
     skillIds,
   };

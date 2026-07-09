@@ -26,7 +26,7 @@ export async function LyricsCard({
       <div>
         <h2 className="font-display text-lg text-primary">Lyrics</h2>
         <p className="mt-1 text-sm text-muted">
-          Paste words you trust — especially for Bangla or Hindi songs.
+          Paste words you trust, especially for Bangla or Hindi songs.
         </p>
       </div>
 
@@ -107,7 +107,7 @@ async function ExternalLyrics({
         </div>
       ) : result.status === "not-found" ? (
         <p className="text-sm text-secondary">
-          Couldn&apos;t find a match — pasted lyrics above work better for regional songs.
+          Couldn&apos;t find a match. Pasted lyrics above work better for regional songs.
         </p>
       ) : (
         <p className="text-sm text-secondary">Lyrics service didn&apos;t respond just now.</p>

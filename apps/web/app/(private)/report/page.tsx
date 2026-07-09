@@ -31,8 +31,7 @@ export default async function ReportPage() {
           {data.monthTitle}
         </h1>
         <p className="mt-3 max-w-prose leading-relaxed text-secondary">
-          A calm look back — not a scorecard. Just what you did, how it felt, and
-          the small wins worth remembering.
+          What you did this month, how it felt, and what stood out.
         </p>
       </div>
 
@@ -40,11 +39,16 @@ export default async function ReportPage() {
         <DbSetupNotice />
       ) : (
         <>
-          <div className="grid grid-cols-3 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
             <StatCard value={data.sessionsThisMonth} label="sessions this month" />
+            <StatCard value={data.riyazMorningsThisMonth} label="riyaz mornings" />
             <StatCard value={data.songsTouched} label="songs touched" />
             <StatCard value={data.recordingsMade} label="takes recorded" />
           </div>
+          <p className="text-xs text-muted">
+            Sessions are sit-down practice. Riyaz is morning warm-up and isn&apos;t on the
+            calendar below.
+          </p>
 
           <div className="grid gap-5 lg:grid-cols-2 lg:items-start">
             <PracticeCalendar
@@ -67,8 +71,8 @@ export default async function ReportPage() {
                 </p>
               ) : (
                 <p className="border-t border-border pt-3 text-xs text-muted">
-                  Next month you&apos;ll see how this shape shifted — your snapshot
-                  updates quietly each time you open this page.
+                  Next month you&apos;ll see how this shifted. Your snapshot saves each time
+                  you open this page.
                 </p>
               )}
             </Card>
@@ -108,7 +112,7 @@ export default async function ReportPage() {
                   <h2 className="font-display text-lg text-primary">Singing confidence</h2>
                   <ConfidenceTrend values={data.confidenceTrend} />
                   <p className="text-xs text-muted">
-                    The shape of how singing felt this month — ups and downs and all.
+                    How singing felt this month.
                   </p>
                 </Card>
               ) : null}

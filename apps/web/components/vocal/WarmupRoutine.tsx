@@ -22,7 +22,7 @@ export function WarmupRoutine({ warmups }: { warmups: VocalWarmup[] }) {
         ) : null}
       </div>
       <p className="text-sm text-muted">
-        A gentle on-ramp. Tap each as you go — it resets each time, no streak to keep.
+        A gentle on-ramp. Tap each as you go. It resets each time.
       </p>
       <ul className="space-y-1.5">
         {warmups.map((w) => (

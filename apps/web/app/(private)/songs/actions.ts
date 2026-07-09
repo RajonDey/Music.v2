@@ -10,6 +10,8 @@ import {
 } from "@music/types";
 import { createServiceClient } from "@/lib/supabase";
 
+const MAX_SONG_RESOURCES = 5;
+
 function str(formData: FormData, key: string): string | null {
   const value = formData.get(key);
   if (typeof value !== "string") return null;
@@ -221,6 +223,9 @@ export async function addResource(
   const url = str(formData, "url");
   if (!label || !url) return;
 
+  const position = await nextPosition("song_resources", songId);
+  if (position >= MAX_SONG_RESOURCES) return;
+
   const kindRaw = str(formData, "kind");
   const kind: ResourceKind = RESOURCE_KINDS.includes(kindRaw as ResourceKind)
     ? (kindRaw as ResourceKind)
@@ -232,7 +237,7 @@ export async function addResource(
     label,
     url,
     kind,
-    position: await nextPosition("song_resources", songId),
+    position,
   });
 
   if (error) throw error;

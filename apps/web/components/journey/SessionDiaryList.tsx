@@ -36,7 +36,7 @@ export function SessionDiaryList() {
   return (
     <Card>
       <h2 className="font-display text-xl text-primary">This week&apos;s sessions</h2>
-      <p className="mt-1 text-sm text-muted">A plain diary — no graphs, no trends.</p>
+      <p className="mt-1 text-sm text-muted">A plain diary. No graphs, no trends.</p>
 
       <ul className="mt-5 divide-y divide-border">
         {entries.map((entry, i) => (

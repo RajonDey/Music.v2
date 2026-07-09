@@ -28,9 +28,11 @@ writes server-side (route handlers / server actions).
 | created_at | timestamptz default now() | |
 | date | date not null default current_date | |
 | song_id | uuid references songs(id) on delete set null | primary song when anchor is song; drives `last_worked_at` trigger |
+| practice_kind | text not null default 'session' | `riyaz` (morning warm-up) or `session` (full practice) |
 | anchor_type | text | `song` / `guitar_skill` / `vocal` / `freestyle` — what the session Stand shows |
-| anchor_skill_id | uuid references skills(id) on delete set null | set when anchor is `guitar_skill` |
+| anchor_skill_id | uuid references skills(id) on delete set null | set when anchor is `guitar_skill` or `vocal` (optional for vocal warm-up-only) |
 | song_focus | text | `guitar` / `vocal` / `both` — optional focus when anchor is song |
+| riyaz_feel | text | optional one-tap after riyaz: vocal `good/okay/rough`, guitar `loose/normal/tight` |
 | intention | text | session focus |
 | feeling_before | text | nervous / neutral / excited |
 | what_worked_on | text | |
@@ -77,3 +79,10 @@ through the service role used by server routes). Never expose the service role k
 ## Seed
 
 `supabase/seed.sql` pre-loads: **"Knockin' on Heaven's Door" — Bob Dylan** (stage `learning`).
+
+## Music OS v2 tables (see `docs/MUSIC_OS_V2.md`)
+
+Additional tables: `song_parts`, `song_resources`, `song_stage_log`, `session_songs`,
+`session_skills`, `skills`, `skill_states` (includes `practice_note`), `skill_resources`,
+`skill_moments`, `skill_snapshots` (includes `domain` for guitar vs vocal radar), `vocal_*`, `monthly_reflections`. Full column specs
+in `MUSIC_OS_V2.md`. Skills catalogue: `skills.domain` = `guitar` | `vocal`; unique on `(domain, category, name)`.

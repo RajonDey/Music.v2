@@ -11,7 +11,7 @@ const PATTERNS = [
     name: "Minor pentatonic",
     steps: "1 · ♭3 · 4 · 5 · ♭7",
     example: "A minor pent: A C D E G",
-    note: "Five notes — safe for improvising over most songs.",
+    note: "Five notes. Safe for improvising over most songs.",
   },
   {
     name: "Major pentatonic",
@@ -27,7 +27,7 @@ export function ScaleReference() {
       <div>
         <h2 className="font-display text-lg text-primary">Scale patterns</h2>
         <p className="mt-1 text-sm text-muted">
-          Moveable shapes — pick a root on any string and walk the pattern.
+          Moveable shapes. Pick a root on any string and walk the pattern.
         </p>
       </div>
       <ul className="space-y-4">

@@ -7,7 +7,7 @@ export function FreestyleStand({ payload }: { payload: FreestyleStandPayload }) 
         <h1 className="font-display text-2xl tracking-tightish text-primary sm:text-3xl">
           Freestyle
         </h1>
-        <p className="text-sm text-secondary">No song picked — just play and see what comes.</p>
+        <p className="text-sm text-secondary">No song picked. Just play and see what comes.</p>
       </header>
 
       {payload.intention ? (

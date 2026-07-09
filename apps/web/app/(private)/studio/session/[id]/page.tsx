@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { Card } from "@music/ui";
 import type { Song, Session } from "@music/types";
 import { getStudioData, type SkillGroup } from "@/lib/practice";
-import { getLoggedSession, resolveSessionAnchor } from "@/lib/session";
+import { getLoggedSession } from "@/lib/session";
+import { resolveSessionAnchor } from "@/lib/session-utils";
 import { updateLoggedSession } from "@/app/(private)/studio/actions";
 import { SessionReflectionForm } from "@/components/session/SessionReflectionForm";
 import { DeleteLoggedSessionButton } from "@/components/session/DeleteLoggedSessionButton";
@@ -43,8 +44,15 @@ function anchorSummary(
       }
       return "Guitar craft";
     }
-    case "vocal":
-      return "Vocal";
+    case "vocal": {
+      const skillId = session.anchor_skill_id ?? skillIds[0] ?? null;
+      if (!skillId) return "Vocal warm-up";
+      for (const group of skillGroups) {
+        const skill = group.skills.find((s) => s.id === skillId);
+        if (skill) return `Vocal · ${skill.name}`;
+      }
+      return "Vocal warm-up";
+    }
     case "freestyle":
       return "Freestyle";
   }
@@ -62,7 +70,7 @@ export default async function EditSessionPage({
   const detail = await getLoggedSession(id);
   if (!detail) notFound();
 
-  const { songs, skillGroups, recentSkills } = await getStudioData();
+  const { songs, allSkillGroups, recentSkills } = await getStudioData();
   const { session, songIds, skillIds } = detail;
 
   return (
@@ -82,7 +90,7 @@ export default async function EditSessionPage({
       </div>
 
       {saved === "1" ? (
-        <p className="text-sm text-accent">Logged — you can tweak anything below.</p>
+        <p className="text-sm text-accent">Logged. You can tweak anything below.</p>
       ) : null}
       {updated === "1" ? (
         <p className="text-sm text-accent">Saved your changes.</p>
@@ -92,7 +100,7 @@ export default async function EditSessionPage({
         <div>
           <p className="text-xs text-muted">Anchor</p>
           <p className="mt-1 text-sm text-secondary">
-            {anchorSummary(session, songs, skillGroups, skillIds)}
+            {anchorSummary(session, songs, allSkillGroups, skillIds)}
           </p>
         </div>
 
@@ -108,7 +116,7 @@ export default async function EditSessionPage({
           action={updateLoggedSession}
           session={session}
           songs={songs}
-          skillGroups={skillGroups}
+          skillGroups={allSkillGroups}
           recentSkills={recentSkills}
           songIds={songIds}
           skillIds={skillIds}

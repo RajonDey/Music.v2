@@ -6,13 +6,13 @@ export function SessionShapeHint() {
   return (
     <details>
       <summary className="cursor-pointer list-none text-sm text-secondary transition hover:text-primary [&::-webkit-details-marker]:hidden">
-        Need a gentle shape for today? (optional)
+        Need a shape for today?
       </summary>
       <Card className="mt-3 space-y-2 text-sm text-secondary">
         <p>Warm up → chords → one song → one small riff. No need to hit every step.</p>
         <p>
-          <Link href="/vocal" className="text-accent transition hover:text-accent-strong">
-            Vocal warm-ups
+          <Link href="/studio" className="text-accent transition hover:text-accent-strong">
+            Morning riyaz
           </Link>
           {" · "}
           Pick a pinned song above, or freestyle and see what comes.

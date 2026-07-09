@@ -89,7 +89,7 @@ export function ExercisesDock({ exercises }: { exercises: VocalExercise[] }) {
           ))}
         </div>
       ) : (
-        <p className="text-sm text-muted">No exercises yet — add your first below.</p>
+        <p className="text-sm text-muted">No exercises yet. Add your first below.</p>
       )}
 
       <details>
