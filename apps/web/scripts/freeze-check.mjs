@@ -177,10 +177,12 @@ async function checkEnv() {
     ok = fail("Supabase credentials", "missing URL or service role key") && ok;
   }
 
-  if (process.env.ANTHROPIC_API_KEY) {
-    pass("ANTHROPIC_API_KEY", "coach enabled");
+  if (process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    pass("GOOGLE_GENERATIVE_AI_API_KEY", "coach enabled");
   } else {
-    console.log("  ⚠ ANTHROPIC_API_KEY — coach will return 503 (optional but recommended)");
+    console.log(
+      "  ⚠ GOOGLE_GENERATIVE_AI_API_KEY — coach will return 503 (optional but recommended)",
+    );
   }
 
   return ok;

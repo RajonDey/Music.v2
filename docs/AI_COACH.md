@@ -5,7 +5,7 @@ guitar/vocal mentor who normalizes plateaus and lowers the bar to action.
 
 ## Technical
 
-- **Model:** `claude-sonnet-4-6` (Anthropic), via Vercel AI SDK (`ai` + `@ai-sdk/anthropic`).
+- **Model:** `gemini-2.0-flash` (Google AI Studio free tier), via Vercel AI SDK (`ai` + `@ai-sdk/google`).
 - **Route:** `POST /api/coach` with body `{ messages: Message[], context: CoachContext }`.
 - **Response:** streamed (Vercel AI SDK `streamText` → `toDataStreamResponse`, or native ReadableStream).
 - **System prompt:** lives in `apps/web/lib/coach-prompt.ts` (content below).

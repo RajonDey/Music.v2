@@ -11,7 +11,7 @@
     "freeze-check": "node scripts/freeze-check.mjs --url=http://localhost:3000"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^3.0.85",
+    "@ai-sdk/google": "^3.0.90",
     "@ai-sdk/react": "^3.0.210",
     "@music/tokens": "workspace:*",
     "@music/types": "workspace:*",

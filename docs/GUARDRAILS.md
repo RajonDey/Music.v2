@@ -66,7 +66,7 @@ Music OS = songs, practice intention/reflection, journey journal, coach, optiona
 **Rule:** `.cursor/rules/50-data-and-security.mdc`
 
 - RLS on every Supabase table from migration 1.
-- `SUPABASE_SERVICE_ROLE_KEY`, `ANTHROPIC_API_KEY`, `MUSIC_OS_PASSWORD` — server only.
+- `SUPABASE_SERVICE_ROLE_KEY`, `GOOGLE_GENERATIVE_AI_API_KEY`, `MUSIC_OS_PASSWORD` — server only.
 - Public `/` never reads or renders private session/reflection rows.
 - Middleware on all `(private)` routes and `/api/coach` before any private UI ships.
 

@@ -64,7 +64,7 @@ No `/admin` prefix — short paths for mobile logging after practice. Middleware
 4. Everything under `(private)` and private `/api/*` requires the cookie; else redirect to `/login`.
 5. Cookie lifetime ~1 year (match WeekOS “unlocks this browser” feel).
 
-Never expose `SUPABASE_SERVICE_ROLE_KEY` or `ANTHROPIC_API_KEY` to the client.
+Never expose `SUPABASE_SERVICE_ROLE_KEY` or `GOOGLE_GENERATIVE_AI_API_KEY` to the client.
 
 ## Tooling
 
@@ -72,7 +72,7 @@ Never expose `SUPABASE_SERVICE_ROLE_KEY` or `ANTHROPIC_API_KEY` to the client.
 - **Framework:** Next.js 14+ App Router, TypeScript strict, RSC by default.
 - **Styling:** Tailwind via `packages/tokens` preset — semantic utilities, no raw hex in app code.
 - **Data:** Supabase (Postgres), RLS from day one. All writes server-side.
-- **AI:** Anthropic `claude-sonnet-4-6` via Vercel AI SDK, streaming.
+- **AI:** Google `gemini-2.0-flash` (AI Studio free tier) via Vercel AI SDK, streaming.
 
 ## Deploy (Vercel)
 

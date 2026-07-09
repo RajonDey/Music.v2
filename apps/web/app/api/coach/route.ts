@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { anthropic } from "@ai-sdk/anthropic";
+import { google } from "@ai-sdk/google";
 import { streamText } from "ai";
 import { buildCoachContext, formatCoachContext } from "@/lib/coach-context";
 import { COACH_SYSTEM_PROMPT } from "@/lib/coach-prompt";
@@ -13,10 +13,10 @@ type ChatMessage = {
 };
 
 export async function POST(req: Request) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
-      { error: "Coach is not configured yet — add ANTHROPIC_API_KEY." },
+      { error: "Coach is not configured yet — add GOOGLE_GENERATIVE_AI_API_KEY." },
       { status: 503 },
     );
   }
@@ -37,11 +37,11 @@ export async function POST(req: Request) {
 
   const context = await buildCoachContext();
   const system = `${COACH_SYSTEM_PROMPT}\n\n---\nContext:\n${formatCoachContext(context)}`;
-  const modelId = process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6";
+  const modelId = process.env.GOOGLE_MODEL ?? "gemini-2.0-flash";
   const sessionDate = context.currentDate;
 
   const result = streamText({
-    model: anthropic(modelId),
+    model: google(modelId),
     system,
     messages,
     onFinish: async ({ text }) => {

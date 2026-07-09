@@ -28,7 +28,7 @@ Fill in:
 - `MUSIC_OS_PASSWORD` — your private gate password
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
-- `ANTHROPIC_API_KEY` — optional until coach (step 4)
+- `GOOGLE_GENERATIVE_AI_API_KEY` — optional until coach (step 4)
 
 ## 4. Supabase
 
