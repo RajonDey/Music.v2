@@ -52,8 +52,22 @@ Music.v2/
 | `/journey` | Private | Weekly reflection + session log |
 | `/releases` | Private | Song tracker |
 | `/api/coach` | Private | Streaming AI coach |
+| `/api/backup` | Private | JSON notebook dump (cookie) |
+| `/api/cron/backup` | Cron | Monthly email of the same dump (`CRON_SECRET`) |
 
 No `/admin` prefix — short paths for mobile logging after practice. Middleware is the gate.
+
+## Notebook backup (Phase 10)
+
+A versioned JSON dump (`{ version: 1, app: "music-os", exported_at, tables }`) of every
+user table, built in `apps/web/lib/backup.ts`. Download from Report or receive it by email
+on the 1st of each month. The file is the product — there is no in-app restore. If data is
+lost, hand the JSON to an agent and write a one-off import. Do not overwrite a live database
+from an old file without a deliberate, reviewed step.
+
+Public `/` never reads this dump. Cron is secret-gated, not cookie-gated (Vercel Cron has
+no session). The monthly email is a private copy of reflections and coach chat — treat the
+inbox as sensitive.
 
 ## Auth (middleware + WeekOS pattern)
 

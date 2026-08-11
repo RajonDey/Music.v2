@@ -1,4 +1,5 @@
 import { Button, Card, FieldLabel, TextInput } from "@music/ui";
+import type { DriftList } from "@music/types";
 import type { SongMatch } from "@/lib/musicbrainz";
 import { SongMatchRow } from "./SongMatchRow";
 
@@ -10,10 +11,14 @@ export function SongFinder({
   title,
   artist,
   matches,
+  categories,
+  defaultCategoryId,
 }: {
   title: string;
   artist: string;
   matches: SongMatch[];
+  categories: DriftList[];
+  defaultCategoryId?: string | null;
 }) {
   const hasQuery = title.trim().length > 0 || artist.trim().length > 0;
 
@@ -28,6 +33,9 @@ export function SongFinder({
 
       <Card className="mt-3 space-y-5">
         <form method="get" className="space-y-3">
+          {defaultCategoryId ? (
+            <input type="hidden" name="category" value={defaultCategoryId} />
+          ) : null}
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <FieldLabel htmlFor="find-title">Title</FieldLabel>
@@ -64,7 +72,12 @@ export function SongFinder({
           matches.length > 0 ? (
             <ul className="space-y-2">
               {matches.map((match, i) => (
-                <SongMatchRow key={`${match.title}-${match.artist}-${i}`} match={match} />
+                <SongMatchRow
+                  key={`${match.title}-${match.artist}-${i}`}
+                  match={match}
+                  categories={categories}
+                  defaultCategoryId={defaultCategoryId}
+                />
               ))}
             </ul>
           ) : (

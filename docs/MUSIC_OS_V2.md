@@ -207,6 +207,8 @@ Evolves the current Studio. Stays short and low-friction.
 
 ### 4.2 Song Room (`/songs`, `/songs/[id]`)
 The most powerful screen — a dedicated notebook per song.
+- **Drift (Phase 11)** — named listening lists. A line is a title and/or a link, not a `songs` row. Promote starts a notebook; let go deletes the line. Headings are user-written (no prescribed taxonomy).
+- **Categories + IA (Phase 11B)** — headings are shared with notebooks (`songs.category_id`). `/songs` has two tabs only: Songs List and Songs Notebook. Categories are a dropdown + headings inside each tab. Starter set is deletable.
 - **Header** — name, artist, key, BPM, time signature (fill once; API autofill later).
 - **Parts map** — collapsible sections from `song_parts`; each part shows chord progression +
   notes. Add/reorder/edit parts.

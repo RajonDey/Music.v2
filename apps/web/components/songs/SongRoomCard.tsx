@@ -16,7 +16,13 @@ function lastWorkedLabel(iso: string | null): string | null {
   return "a while ago";
 }
 
-export function SongRoomCard({ song }: { song: Song }) {
+export function SongRoomCard({
+  song,
+  categoryName,
+}: {
+  song: Song;
+  categoryName?: string;
+}) {
   const lastWorked = lastWorkedLabel(song.last_worked_at);
 
   return (
@@ -28,6 +34,9 @@ export function SongRoomCard({ song }: { song: Song }) {
           </h3>
           {song.artist ? (
             <p className="mt-0.5 text-sm text-secondary">{song.artist}</p>
+          ) : null}
+          {categoryName ? (
+            <p className="mt-1 text-xs text-muted">{categoryName}</p>
           ) : null}
         </Link>
         <div className="flex shrink-0 items-start gap-1">

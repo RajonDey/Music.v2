@@ -8,6 +8,9 @@ const MIGRATIONS = [
   "20260624000000_skill_resources.sql",
   "20260625000000_skill_domain.sql",
   "20260626000000_practice_kind.sql",
+  "20260811000000_drift_pockets.sql",
+  "20260811000001_song_category.sql",
+  "20260811000002_seed_music_categories.sql",
 ] as const;
 
 export function DbSetupNotice() {

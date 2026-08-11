@@ -1,10 +1,16 @@
 import { Button, Card } from "@music/ui";
-import type { Song } from "@music/types";
+import type { DriftList, Song } from "@music/types";
 import { toggleSongPin } from "@/app/(private)/songs/actions";
 import { DeleteSongButton } from "@/components/songs/DeleteSongButton";
 import { SongHeaderEditor } from "@/components/songs/SongHeaderEditor";
 
-export function SongNotebookSettings({ song }: { song: Song }) {
+export function SongNotebookSettings({
+  song,
+  categories,
+}: {
+  song: Song;
+  categories: DriftList[];
+}) {
   return (
     <Card id="notebook-settings" className="scroll-mt-24">
       <details className="group">
@@ -39,7 +45,7 @@ export function SongNotebookSettings({ song }: { song: Song }) {
               Edit song details
             </summary>
             <div className="mt-3 rounded-lg border border-border bg-elevated p-4 sm:p-5">
-              <SongHeaderEditor song={song} />
+              <SongHeaderEditor song={song} categories={categories} />
             </div>
           </details>
 

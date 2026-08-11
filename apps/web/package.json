@@ -24,6 +24,7 @@
     "next-mdx-remote": "^6.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "resend": "^6.19.0",
     "zod": "^3.25.67"
   },
   "devDependencies": {

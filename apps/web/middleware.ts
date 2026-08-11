@@ -35,5 +35,6 @@ export const config = {
     "/vocal/:path*",
     "/report/:path*",
     "/api/coach/:path*",
+    "/api/backup",
   ],
 };

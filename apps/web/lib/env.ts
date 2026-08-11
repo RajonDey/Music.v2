@@ -26,3 +26,24 @@ export function getSupabaseEnv() {
   }
   return parsed.data;
 }
+
+const backupEmailEnvSchema = z.object({
+  RESEND_API_KEY: z.string().min(1),
+  BACKUP_EMAIL: z.string().email(),
+  CRON_SECRET: z.string().min(16),
+  BACKUP_FROM_EMAIL: z.string().min(1).optional(),
+});
+
+export function getBackupEmailEnv() {
+  const parsed = backupEmailEnvSchema.safeParse(process.env);
+  if (!parsed.success) {
+    throw new Error(
+      "Backup email env missing. Set RESEND_API_KEY, BACKUP_EMAIL, and CRON_SECRET.",
+    );
+  }
+  return {
+    ...parsed.data,
+    BACKUP_FROM_EMAIL:
+      parsed.data.BACKUP_FROM_EMAIL ?? "Music OS <beth.t@example.com>",
+  };
+}

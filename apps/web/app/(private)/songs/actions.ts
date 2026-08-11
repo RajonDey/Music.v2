@@ -50,6 +50,7 @@ export async function addSong(formData: FormData): Promise<void> {
       artist: str(formData, "artist"),
       why_this_song: str(formData, "why_this_song"),
       stage: "learning",
+      category_id: str(formData, "category_id"),
     })
     .select("id")
     .single();
@@ -79,6 +80,7 @@ export async function updateSongHeader(
       why_this_song: str(formData, "why_this_song"),
       target: str(formData, "target"),
       notes: str(formData, "notes"),
+      category_id: str(formData, "category_id"),
     })
     .eq("id", songId);
 

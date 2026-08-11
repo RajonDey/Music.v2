@@ -74,6 +74,8 @@ async function checkSchema(supabase) {
     "session_skills",
     "vocal_warmups",
     "monthly_reflections",
+    "drift_lists",
+    "drift_items",
   ];
 
   for (const table of tables) {

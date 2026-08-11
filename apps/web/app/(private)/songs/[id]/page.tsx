@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Card } from "@music/ui";
 import { learningStageLabel, qualityLabel } from "@music/types";
 import { getSongDetail } from "@/lib/songs";
+import { getCategories } from "@/lib/categories";
 import { LearningStagePipeline } from "@/components/songs/LearningStagePipeline";
 import { PartsMap } from "@/components/songs/PartsMap";
 import { ResourcesDock } from "@/components/songs/ResourcesDock";
@@ -30,11 +31,13 @@ export default async function SongNotebookPage({
 }) {
   const { id } = await params;
   const { lyrics } = await searchParams;
-  const detail = await getSongDetail(id);
+  const [detail, categories] = await Promise.all([getSongDetail(id), getCategories()]);
   if (!detail) notFound();
 
   const { song, parts, resources, practiceLog, stageLog } = detail;
+  const heading = categories.find((category) => category.id === song.category_id)?.name;
   const meta = [
+    heading,
     song.key,
     song.capo != null && song.capo > 0 ? `Capo ${song.capo}` : null,
     song.bpm ? `${song.bpm} BPM` : null,
@@ -179,7 +182,7 @@ export default async function SongNotebookPage({
         </div>
       </div>
 
-      <SongNotebookSettings song={song} />
+      <SongNotebookSettings song={song} categories={categories} />
     </div>
   );
 }

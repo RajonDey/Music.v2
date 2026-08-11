@@ -2,5 +2,11 @@
   "buildCommand": "cd ../.. && pnpm turbo build --filter=@music/web",
   "installCommand": "cd ../.. && pnpm install",
   "framework": "nextjs",
-  "outputDirectory": ".next"
+  "outputDirectory": ".next",
+  "crons": [
+    {
+      "path": "/api/cron/backup",
+      "schedule": "0 2 1 * *"
+    }
+  ]
 }

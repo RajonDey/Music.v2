@@ -20,6 +20,7 @@ writes server-side (route handlers / server actions).
 | target | text | optional, no deadline pressure |
 | last_worked_at | timestamptz | auto-updated from sessions |
 | is_shared | boolean default false | drives future public sync |
+| category_id | uuid fk → drift_lists on delete set null | Phase 11B — shared heading with Drift |
 
 ### `sessions`
 | column | type | notes |
@@ -79,6 +80,30 @@ through the service role used by server routes). Never expose the service role k
 ## Seed
 
 `supabase/seed.sql` pre-loads: **"Knockin' on Heaven's Door" — Bob Dylan** (stage `learning`).
+
+## Drift (Phase 11) — not songs until promoted
+
+Listening lists. A drift item is **not** a `songs` row. Studio, pins, coach, and report ignore these.
+
+### `drift_lists`
+| column | type | notes |
+|---|---|---|
+| id | uuid pk default gen_random_uuid() | |
+| created_at | timestamptz default now() | |
+| name | text not null | user-written heading; unique on `lower(name)` |
+| position | int not null default 0 | display order |
+
+Seed: one empty list named **Noticed**. These rows are the shared category system (Phase 11B) — notebooks point at them via `songs.category_id`.
+
+### `drift_items`
+| column | type | notes |
+|---|---|---|
+| id | uuid pk default gen_random_uuid() | |
+| created_at | timestamptz default now() | |
+| list_id | uuid fk → drift_lists on delete cascade | |
+| title | text | nullable; title **or** url required |
+| url | text | nullable; any http(s) link, often YouTube |
+| promoted_song_id | uuid fk → songs on delete set null | set on “Start a notebook”; hidden from the shelf |
 
 ## Music OS v2 tables (see `docs/MUSIC_OS_V2.md`)
 

@@ -1,7 +1,15 @@
 import { Button, Card, FieldLabel, TextArea, TextInput } from "@music/ui";
+import type { DriftList } from "@music/types";
 import { addSong } from "@/app/(private)/songs/actions";
+import { CategorySelect } from "./CategorySelect";
 
-export function AddSong() {
+export function AddSong({
+  categories,
+  defaultCategoryId,
+}: {
+  categories: DriftList[];
+  defaultCategoryId?: string | null;
+}) {
   return (
     <details className="group">
       <summary className="flex cursor-pointer list-none items-center gap-2 rounded-lg bg-accent-soft px-4 py-2.5 text-sm font-medium text-primary transition hover:bg-elevated [&::-webkit-details-marker]:hidden">
@@ -22,6 +30,11 @@ export function AddSong() {
             </FieldLabel>
             <TextInput id="add-artist" name="artist" placeholder="Bob Dylan" />
           </div>
+          <CategorySelect
+            id="add-category"
+            categories={categories}
+            defaultId={defaultCategoryId}
+          />
           <div>
             <FieldLabel htmlFor="add-why" hint="optional">
               Why this song?

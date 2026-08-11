@@ -29,6 +29,7 @@ Fill in:
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `GOOGLE_GENERATIVE_AI_API_KEY` — optional until coach (step 4)
+- `RESEND_API_KEY`, `BACKUP_EMAIL`, `CRON_SECRET` — optional until monthly backup email
 
 ## 4. Supabase
 

@@ -15,6 +15,32 @@ Add a dated entry when Rajon explicitly approves something not in the original b
 
 ---
 
+## 2026-08-11 — Phase 11B: Shared categories + Song Room IA
+
+### 2026-08-11 — Categories on notebooks + tabs so the page can grow
+- **Proposal:** Treat Drift headings as a shared category system (same names on listening lines and Song Room notebooks). Restructure `/songs` so Drift, Growing, and Shelf are tabs, with category chips underneath — never stack every list and every notebook on one scroll. No prescribed category names. No counts on chips.
+- **Gate:** Scope expansion of Phase 11 (fail until approved). Courage / habit-tracker pass if chips have no tallies and unfiled songs are not judged. Simpler “tabs only, stamp later” was offered; Rajon chose the full shared system for scalability.
+- **Decision:** `songs.category_id` → `drift_lists`. Promote and Add Song set it. Two tabs only: **Songs List** and **Songs Notebook**. Categories are a dropdown + section headings inside, never tabs. Seed Classic covers, Hangouts, Rabindra & Nazrul, Noticed — all deletable. Completed shelf stays inside Notebook.
+- **Roadmap:** Phase 11 step 53.
+
+## 2026-08-11 — Phase 11: Drift (listening pockets)
+
+### 2026-08-11 — Named pockets on Song Room
+- **Proposal:** A pre-notebook shelf on `/songs` for songs that catch Rajon while listening. Named lists he writes himself (hangouts, classic covers, Rabindra/Nazrul, …) — not a flat inbox and not a prescribed taxonomy. Each line is a title and/or a link. Promote starts a Song Room notebook; let go deletes the line. No new page or nav tab.
+- **Gate:** Phase was not on the roadmap (fail until approved). Courage / habit-tracker / WeekOS / public-leak pass if there are no counts, ranks, or deadlines. Global song-category taxonomy was offered and deferred. Rajon approved named pockets after reviewing a real listening note.
+- **Decision:** New Phase 11. Tables `drift_lists` + `drift_items` (not `songs` rows). Seed one empty **Noticed** catch-all. One pocket per line. YouTube/any URL is a first-class capture. Backup dump includes both tables.
+- **Roadmap:** Phase 11 step 52.
+
+## 2026-08-11 — Phase 10: Data backup (off-site notebook copy)
+
+### 2026-08-11 — Anytime download + monthly emailed JSON
+- **Proposal:** Quiet durability layer so the practice journal is not trapped in Supabase. Anytime JSON download from Report, plus a monthly email with the same file attached. No in-app restore, no nagging, no new nav tab.
+- **Gate:** Phase was not on the roadmap (fail until approved). Courage / habit-tracker / WeekOS / public-leak all pass if the UI stays quiet and the dump never touches `/`. Privacy trade-off accepted: reflections + coach chat will live in the inbox. Simpler download-only was offered; Rajon chose both.
+- **Decision:** New Phase 10. Shared dump of all user tables (`version: 1` JSON). `GET /api/backup` behind the Music OS cookie. `GET /api/cron/backup` on the 1st of each month, gated by `CRON_SECRET`, sent via Resend. Restore later is a one-off import from that file — no overwrite button in the app.
+- **Roadmap:** Phase 10 step 51.
+
+---
+
 ## 2026-06-23 — Phase 7: Execution mode (Session Stand + anchors)
 
 ### 2026-06-23 — Session Stand and anchor-based practice flow

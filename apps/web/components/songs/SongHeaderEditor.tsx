@@ -1,8 +1,15 @@
 import { Button, FieldLabel, TextArea, TextInput } from "@music/ui";
-import type { Song } from "@music/types";
+import type { DriftList, Song } from "@music/types";
 import { updateSongHeader } from "@/app/(private)/songs/actions";
+import { CategorySelect } from "./CategorySelect";
 
-export function SongHeaderEditor({ song }: { song: Song }) {
+export function SongHeaderEditor({
+  song,
+  categories,
+}: {
+  song: Song;
+  categories: DriftList[];
+}) {
   return (
     <form action={updateSongHeader.bind(null, song.id)} className="space-y-5">
       <div className="grid gap-5 sm:grid-cols-2">
@@ -59,6 +66,13 @@ export function SongHeaderEditor({ song }: { song: Song }) {
             name="time_signature"
             defaultValue={song.time_signature ?? ""}
             placeholder="4/4"
+          />
+        </div>
+        <div className="sm:col-span-2">
+          <CategorySelect
+            id="h-category"
+            categories={categories}
+            defaultId={song.category_id}
           />
         </div>
         <div className="sm:col-span-2">

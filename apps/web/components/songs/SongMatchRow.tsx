@@ -2,10 +2,20 @@
 
 import { useState } from "react";
 import { Button, FieldLabel, TextInput } from "@music/ui";
+import type { DriftList } from "@music/types";
 import type { SongMatch } from "@/lib/musicbrainz";
 import { addSong } from "@/app/(private)/songs/actions";
+import { CategorySelect } from "./CategorySelect";
 
-export function SongMatchRow({ match }: { match: SongMatch }) {
+export function SongMatchRow({
+  match,
+  categories,
+  defaultCategoryId,
+}: {
+  match: SongMatch;
+  categories: DriftList[];
+  defaultCategoryId?: string | null;
+}) {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(match.title);
   const [artist, setArtist] = useState(match.artist ?? "");
@@ -50,6 +60,11 @@ export function SongMatchRow({ match }: { match: SongMatch }) {
             onChange={(e) => setArtist(e.target.value)}
           />
         </div>
+        <CategorySelect
+          id={`confirm-category-${match.title}`}
+          categories={categories}
+          defaultId={defaultCategoryId}
+        />
         <div className="flex gap-2">
           <Button type="submit" size="sm">
             Add this one

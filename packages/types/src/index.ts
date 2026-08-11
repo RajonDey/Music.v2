@@ -188,6 +188,8 @@ export type Song = {
   is_pinned: boolean;
   /** Phase 6 — capo position (0 = none) */
   capo: number | null;
+  /** Phase 11B — shared heading with Drift lists */
+  category_id: string | null;
 };
 
 export type SongPart = {
@@ -216,6 +218,30 @@ export type SongStageLogEntry = {
   from_stage: LearningStage | null;
   to_stage: LearningStage;
   changed_at: string;
+};
+
+export const SONG_ROOM_VIEWS = ["list", "notebook"] as const;
+export type SongRoomView = (typeof SONG_ROOM_VIEWS)[number];
+
+/** Phase 11 — named listening list. Also the shared category (Phase 11B). */
+export type DriftList = {
+  id: string;
+  created_at: string;
+  name: string;
+  position: number;
+};
+
+export type DriftItem = {
+  id: string;
+  created_at: string;
+  list_id: string;
+  title: string | null;
+  url: string | null;
+  promoted_song_id: string | null;
+};
+
+export type DriftPocket = DriftList & {
+  items: DriftItem[];
 };
 
 export type SessionSong = {

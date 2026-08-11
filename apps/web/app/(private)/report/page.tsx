@@ -7,6 +7,7 @@ import { PracticeCalendar } from "@/components/report/PracticeCalendar";
 import { MonthSessionNotes } from "@/components/report/MonthSessionNotes";
 import { YearView } from "@/components/report/YearView";
 import { MonthlyReflection } from "@/components/report/MonthlyReflection";
+import { KeepACopy } from "@/components/report/KeepACopy";
 import { DbSetupNotice } from "@/components/songs/DbSetupNotice";
 
 export const dynamic = "force-dynamic";
@@ -131,6 +132,8 @@ export default async function ReportPage() {
             monthLabel={data.monthLabel}
             monthTitle={data.monthTitle}
           />
+
+          <KeepACopy />
         </>
       )}
     </div>

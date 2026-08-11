@@ -122,6 +122,26 @@ sessions. No habit-tracker patterns; riyaz excluded from calendar.
 49. ✅ **9H Cleanup** — `/releases` → `/songs`; `/journey` → `/report`.
 50. ✅ **9I Docs** — ROADMAP, DECISIONS, DATA_MODEL.
 
+## Phase 10 — Durability (off-site notebook copy)
+
+Approved 2026-08-11 (see `docs/DECISIONS.md`). Complements Supabase; does not replace it.
+No restore UI, no backup-health scores, no new nav tab.
+
+51. **Notebook copy** — versioned JSON dump of all user tables; anytime download from
+    Report (`GET /api/backup`, cookie); monthly email on the 1st (`GET /api/cron/backup`,
+    `CRON_SECRET` + Resend). Recover later by handing the file to an agent.
+
+## Phase 11 — Drift (listening pockets)
+
+Approved 2026-08-11 (see `docs/DECISIONS.md`). Pre-notebook lists on `/songs`.
+Not a second song tracker. No prescribed categories. No new nav tab.
+
+52. ✅ **Named pockets** — `drift_lists` + `drift_items` (RLS); seed **Noticed**; shelf on
+    `/songs` (title or URL); promote → existing Song Room; let go. Backup includes both tables.
+53. ✅ **Shared categories + IA** — `songs.category_id`; `/songs` tabs (**Songs List** /
+    **Songs Notebook** only). Categories live inside as a dropdown + headings. Seed
+    Noticed / Classic covers / Hangouts / Rabindra & Nazrul (deletable). No category tabs.
+
 ## Definition of done (every phase)
 - Mobile-first, warm, no habit-tracker patterns.
 - Middleware protects all private routes; no private data on `/`.
