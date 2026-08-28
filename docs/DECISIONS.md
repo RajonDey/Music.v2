@@ -15,6 +15,20 @@ Add a dated entry when Rajon explicitly approves something not in the original b
 
 ---
 
+## 2026-08-29 — Phase 12: Public tools shelf
+
+### 2026-08-29 — Chords tool (name + first instrument)
+- **Proposal:** First live utility: type-a-chord + hierarchical picker, large fretboard, cycle shapes. HTML is engine-reference only.
+- **Gate:** Step 55. Courage / habit-tracker pass (no practice copy, no padlocks). Rajon rejected **Voicings** as opaque; locked **Chords** / `/tools/chords`. Approved implement.
+- **Decision:** `docs/CHORDS.md`. Parser extended in `lib/chords.ts`. Public `VoicingDiagram` + `chords.tsx`. Song Room diagrams unchanged.
+- **Roadmap:** Phase 12 step 55.
+
+### 2026-08-29 — Catalogue + per-tool pages (shell first)
+- **Proposal:** Public `/tools` becomes a scalable utility shelf (not gear). Each tool is `/tools/{slug}`. Gear moves to `/about#kit`. Chord finder HTML later; this step is list + detail frame only.
+- **Gate:** Not on the roadmap (fail until approved). Courage / habit-tracker / WeekOS / public-leak pass if copy never says “improve your skills,” no drills/streaks, and no session data on these routes. Chordify-style icon-tile grid refused. Rajon approved (“proceed”) after reviewing `docs/PUBLIC_TOOLS.md`.
+- **Decision:** Registry in `lib/public-tools.ts`. Index is a vertical setlist (“At hand”). Detail pages share `ToolFrame`. Empty catalogue is honest. Freemium/ads deferred. First live tool is **Chords** (`/tools/chords`).
+- **Roadmap:** Phase 12 steps 54–55.
+
 ## 2026-08-11 — Phase 11B: Shared categories + Song Room IA
 
 ### 2026-08-11 — Categories on notebooks + tabs so the page can grow

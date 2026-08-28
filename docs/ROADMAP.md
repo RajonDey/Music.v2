@@ -142,6 +142,17 @@ Not a second song tracker. No prescribed categories. No new nav tab.
     **Songs Notebook** only). Categories live inside as a dropdown + headings. Seed
     Noticed / Classic covers / Hangouts / Rabindra & Nazrul (deletable). No category tabs.
 
+## Phase 12 — Public tools shelf
+
+Approved 2026-08-29 (see `docs/DECISIONS.md` and `docs/PUBLIC_TOOLS.md`).
+Public catalogue of musician utilities. Gear stays on `/about#kit`. No Music OS
+data, no skill-improvement framing, no icon-tile grid.
+
+54. ✅ **Catalogue shell** — registry, `/tools` index (empty setlist), `/tools/[slug]`
+    frame + not-found; sitemap + `llms.txt` read the registry.
+55. ✅ **Chords** — public `/tools/chords`; type + letter/spelling/quality navigator;
+    standard-tuning diagrams; name locked (not Voicings). See `docs/CHORDS.md`.
+
 ## Definition of done (every phase)
 - Mobile-first, warm, no habit-tracker patterns.
 - Middleware protects all private routes; no private data on `/`.

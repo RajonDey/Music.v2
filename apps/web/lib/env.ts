@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
 import { z } from "zod";
 
 const authEnvSchema = z.object({
@@ -9,7 +11,43 @@ const supabaseEnvSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
 });
 
+let rootEnvLoaded = false;
+
+/** apps/web/.env.local may ship empty placeholders; fall back to repo root .env. */
+function ensureRootEnv() {
+  if (rootEnvLoaded) return;
+  rootEnvLoaded = true;
+
+  const repoRoot = path.join(__dirname, "..", "..", "..");
+  for (const name of [".env.local", ".env"]) {
+    const file = path.join(repoRoot, name);
+    if (!existsSync(file)) continue;
+
+    for (const line of readFileSync(file, "utf8").split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+
+      const eq = trimmed.indexOf("=");
+      if (eq === -1) continue;
+
+      const key = trimmed.slice(0, eq).trim();
+      let value = trimmed.slice(eq + 1).trim();
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        value = value.slice(1, -1);
+      }
+
+      if ((process.env[key] === undefined || process.env[key] === "") && value) {
+        process.env[key] = value;
+      }
+    }
+  }
+}
+
 export function getAuthPassword(): string {
+  ensureRootEnv();
   const parsed = authEnvSchema.safeParse(process.env);
   if (!parsed.success) {
     throw new Error("MUSIC_OS_PASSWORD is not configured.");
@@ -18,6 +56,7 @@ export function getAuthPassword(): string {
 }
 
 export function getSupabaseEnv() {
+  ensureRootEnv();
   const parsed = supabaseEnvSchema.safeParse(process.env);
   if (!parsed.success) {
     throw new Error(
@@ -35,6 +74,7 @@ const backupEmailEnvSchema = z.object({
 });
 
 export function getBackupEmailEnv() {
+  ensureRootEnv();
   const parsed = backupEmailEnvSchema.safeParse(process.env);
   if (!parsed.success) {
     throw new Error(

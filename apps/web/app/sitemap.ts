@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { PUBLIC_SITE } from "@/lib/public-site-legacy";
 import { getAllPosts } from "@/lib/blog";
+import { getLiveTools } from "@/lib/public-tools";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = PUBLIC_SITE.url;
@@ -25,5 +26,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticRoutes, ...postRoutes];
+  const toolRoutes: MetadataRoute.Sitemap = getLiveTools().map((tool) => ({
+    url: `${base}/tools/${tool.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.5,
+  }));
+
+  return [...staticRoutes, ...postRoutes, ...toolRoutes];
 }

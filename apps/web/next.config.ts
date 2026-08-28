@@ -26,7 +26,8 @@ function loadRootEnv() {
         value = value.slice(1, -1);
       }
 
-      if (process.env[key] === undefined) {
+      // apps/web/.env.local may define keys with empty placeholders; fall back to root.
+      if ((process.env[key] === undefined || process.env[key] === "") && value) {
         process.env[key] = value;
       }
     }

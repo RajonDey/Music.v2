@@ -28,8 +28,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/studio/:path*",
-    "/journey/:path*",
-    "/releases/:path*",
     "/songs/:path*",
     "/skills/:path*",
     "/vocal/:path*",

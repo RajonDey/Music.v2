@@ -1,0 +1,165 @@
+# Public tools — spec
+
+Approved 2026-08-29. Catalogue shell is in progress (roadmap step 54). Chord lookup is step 55.
+
+---
+
+## What I understood
+
+You want a **public shelf of musician utilities** — not gear, not Music OS.
+
+- **`/tools`** is the list. It should already look like a real page, even with zero tools.
+- **Each tool** is its own page (`/tools/{slug}`), not a widget jammed on the list.
+- Adding a second tool later = one catalogue entry + one page. No redesign.
+- The attached Chordify grid is **the idea of a list**, not the look.
+- Chord finder HTML comes **after** this shell. Name of that tool is still open.
+
+Gear stays on `/about#kit`. Private metronome / Song Room diagrams stay in Music OS.
+
+---
+
+## Feature gate
+
+| # | Question | Call |
+|---|---|---|
+| 1 | Phase | **Not on the roadmap.** Needs a new public step after you say yes. |
+| 2 | Courage | Pass — lookups, not scores. Copy must never say “improve your skills.” |
+| 3 | Habit tracker | Pass **if** we refuse drills, streaks, “practice your chords” gamification. |
+| 4 | Wrong app | Pass — music utilities, not WeekOS. |
+| 5 | Privacy | Pass — no sessions, reflections, or coach on these routes. |
+| 6 | Simpler | This *is* the simple version: registry + list + empty detail shell. |
+| 7 | Approval | **Passed** — Rajon said proceed (2026-08-29). |
+
+**Refuse from the screenshot:** rainbow gradient cards, white icon circles, 4-up equal grid, “awesome features,” skill-improvement framing. Design system already bans icon-tile feature cards.
+
+---
+
+## Routes
+
+| URL | Job |
+|---|---|
+| `/tools` | Catalogue. Always exists. Empty is honest. |
+| `/tools/{slug}` | One tool, full page. |
+| Unknown slug | `not-found` — warm, same public chrome. |
+
+Nav word stays **Tools**. No extra nav item per tool.
+
+---
+
+## How it scales (the only architecture)
+
+One registry is the source of truth:
+
+```ts
+// lib/public-tools.ts
+{
+  slug: "chords",
+  name: "Chords",
+  lede: "Look up a chord. See how it sits on the neck.",
+  status: "live",
+}
+```
+
+**To ship a new tool later**
+
+1. Add one object to the registry.
+2. Add `components/public-tools/{slug}.tsx` (the actual instrument).
+3. Map `slug → component` in `/tools/[slug]/page.tsx`.
+
+No new nav. No new layout system. Sitemap + `llms.txt` read the same registry.
+
+This build (`list ready`): registry file (empty array), index page designed, `[slug]` route + shared **frame**, 404. **Zero live tools.**
+
+---
+
+## List page — feel
+
+**Not a toolkit product.** Not Chordify. Not a bento of apps.
+
+**Feel:** a setlist on warm paper. Names in display type, lots of air, hairlines. Same family as Blog / About — journal, not SaaS.
+
+| Do | Don’t |
+|---|---|
+| One row per tool, full measure | 2×2 or 4-up equal cards |
+| Huge display name + one-line lede | Icons, mascots, coloured blobs |
+| Whole row is the link | Separate “Open” chrome as the only hit |
+| Amber hover on the name | Rainbow per-card gradients |
+| Empty: one quiet line | Ghost cards / “coming soon” tiles |
+
+**Copy (proposed)**
+
+- Label: `Tools`
+- Title: `At hand`
+- Lede: `Small things to play with. Not the kit I use — that’s on About.`
+- Empty: `Nothing here yet.` (same voice as Blog)
+
+If “At hand” feels cute, fall back to current `Things you can use`.
+
+**Layout**
+
+- Mobile-first: stacked rows, tall tap targets.
+- Desktop: still a **vertical catalogue**, not a card grid. (A grid starts looking like the screenshot the moment there are 3–4 tools.)
+- Tokens only. Existing `PublicHeader` + `SiteFooter`. Reveal on rows, same as Blog.
+
+Hallmark pick for the index: **Index-First** (the page *is* the list). Not Catalogue-grid, not Bento.
+
+---
+
+## Detail page — the frame (this build)
+
+Every tool page shares the same editorial chrome. The *instrument* (fretboard, metronome, etc.) fills the space below.
+
+```
+← Tools                         (back, not a second nav)
+
+Voicings                        (display)
+One quiet sentence.             (lede)
+
+────────────────────────────────
+     the tool itself
+────────────────────────────────
+```
+
+- Frame = public site (warm dark, display + body, hairline).
+- Tool body may be denser — that’s the instrument, not a second marketing page.
+- No ads, no signup, no “pro” badge. Freemium is a later decision.
+- No Music OS cookie. Anyone can open it.
+
+This build ships the frame with **no tool body**. Visiting a slug that isn’t in the registry 404s. When the chord page is ready, it drops into the frame.
+
+---
+
+## Chord tool — later (not this spec’s build)
+
+HTML you already have becomes the body of `/tools/{slug}`.
+
+**Name:** **Chords**. URL `/tools/chords`. (“Voicings” was clearer to guitarists, opaque to everyone else.)
+
+Do not title the list “The Chordify Toolkit.” This site is still *Feel the Sound*.
+
+---
+
+## Out of scope (until you say otherwise)
+
+- Building the chord UI
+- Tuner / metronome / “live detection” as public tools (OS already has a metronome)
+- Accounts, ads, freemium
+- Linking these tools from Studio / Stand (optional later, same public URLs)
+- Replacing `/tools` nav or deleting About kit
+
+---
+
+## Build order (after yes)
+
+1. Registry + index design (empty catalogue).
+2. `/tools/[slug]` frame + `not-found`.
+3. Wire sitemap / `llms.txt` to the registry.
+4. **Stop.** You review in the browser.
+5. Next conversation: name the chord tool, drop in the HTML, register it as the first live row.
+
+---
+
+## Status
+
+- Step 54 (shell): done.
+- Step 55: **Chords** at `/tools/chords`. Spec: `docs/CHORDS.md`.

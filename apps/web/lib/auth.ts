@@ -35,8 +35,6 @@ export function authCookieOptions() {
 export function isPrivatePath(pathname: string): boolean {
   return (
     pathname.startsWith("/studio") ||
-    pathname.startsWith("/journey") ||
-    pathname.startsWith("/releases") ||
     pathname.startsWith("/songs") ||
     pathname.startsWith("/skills") ||
     pathname.startsWith("/vocal") ||

@@ -1,0 +1,29 @@
+# Chords — first public tool
+
+Approved 2026-08-29. Roadmap **step 55**. Name locked to **Chords** (`/tools/chords`) — not Voicings.
+
+Reference only (not shipped as a page): `_references/chord-finder.html` and the hierarchical picker screenshot (idea only).
+
+---
+
+## Locked
+
+| | |
+|---|---|
+| Catalogue name | **Chords** |
+| URL | `/tools/chords` |
+| Lede | Look up a chord. See how it sits on the neck. |
+| Default | `C` (override with `?q=Am7`) |
+| Qualities on the row | maj · min · 5 · 7 · m7 · maj7 · sus4 — nothing locked |
+
+---
+
+## As built
+
+- Chart first: huge chord name + large fretboard; type/picker as a quiet legend (under on mobile, right on desktop).
+- Type a name **and** pick letter → spelling → quality. Flats sit with their letter (`Bb` under B).
+- Typing is debounced so the neck doesn’t flicker; `?q=` follows the committed chord.
+- Slash bass is named in copy; the diagram is still the quality.
+- Engine: `@tombatossals/chords-db` via `lib/chords.ts`. Song Room `ChordDiagram` unchanged.
+
+Files: `components/public-tools/chords.tsx`, `VoicingDiagram.tsx`, `lib/chords.ts`, registry slug `chords`.

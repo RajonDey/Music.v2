@@ -47,6 +47,8 @@ Music.v2/
 | URL | Who | What |
 |---|---|---|
 | `/` | Public | Home — bio, tagline, links, current song, latest share |
+| `/tools` | Public | Musician-utility catalogue (not gear) |
+| `/tools/[slug]` | Public | One utility; unknown slugs 404 |
 | `/login` | Public | Password gate |
 | `/studio` | Private | Today's session + AI coach |
 | `/journey` | Private | Weekly reflection + session log |

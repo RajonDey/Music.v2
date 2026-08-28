@@ -12,6 +12,29 @@ export const metadata: Metadata = {
     "Rajon Dey — software engineer by day, learning guitar and voice by morning. Music for the joy of it.",
 };
 
+const kit = [
+  {
+    name: "Guitar",
+    body: "My guitar is the heart of my creativity. It keeps me connected to the music and fuels my passion every day.",
+  },
+  {
+    name: "DAW — Ableton Live",
+    body: "I use Ableton Live to record, mix, and produce tracks. It's where the magic happens in the studio.",
+  },
+  {
+    name: "VST Plugins & Effects",
+    body: "Serum, Omnisphere, and others — essential for adding depth and flavor, from ambient soundscapes to intricate melodies.",
+  },
+  {
+    name: "Microphone & Recording Gear",
+    body: "Quality recording gear keeps the sound crisp and true to the vision of the track.",
+  },
+  {
+    name: "MIDI Controller",
+    body: "My virtual instrument for triggering sounds, building beats, and experimenting with melodies in real time.",
+  },
+];
+
 export default function AboutPage() {
   return (
     <>
@@ -157,6 +180,54 @@ export default function AboutPage() {
         </aside>
         </div>
       </div>
+
+      {/* ── Kit (moved from /tools — inventory, not a product) ── */}
+      <section
+        id="kit"
+        className="scroll-mt-24 border-t border-border px-6 py-20 sm:px-10 lg:px-16"
+        aria-labelledby="kit-heading"
+      >
+        <div className="mx-auto max-w-5xl">
+          <Reveal className="max-w-xl">
+            <SectionLabel className="mb-5">The kit</SectionLabel>
+            <h2
+              id="kit-heading"
+              className="font-display text-3xl tracking-[-0.02em] text-primary sm:text-4xl"
+            >
+              The kit behind the sound
+            </h2>
+            <p className="mt-4 max-w-prose leading-relaxed text-secondary">
+              Creating music is a dynamic process, and the right tools help bring
+              ideas to life. Here&apos;s a glimpse of what I reach for when I
+              craft melodies and sounds.
+            </p>
+          </Reveal>
+
+          <ul className="mt-14 max-w-xl">
+            {kit.map((item, i) => (
+              <Reveal
+                as="li"
+                key={item.name}
+                delay={i * 70}
+                className="border-t border-border py-7"
+              >
+                <h3 className="font-display text-xl tracking-[-0.01em] text-primary">
+                  {item.name}
+                </h3>
+                <p className="mt-2 leading-relaxed text-secondary">
+                  {item.body}
+                </p>
+              </Reveal>
+            ))}
+          </ul>
+
+          <p className="mt-12 max-w-xl leading-relaxed text-secondary">
+            Just a brief overview of what I rely on to bring music to life. Each
+            one plays a part in turning a vague idea into something I can
+            actually hear.
+          </p>
+        </div>
+      </section>
 
       {/* ── Newsletter ─────────────────────────────────────────── */}
       <section

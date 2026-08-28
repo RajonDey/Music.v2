@@ -6,7 +6,7 @@
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "freeze-check": "node scripts/freeze-check.mjs --url=http://localhost:3000"
   },
@@ -34,6 +34,7 @@
     "@types/react-dom": "^19.1.6",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.29.0",
+    "@eslint/eslintrc": "^3.3.1",
     "eslint-config-next": "^15.3.4",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17",

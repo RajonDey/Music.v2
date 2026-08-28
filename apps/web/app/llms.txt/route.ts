@@ -1,15 +1,23 @@
 import { PUBLIC_SITE } from "@/lib/public-site-legacy";
 import { getAllPosts } from "@/lib/blog";
+import { getLiveTools } from "@/lib/public-tools";
 
 export function GET() {
   const base = PUBLIC_SITE.url;
   const posts = getAllPosts();
+  const tools = getLiveTools();
 
   const postLines = posts.length
     ? posts
         .map((p) => `- [${p.title}](${base}/blog/${p.slug}) — ${p.summary}`)
         .join("\n")
     : "- (No posts published yet)";
+
+  const toolLines = tools.length
+    ? tools
+        .map((t) => `- [${t.name}](${base}/tools/${t.slug}) — ${t.lede}`)
+        .join("\n")
+    : "- (No tools published yet)";
 
   const body = `# ${PUBLIC_SITE.siteName} — Rajon Dey Music
 
@@ -26,9 +34,12 @@ ${PUBLIC_SITE.tagline}
 
 ## Pages
 - [Home](${base}/) — ${PUBLIC_SITE.brandLine}
-- [About](${base}/about) — Rajon's story and why this music exists
-- [Tools](${base}/tools) — the gear and software behind the sound
+- [About](${base}/about) — Rajon's story, why this music exists, and the kit behind the sound
+- [Tools](${base}/tools) — musician utilities to play with (listed as they ship)
 - [Blog](${base}/blog) — notes from the practice
+
+## Tools
+${toolLines}
 
 ## Blog posts
 ${postLines}
