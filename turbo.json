@@ -1,5 +1,32 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "MUSIC_OS_PASSWORD",
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "NEXT_PUBLIC_GTM_ID",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "GOOGLE_GENERATIVE_AI_API_KEY",
+    "GOOGLE_MODEL",
+    "RESEND_API_KEY",
+    "BACKUP_EMAIL",
+    "BACKUP_FROM_EMAIL",
+    "CRON_SECRET"
+  ],
+  "globalPassThroughEnv": [
+    "POSTGRES_DATABASE",
+    "POSTGRES_HOST",
+    "POSTGRES_PRISMA_URL",
+    "POSTGRES_URL",
+    "POSTGRES_USER",
+    "POSTGRES_PASSWORD",
+    "POSTGRES_URL_NON_POOLING",
+    "SUPABASE_URL",
+    "SUPABASE_ANON_KEY",
+    "SUPABASE_SECRET_KEY",
+    "SUPABASE_PUBLISHABLE_KEY",
+    "SUPABASE_JWT_SECRET"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -7,15 +34,7 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true,
-      "env": [
-        "MUSIC_OS_PASSWORD",
-        "NEXT_PUBLIC_SUPABASE_URL",
-        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-        "SUPABASE_SERVICE_ROLE_KEY",
-        "GOOGLE_GENERATIVE_AI_API_KEY",
-        "GOOGLE_MODEL"
-      ]
+      "persistent": true
     },
     "lint": {
       "dependsOn": ["^lint"]

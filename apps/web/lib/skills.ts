@@ -8,7 +8,7 @@ import {
 } from "@music/types";
 import { createServiceClient } from "./supabase";
 
-/** Evergreen scaling: this many moments ≈ one radar point (tunable, see MUSIC_OS_V2 §4.3). */
+/** Evergreen scaling: this many moments ≈ one radar point (tunable; original formula in context/history/music-os-v2-plan.md §4.3). */
 const EVERGREEN_K = 3;
 
 function isMissingTable(error: { code?: string; message?: string } | null): boolean {

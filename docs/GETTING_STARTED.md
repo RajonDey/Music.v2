@@ -1,7 +1,5 @@
 # Getting started
 
-Phase 1 scaffold is in place. Follow this order.
-
 ## 1. Prerequisites
 
 - Node 20+
@@ -28,15 +26,13 @@ Fill in:
 - `MUSIC_OS_PASSWORD` — your private gate password
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
-- `GOOGLE_GENERATIVE_AI_API_KEY` — optional until coach (step 4)
+- `GOOGLE_GENERATIVE_AI_API_KEY` — optional; coach returns 503 without it
 - `RESEND_API_KEY`, `BACKUP_EMAIL`, `CRON_SECRET` — optional until monthly backup email
 
 ## 4. Supabase
 
-Apply migration + seed (Supabase CLI or dashboard SQL editor):
-
-- `supabase/migrations/20260616000000_initial_schema.sql`
-- `supabase/seed.sql`
+Apply migrations in `supabase/migrations/` in timestamp order, then `supabase/seed.sql`
+(Supabase CLI or dashboard SQL editor).
 
 ## 5. Run
 
@@ -44,7 +40,7 @@ Apply migration + seed (Supabase CLI or dashboard SQL editor):
 pnpm dev
 ```
 
-- Public stub: http://localhost:3000
+- Public: http://localhost:3000
 - Login: http://localhost:3000/login
 - After unlock: http://localhost:3000/studio
 
@@ -59,19 +55,15 @@ pnpm lint
 
 | Path | Purpose |
 |---|---|
-| `packages/types` | SongStage, Session, CoachContext — shared TS |
+| `AGENTS.md` | Agent navigator |
+| `docs/` | Philosophy, gates, this file |
+| `context/` | As-built system |
+| `specs/` | Work units |
+| `packages/types` | Shared TS |
 | `packages/tokens` | CSS variables + Tailwind preset |
-| `packages/ui` | Button, Card, Field primitives |
+| `packages/ui` | Button, Card, Brand, … |
 | `packages/config` | Shared tsconfig base |
-| `apps/web` | Next.js app (public + private routes) |
+| `apps/web` | Next.js app |
 | `supabase/` | Migrations + seed |
 
-## Next roadmap steps
-
-1. ✅ Phase 1 step 1 — scaffold (this)
-2. Phase 1 step 2 — Studio intention + reflection → Supabase
-3. Phase 1 step 3 — Releases song CRUD
-4. Phase 1 step 4 — AI coach streaming
-5. Phase 1 step 5 — Journey weekly reflection
-
-New ideas → run the **feature gate** (`docs/GUARDRAILS.md`).
+Layout detail: `context/architecture.md`. New ideas → **feature gate** (`docs/GUARDRAILS.md`).

@@ -1,9 +1,8 @@
 # Music OS v2 — Depth (system design)
 
-> Status: **approved plan, not yet built** (2026-06-18). Phase 5 in `docs/ROADMAP.md`.
-> Metric/chart guardrails are explicitly overridden for this phase — see `docs/DECISIONS.md`.
-> This document supersedes the 3-tab spec in `PROJECT_BRIEF.md` for the private OS, and
-> extends `DATA_MODEL.md` (merge into it when migrations are written).
+> **History.** Original Phase 5 plan (2026-06-18). The system **is built**.
+> As-built: `context/domains/music-os.md` + `context/data-model.md`.
+> Do not implement from this file. Metric/chart overrides: `context/decisions.md`.
 
 ---
 

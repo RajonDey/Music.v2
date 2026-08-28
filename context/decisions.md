@@ -1,7 +1,9 @@
 # Decisions log
 
-Short record of scope approved **through the feature gate** (see `docs/GUARDRAILS.md`).
+Append-only record of scope approved **through the feature gate** (`docs/GUARDRAILS.md`).
 Add a dated entry when Rajon explicitly approves something not in the original brief.
+
+Current as-built: `context/`. Current step: `context/progress.md`. Specs: `specs/`.
 
 ## Template
 
@@ -10,7 +12,7 @@ Add a dated entry when Rajon explicitly approves something not in the original b
 - **Proposal:** …
 - **Gate:** passed / override (reason)
 - **Decision:** …
-- **Roadmap:** Phase X step Y / deferred to Phase Z
+- **Roadmap / spec:** Phase X step Y / `specs/…`
 ```
 
 ---
@@ -20,12 +22,12 @@ Add a dated entry when Rajon explicitly approves something not in the original b
 ### 2026-08-29 — Chords tool (name + first instrument)
 - **Proposal:** First live utility: type-a-chord + hierarchical picker, large fretboard, cycle shapes. HTML is engine-reference only.
 - **Gate:** Step 55. Courage / habit-tracker pass (no practice copy, no padlocks). Rajon rejected **Voicings** as opaque; locked **Chords** / `/tools/chords`. Approved implement.
-- **Decision:** `docs/CHORDS.md`. Parser extended in `lib/chords.ts`. Public `VoicingDiagram` + `chords.tsx`. Song Room diagrams unchanged.
+- **Decision:** `specs/archive/12.55-chords.md`. Parser extended in `lib/chords.ts`. Public `VoicingDiagram` + `chords.tsx`. Song Room diagrams unchanged.
 - **Roadmap:** Phase 12 step 55.
 
 ### 2026-08-29 — Catalogue + per-tool pages (shell first)
 - **Proposal:** Public `/tools` becomes a scalable utility shelf (not gear). Each tool is `/tools/{slug}`. Gear moves to `/about#kit`. Chord finder HTML later; this step is list + detail frame only.
-- **Gate:** Not on the roadmap (fail until approved). Courage / habit-tracker / WeekOS / public-leak pass if copy never says “improve your skills,” no drills/streaks, and no session data on these routes. Chordify-style icon-tile grid refused. Rajon approved (“proceed”) after reviewing `docs/PUBLIC_TOOLS.md`.
+- **Gate:** Not on the roadmap (fail until approved). Courage / habit-tracker / WeekOS / public-leak pass if copy never says “improve your skills,” no drills/streaks, and no session data on these routes. Chordify-style icon-tile grid refused. Rajon approved (“proceed”) after reviewing `specs/archive/12.54-tools-catalogue.md`.
 - **Decision:** Registry in `lib/public-tools.ts`. Index is a vertical setlist (“At hand”). Detail pages share `ToolFrame`. Empty catalogue is honest. Freemium/ads deferred. First live tool is **Chords** (`/tools/chords`).
 - **Roadmap:** Phase 12 steps 54–55.
 
@@ -66,7 +68,7 @@ Add a dated entry when Rajon explicitly approves something not in the original b
 - **Gate:** Explicitly approved by Rajon ("Proceed one by one") after architecture review.
   Finishes the stated product purpose (low-friction creative execution); no habit-tracker
   patterns. Nav demotion / Library hub deferred.
-- **Decision:** Phase 7 in `docs/ROADMAP.md`. Build 7A→7G in order. Schema additive only;
+- **Decision:** Phase 7 in `context/roadmap-history.md`. Build 7A→7G in order. Schema additive only;
   backward-compat via `anchor_type` backfill from `song_id`.
 - **Roadmap:** Phase 7 steps 29–35.
 
@@ -87,7 +89,7 @@ Add a dated entry when Rajon explicitly approves something not in the original b
 - **Gate:** Explicitly approved by Rajon ("Proceed"). Parallels approved guitar Skills Lab;
   no new habit-tracker patterns; warm-up catalogue row dropped (ritual stays on Vocal Studio).
 - **Decision:** Migration `20260625000000_skill_domain.sql`; seed vocal catalogue; Phase 8
-  steps 37–41 in `docs/ROADMAP.md`.
+  steps 37–41 in `context/roadmap-history.md`.
 - **Roadmap:** Phase 8.
 
 ### 2026-07-09 — Phase 9: Two rhythms (Riyaz + Session)
@@ -98,7 +100,7 @@ Add a dated entry when Rajon explicitly approves something not in the original b
 - **Gate:** Explicitly approved by Rajon ("Proceed") after architecture review. Reduces daily
   friction and vocal IA confusion; no streaks or daily confidence logging.
 - **Decision:** Migration `20260626000000_practice_kind.sql`; Phase 9 steps 42–50 in
-  `docs/ROADMAP.md`.
+  `context/roadmap-history.md`.
 - **Roadmap:** Phase 9.
 
 ---
@@ -110,7 +112,7 @@ Add a dated entry when Rajon explicitly approves something not in the original b
   five-screen system: **Practice Room** (daily hub) → **Song Room** (per-song notebook) →
   **Skills Lab** (80+ skills across 11 categories) → **Vocal Studio** → **Monthly Report**.
   Core principle: one daily log fans out into every other screen — no double entry.
-  Full spec in `docs/MUSIC_OS_V2.md`.
+  Full spec in `context/history/music-os-v2-plan.md`.
 - **Gate:** Explicitly approved by Rajon in conversation. Major scope expansion of the private OS.
 - **Decision:** Build it as a new roadmap phase (Phase 5). Manual-entry first; free APIs
   (MusicBrainz, chords-db, lyrics.ovh, Web Audio pitch, VexFlow) layered last.
@@ -141,7 +143,7 @@ Add a dated entry when Rajon explicitly approves something not in the original b
 - **Decision:** Rethink/retire the weekly Journey tab and its UI. The monthly reflection moves
   to the Monthly Report. `weekly_reflections` table is deprecated for v2 (kept for back-compat
   until migration). New IA + UI/UX to be designed for the v2 navigation.
-- **Roadmap:** Phase 5. Navigation redesign tracked in `docs/MUSIC_OS_V2.md`.
+- **Roadmap:** Phase 5. Navigation redesign tracked in `context/history/music-os-v2-plan.md`.
 
 ---
 
@@ -152,7 +154,7 @@ Add a dated entry when Rajon explicitly approves something not in the original b
   song delete/edit gaps, paste-your-own lyrics (Bangla/Hindi primary), MusicBrainz confirm step,
   real AI coach (Phase 1 step 4 never shipped), chord shape cycling, capo field.
 - **Gate:** Explicitly approved by Rajon (“Proceed”) in conversation after UX review.
-- **Decision:** New Phase 6 in `docs/ROADMAP.md`. Build 6A→6E in order; 6F/6G deferred.
+- **Decision:** New Phase 6 in `context/roadmap-history.md`. Build 6A→6E in order; 6F/6G deferred.
   Practice tips that imply habit trackers (daily minimums, weekly check-offs) rejected.
   Metronome/session-shape copy approved as optional tools, not streaks.
 - **Roadmap:** Phase 6 steps 22–28.
@@ -193,5 +195,5 @@ Add a dated entry when Rajon explicitly approves something not in the original b
 ### 2026-06-16 — Preserve legacy public site identity
 - **Proposal:** Keep [RajonDey/Music](https://github.com/RajonDey/Music) as historical source; extract SEO, favicon, social links, and AI discoverability into Music.v2 before Phase 3 public rebuild.
 - **Gate:** passed — migration prep on same domain; no new product behavior; protects existing Google presence.
-- **Decision:** Document in `docs/LEGACY_PUBLIC_SITE.md`; constants in `apps/web/lib/public-site-legacy.ts`; brand PNGs in `apps/web/public/brand/`; `/robots.txt`, `/sitemap.xml`, `/llms.txt`, JSON-LD wired in Next.js. Local WP clone at `.legacy/Music` (gitignored).
+- **Decision:** Document in `context/domains/legacy-public.md`; constants in `apps/web/lib/public-site-legacy.ts`; brand PNGs in `apps/web/public/brand/`; `/robots.txt`, `/sitemap.xml`, `/llms.txt`, JSON-LD wired in Next.js. Local WP clone at `.legacy/Music` (gitignored).
 - **Roadmap:** Phase 3 step 9 uses this reference for public home UI; GTM migration deferred until explicit approval.

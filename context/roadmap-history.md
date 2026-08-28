@@ -1,6 +1,9 @@
-# Roadmap
+# Roadmap history
 
-Build strictly in order. **Finish each phase before the next.**
+**This is a completed-phase checklist, not current IA.** Where we are now: `context/progress.md`.
+Early phases still name Journey / Releases — those routes redirect. As-built: `context/domains/music-os.md`.
+
+Build was strictly in order. **Finish each phase before the next.** (Historical rule.)
 
 ## Phase 0 — Shell & ship (structure visible, deploy live)
 
@@ -12,7 +15,7 @@ Build strictly in order. **Finish each phase before the next.**
 
 ## Phase 1 — Music OS core (private routes — deep dives)
 0. **Design prep:** install [Hallmark](https://www.usehallmark.com/) (`npx skills add nutlope/hallmark`);
-   confirm typography + Studio layout per `docs/DESIGN_SYSTEM.md` (journal, not WeekOS metrics).
+   confirm typography + Studio layout per `context/ui-context.md` (journal, not WeekOS metrics).
 1. Monorepo scaffold: Turborepo + pnpm, **`apps/web`** (single app), `packages/{tokens,ui,types,config}`,
    Supabase (tables + RLS + seed), `/login` password gate + **middleware** (httpOnly cookie, WeekOS pattern).
 2. **`/studio`** — Intention block + Reflection block + session log → Supabase.
@@ -26,7 +29,7 @@ Build strictly in order. **Finish each phase before the next.**
 8. Mobile responsiveness pass.
 
 ## Phase 3 — Public home (same app, new route group)
-Reference: `docs/LEGACY_PUBLIC_SITE.md` (SEO, favicon, social, llms.txt from WordPress site).
+Reference: `context/domains/legacy-public.md` (SEO, favicon, social, llms.txt from WordPress site).
 
 9. **`(public)/page.tsx`** at `/` — Hallmark **build** for macrostructure; no gradient hero, no fake stats.
 10. Wire current song + latest share from Supabase (`is_shared` later).
@@ -37,8 +40,8 @@ Reference: `docs/LEGACY_PUBLIC_SITE.md` (SEO, favicon, social, llms.txt from Wor
 13. Optional: lightweight “publish” action instead of full auto-sync.
 
 ## Phase 5 — Music OS Depth (v2)
-Approved 2026-06-18 (see `docs/DECISIONS.md`). Replaces the 3-tab private OS with a connected
-five-screen practice system. Full spec: `docs/MUSIC_OS_V2.md`. Metric/chart guardrails
+Approved 2026-06-18 (see `context/decisions.md`). Replaces the 3-tab private OS with a connected
+five-screen practice system. Full spec: `context/history/music-os-v2-plan.md`. Metric/chart guardrails
 explicitly overridden for this phase. Build strictly in order, manual-entry first.
 
 14. ✅ **Schema + data-flow engine** — extend `songs`; add `song_parts`, `song_resources`,
@@ -67,7 +70,7 @@ explicitly overridden for this phase. Build strictly in order, manual-entry firs
 
 ## Phase 6 — Daily UX & trust (post-v2 polish)
 
-Approved 2026-06-18 (see `docs/DECISIONS.md`). Builds on Phase 5 without changing the
+Approved 2026-06-18 (see `context/decisions.md`). Builds on Phase 5 without changing the
 session fan-out contract. Manual-first for Bangla/Hindi; APIs stay enrichment.
 
 22. ✅ **6A Trust & CRUD** — song delete, resource edit, part presets, add-song confirm.
@@ -80,7 +83,7 @@ session fan-out contract. Manual-first for Bangla/Hindi; APIs stay enrichment.
 
 ## Phase 7 — Execution mode (Session Stand)
 
-Approved 2026-06-23 (see `docs/DECISIONS.md`). Shifts Studio from journal-first to
+Approved 2026-06-23 (see `context/decisions.md`). Shifts Studio from journal-first to
 execution-first: one anchor per session, fullscreen Stand while practicing, reflection only
 after "End session." Songs and skills are parallel anchors, not a hierarchy.
 
@@ -97,7 +100,7 @@ after "End session." Songs and skills are parallel anchors, not a hierarchy.
 
 ## Phase 8 — Vocal Skills Lab
 
-Approved 2026-07-09 (see `docs/DECISIONS.md`). Extends the skills spine with a vocal
+Approved 2026-07-09 (see `context/decisions.md`). Extends the skills spine with a vocal
 catalogue without touching guitar Skills Lab behaviour.
 
 37. ✅ **8A Schema** — `skills.domain`; unique `(domain, category, name)`; vocal radar axes on
@@ -109,7 +112,7 @@ catalogue without touching guitar Skills Lab behaviour.
 
 ## Phase 9 — Two rhythms (Riyaz + Session)
 
-Approved 2026-07-09 (see `docs/DECISIONS.md`). Matches daily morning riyaz vs 4–5×/week full
+Approved 2026-07-09 (see `context/decisions.md`). Matches daily morning riyaz vs 4–5×/week full
 sessions. No habit-tracker patterns; riyaz excluded from calendar.
 
 42. ✅ **9A Schema** — `sessions.practice_kind`, `sessions.riyaz_feel`; types in `packages/types`.
@@ -124,7 +127,7 @@ sessions. No habit-tracker patterns; riyaz excluded from calendar.
 
 ## Phase 10 — Durability (off-site notebook copy)
 
-Approved 2026-08-11 (see `docs/DECISIONS.md`). Complements Supabase; does not replace it.
+Approved 2026-08-11 (see `context/decisions.md`). Complements Supabase; does not replace it.
 No restore UI, no backup-health scores, no new nav tab.
 
 51. **Notebook copy** — versioned JSON dump of all user tables; anytime download from
@@ -133,7 +136,7 @@ No restore UI, no backup-health scores, no new nav tab.
 
 ## Phase 11 — Drift (listening pockets)
 
-Approved 2026-08-11 (see `docs/DECISIONS.md`). Pre-notebook lists on `/songs`.
+Approved 2026-08-11 (see `context/decisions.md`). Pre-notebook lists on `/songs`.
 Not a second song tracker. No prescribed categories. No new nav tab.
 
 52. ✅ **Named pockets** — `drift_lists` + `drift_items` (RLS); seed **Noticed**; shelf on
@@ -144,14 +147,14 @@ Not a second song tracker. No prescribed categories. No new nav tab.
 
 ## Phase 12 — Public tools shelf
 
-Approved 2026-08-29 (see `docs/DECISIONS.md` and `docs/PUBLIC_TOOLS.md`).
+Approved 2026-08-29 (see `context/decisions.md` and `specs/archive/12.54-tools-catalogue.md`).
 Public catalogue of musician utilities. Gear stays on `/about#kit`. No Music OS
 data, no skill-improvement framing, no icon-tile grid.
 
 54. ✅ **Catalogue shell** — registry, `/tools` index (empty setlist), `/tools/[slug]`
     frame + not-found; sitemap + `llms.txt` read the registry.
 55. ✅ **Chords** — public `/tools/chords`; type + letter/spelling/quality navigator;
-    standard-tuning diagrams; name locked (not Voicings). See `docs/CHORDS.md`.
+    standard-tuning diagrams; name locked (not Voicings). See `specs/archive/12.55-chords.md`.
 
 ## Definition of done (every phase)
 - Mobile-first, warm, no habit-tracker patterns.

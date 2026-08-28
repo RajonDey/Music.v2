@@ -1,5 +1,7 @@
 # Legacy public site — preservation reference
 
+> As-built public site: `context/domains/public-site.md`. Constants: `apps/web/lib/public-site-legacy.ts`.
+
 This doc captures everything worth carrying forward from the live WordPress site at
 [music.rajondey.com](https://music.rajondey.com) and the source repo
 [RajonDey/Music](https://github.com/RajonDey/Music).

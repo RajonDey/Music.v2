@@ -198,7 +198,7 @@ function normalizeSuffix(raw: string): string | null {
 }
 
 export function parseChordName(raw: string): ParsedChord | null {
-  let s = raw.trim();
+  const s = raw.trim();
   if (!s) return null;
   const m = s.match(/^([A-Ga-g])([#bB♯♭\u266f\u266d]?)(.*)$/);
   if (!m) return null;

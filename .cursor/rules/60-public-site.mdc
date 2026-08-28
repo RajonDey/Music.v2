@@ -1,13 +1,15 @@
 ---
-description: Public home at / — music.rajondey.com landing page.
+description: Public site — home, about, blog, tools. No private practice data.
 globs: apps/web/app/(public)/**
 ---
 
-# Public home — `/`
+# Public site
 
-One page in `(public)/page.tsx`. Dead simple. Full spec: @docs/PROJECT_BRIEF.md
+As-built: @context/domains/public-site.md · tools: @context/domains/tools.md
 
-Hero: name + "Feel the Sound" + short bio; current song learning; SoundCloud + YouTube;
-latest share. Same warm tokens from `packages/tokens`. Mobile-first.
+`(public)/` is home, about, blog, tools, legal — not a single page. Same tokens from
+`packages/tokens`. Mobile-first.
 
-**No private data here** — only published/shared content. Phase 3; see @docs/ROADMAP.md
+**No private data here** — never session logs, reflections, or coach chat.
+`/tools` is utilities, not gear (gear is `/about#kit`) and not skill-improvement gamification.
+No Chordify-style icon-tile grids.

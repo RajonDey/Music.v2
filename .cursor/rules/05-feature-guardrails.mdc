@@ -13,12 +13,12 @@ Run this gate first. Use the **AskQuestion** tool when available; otherwise ask 
 
 ## Gate questions (all must pass)
 
-1. **Phase:** Is this in the current `docs/ROADMAP.md` phase/step, or should it be deferred to a
-   later phase with an explicit roadmap entry?
+1. **Phase:** Is this in the current `context/progress.md` step or an existing `specs/` file,
+   or should it be deferred with a new spec?
 2. **Courage:** Does this add pressure, judgment, or "falling behind" — or reduce courage?
    (If pressure → **FAIL** unless user explicitly overrides with written reason.)
 3. **Habit tracker:** Is this a WeekOS-style pattern — scores, streaks, quotas (`X/wk`),
-   progress bars on practice, trend charts, reward tiers, completion rings, numeric targets?
+   progress bars on practice, trend charts as judgment, reward tiers, completion rings, numeric targets?
    (If yes → **FAIL**.)
 4. **Wrong app:** Is this really career/finance/gym/YouTube/life execution → belongs in WeekOS?
    (If yes → **FAIL** — suggest Weekly OS instead.)
@@ -35,7 +35,8 @@ Run this gate first. Use the **AskQuestion** tool when available; otherwise ask 
 - Output a short **STOP** block: what was proposed, which question(s) failed, why it conflicts
   with `docs/PROJECT_BRIEF.md` / `docs/GUARDRAILS.md`, and a recommended alternative (or "drop it").
 - Ask Rajon: *"Still want this? If yes, tell me which trade-off you're accepting."*
-- Only proceed after explicit yes. If approved, add a note to `docs/ROADMAP.md` or `docs/DECISIONS.md`.
+- Only proceed after explicit yes. If approved, add a spec in `specs/`, a line in
+  `context/progress.md`, and an entry in `context/decisions.md`.
 
 ## Triggers (always run gate)
 
@@ -46,7 +47,7 @@ Run this gate first. Use the **AskQuestion** tool when available; otherwise ask 
 ## Exempt (no gate)
 
 - Bug fixes, typos, copy tweaks that don't change product meaning
-- Work explicitly requested as part of the current green-lit roadmap step
+- Work explicitly requested as part of the current green-lit spec / progress step
 - Docs/rules updates that encode existing decisions
 
 Full reference: @docs/GUARDRAILS.md

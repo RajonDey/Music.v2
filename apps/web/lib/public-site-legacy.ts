@@ -1,6 +1,6 @@
 /**
  * Canonical public-site identity from music.rajondey.com (WordPress / RDMusic theme).
- * Source repo: https://github.com/RajonDey/Music — see docs/LEGACY_PUBLIC_SITE.md
+ * Source repo: https://github.com/RajonDey/Music — see context/domains/legacy-public.md
  */
 export const PUBLIC_SITE = {
   url: "https://music.rajondey.com",
