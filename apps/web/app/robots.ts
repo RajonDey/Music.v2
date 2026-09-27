@@ -14,7 +14,7 @@ export default function robots(): MetadataRoute.Robots {
         "/report",
         "/journey",
         "/releases",
-        "/login",
+        "/os",
         "/api/",
       ],
     },

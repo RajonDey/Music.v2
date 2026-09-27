@@ -112,5 +112,5 @@ Downloaded from live uploads into `apps/web/public/brand/`:
 plain-text summary, social links, canonical URLs, keywords. Combined with JSON-LD and open
 robots on `/`, the public home stays legible to both Google and AI answer engines.
 
-Private Music OS routes (`/studio`, `/journey`, `/releases`, `/login`, `/api/*`) are
+Private Music OS routes (`/studio`, `/journey`, `/releases`, `/os`, `/api/*`) are
 **disallowed** in `robots.ts` and **noindex** on private layout.

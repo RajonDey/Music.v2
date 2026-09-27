@@ -45,7 +45,7 @@ Auth before any private mutation. Coach streams; missing Google key → 503 with
 |---|---|
 | `app/(public)/` | Public pages + public layout/header |
 | `app/(private)/` | Music OS pages, layouts, server actions |
-| `app/login/` | Gate UI |
+| `app/os/` | Gate UI |
 | `app/api/` | Auth, coach, backup, cron |
 | `components/session/` | Stand, riyaz, reflection, anchor picker |
 | `components/songs/` | Song Room, Drift, diagrams |

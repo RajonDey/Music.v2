@@ -1,4 +1,3 @@
-import { timingSafeEqual } from "crypto";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import {
@@ -7,19 +6,11 @@ import {
   previousMonthTitle,
   serializeBackup,
 } from "@/lib/backup";
+import { authorizeCron } from "@/lib/cron-auth";
 import { getBackupEmailEnv } from "@/lib/env";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
-
-function authorizeCron(request: Request, secret: string): boolean {
-  const header = request.headers.get("authorization") ?? "";
-  const expected = `Bearer ${secret}`;
-  const a = Buffer.from(header);
-  const b = Buffer.from(expected);
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
-}
 
 export async function GET(request: Request) {
   let env: ReturnType<typeof getBackupEmailEnv>;

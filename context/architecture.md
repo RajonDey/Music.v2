@@ -24,11 +24,13 @@ Music.v2/
 │   ├── app/
 │   │   ├── (public)/          # /, /about, /blog, /tools, legal
 │   │   ├── (private)/         # /studio, /songs, /skills, /report (+ redirects)
-│   │   ├── login/             # password gate
+│   │   ├── os/                # password gate (was /login)
 │   │   ├── api/auth/login/
 │   │   ├── api/coach/
 │   │   ├── api/backup/        # cookie; JSON dump
 │   │   ├── api/cron/backup/   # CRON_SECRET; monthly email
+│   │   ├── api/cron/notebook-note/  # CRON_SECRET; weekly memory email
+│   │   ├── api/cron/keepalive/      # CRON_SECRET; every 3 days, no email
 │   │   ├── sitemap.ts, robots.ts, llms.txt/, manifest.ts
 │   │   └── layout.tsx         # fonts, theme, GTM, JSON-LD
 │   ├── components/            # session, songs, skills, report, coach, public, nav, …
@@ -54,7 +56,7 @@ Music.v2/
 | `/blog`, `/blog/[slug]` | Public | Posts |
 | `/tools`, `/tools/[slug]` | Public | Utility catalogue; unknown slug 404s |
 | `/privacy-policy`, `/terms-of-use`, `/cookies-policy` | Public | Legal |
-| `/login` | Public | Password gate |
+| `/os` | Public | Password gate (`/login` redirects here) |
 | `/studio` | Private | Daily hub: riyaz, session Stand, coach |
 | `/studio/session/[id]` | Private | Edit a logged session |
 | `/songs`, `/songs/[id]` | Private | Song Room |
@@ -66,6 +68,8 @@ Music.v2/
 | `POST /api/coach` | Private | Streaming coach |
 | `GET /api/backup` | Private | JSON dump |
 | `GET /api/cron/backup` | Cron | Same dump by email |
+| `GET /api/cron/notebook-note` | Cron | Sunday: one past memory by email |
+| `GET /api/cron/keepalive` | Cron | Tiny read so free Supabase never auto-pauses |
 | `POST /api/auth/login` | Public | Sets cookie |
 
 Private layout: desktop **side-rail**, mobile **top bar + bottom tabs**. Nav items: Studio, Songs, Skills, Report (`components/nav/navItems.tsx`). Content `max-w-6xl`. Private pages send `robots: noindex`.
@@ -74,7 +78,7 @@ Private layout: desktop **side-rail**, mobile **top bar + bottom tabs**. Nav ite
 
 Cookie name: `music_os_auth`. Value: SHA-256 hex of `{password}:music-os-unlock` (Node `crypto` in Node; Web Crypto in Edge middleware). HttpOnly, `Secure` in production, `SameSite=lax`, path `/`, max-age 1 year.
 
-`middleware.ts` matcher: `/studio`, `/songs`, `/skills`, `/vocal`, `/report`, `/api/coach`, `/api/backup`. Missing password → `/login?error=config`. Bad/missing cookie → `/login?next=…`.
+`middleware.ts` matcher: `/studio`, `/songs`, `/skills`, `/vocal`, `/report`, `/api/coach`, `/api/backup`. Missing password → `/os?error=config`. Bad/missing cookie → `/os?next=…`.
 
 Cron is **secret-gated**, not cookie-gated. Login API is public.
 
@@ -87,6 +91,10 @@ Cron is **secret-gated**, not cookie-gated. Login API is public.
 ## Notebook backup (Phase 10)
 
 `lib/backup.ts` builds `{ version: 1, app: "music-os", exported_at, tables }`. Download from Report (`KeepACopy`) or monthly email (Resend). No in-app restore — hand the JSON to an agent. Do not overwrite live DB from an old file without a reviewed step. Public `/` never reads the dump.
+
+## Notebook note + keep-alive (Phase 13)
+
+`lib/notebook-note.ts` picks one random memory (felt-better line, stage move, tiny win, unpromoted Drift item), preferring ones older than 14 days, and emails it Sunday 8 AM Dhaka. Empty notebook → no email. Never mentions time away. `keepalive` runs every 3 days because Supabase free pauses after 7 idle days.
 
 ## Deploy
 

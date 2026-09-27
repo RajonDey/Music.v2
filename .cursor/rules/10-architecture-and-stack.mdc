@@ -12,7 +12,7 @@ Details: @context/architecture.md
 apps/web        # Single app -> music.rajondey.com
   (public)/     # /, /about, /blog, /tools, legal
   (private)/    # /studio, /songs, /skills, /report
-  login/        # password gate
+  os/           # password gate
   api/coach/    # streaming AI (middleware-protected)
 packages/tokens # design tokens (CSS vars + Tailwind preset)
 packages/ui     # shared React primitives

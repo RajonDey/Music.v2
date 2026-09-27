@@ -10,7 +10,7 @@ Rajon Dey’s music world: **one Next.js app** (`apps/web` → [music.rajondey.c
 
 ## Core user flow (as built)
 
-1. Unlock Music OS at `/login` (password cookie, ~1 year).
+1. Unlock Music OS at `/os` (password cookie, ~1 year).
 2. Morning: **riyaz** from Studio (vocal or guitar warm-up, light end chip). Sit-down: pick an **anchor** (song / guitar skill / vocal / freestyle) → fullscreen **Stand** → end → reflection.
 3. Deeper work in **Song Room** (`/songs`) or **Skills Lab** (`/skills`). Coach stays on Studio.
 4. Once in a while: **Report** (`/report`) — month look-back, not a scorecard. Optional notebook JSON copy from there.

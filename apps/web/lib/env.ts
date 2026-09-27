@@ -66,6 +66,15 @@ export function getSupabaseEnv() {
   return parsed.data;
 }
 
+export function getCronSecret(): string {
+  ensureRootEnv();
+  const parsed = z.string().min(16).safeParse(process.env.CRON_SECRET);
+  if (!parsed.success) {
+    throw new Error("CRON_SECRET is not configured.");
+  }
+  return parsed.data;
+}
+
 const backupEmailEnvSchema = z.object({
   RESEND_API_KEY: z.string().min(1),
   BACKUP_EMAIL: z.string().email(),

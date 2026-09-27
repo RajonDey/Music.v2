@@ -5,6 +5,7 @@
 - **Phase 12 (Public tools shelf) — steps 54–55 done.** Catalogue + live **Chords** tool.
 - Private Music OS through Phase 11 (Drift + shared categories) is in production use.
 - Phase 10 notebook copy is in the app (Report download + cron email).
+- **Phase 13 step 56 done** — weekly "note from your notebook" email + 3-day Supabase keep-alive.
 
 ## Current goal
 
@@ -13,6 +14,7 @@
 
 ## Completed (recent)
 
+- 13.56 Notebook note + keep-alive — `specs/archive/13.56-notebook-note.md`
 - Agent layout: `AGENTS.md`, `context/`, `specs/`, `docs/` slimmed to brief / guardrails / getting started
 - 12.54 Catalogue shell — `specs/archive/12.54-tools-catalogue.md`
 - 12.55 Chords — `specs/archive/12.55-chords.md`

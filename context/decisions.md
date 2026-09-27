@@ -17,6 +17,14 @@ Current as-built: `context/`. Current step: `context/progress.md`. Specs: `specs
 
 ---
 
+## 2026-09-27 — Phase 13: Notebook note + keep-alive
+
+### 2026-09-27 — Weekly memory email instead of a practice reminder
+- **Proposal:** Supabase free auto-paused the project after 7 idle days. Keep it awake, and make the weekly touch meaningful. A plain "time to practice" reminder was considered and rejected as pressure.
+- **Gate:** Not on the roadmap (fail until approved). Courage / habit-tracker pass: one past moment, no counts, no "days since". Privacy pass: private inbox only. Simpler silent-ping-only was offered; Rajon chose ping + note.
+- **Decision:** `GET /api/cron/notebook-note` Sundays (Resend, reuses backup env). `GET /api/cron/keepalive` every 3 days. Both `CRON_SECRET`-gated.
+- **Roadmap / spec:** Phase 13 step 56 / `specs/archive/13.56-notebook-note.md`.
+
 ## 2026-08-29 — Phase 12: Public tools shelf
 
 ### 2026-08-29 — Chords tool (name + first instrument)

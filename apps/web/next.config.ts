@@ -39,6 +39,9 @@ loadRootEnv();
 const nextConfig: NextConfig = {
   transpilePackages: ["@music/ui", "@music/types", "@music/tokens"],
   outputFileTracingRoot: repoRoot,
+  async redirects() {
+    return [{ source: "/login", destination: "/os", permanent: true }];
+  },
 };
 
 export default nextConfig;

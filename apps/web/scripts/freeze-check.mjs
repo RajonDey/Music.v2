@@ -195,7 +195,7 @@ async function checkRoutes(base) {
   let ok = true;
   const password = process.env.MUSIC_OS_PASSWORD;
 
-  const publicRoutes = ["/", "/login"];
+  const publicRoutes = ["/", "/os"];
   for (const path of publicRoutes) {
     const res = await fetch(`${base}${path}`, { redirect: "manual" });
     if (res.status === 200) {

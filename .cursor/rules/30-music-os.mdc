@@ -1,6 +1,6 @@
 ---
 description: Music OS private dashboard — Studio, Songs, Skills, Report.
-globs: apps/web/app/(private)/**,apps/web/app/login/**
+globs: apps/web/app/(private)/**,apps/web/app/os/**
 ---
 
 # Music OS (private routes)
@@ -8,7 +8,7 @@ globs: apps/web/app/(private)/**,apps/web/app/login/**
 Private admin at `/studio`, `/songs`, `/skills`, `/report`.
 As-built: @context/domains/music-os.md · Data: @context/data-model.md
 
-**Auth:** `/login` + middleware (httpOnly cookie, `MUSIC_OS_PASSWORD`, ~1 year). WeekOS pattern.
+**Auth:** `/os` + middleware (httpOnly cookie, `MUSIC_OS_PASSWORD`, ~1 year). WeekOS pattern.
 No sign-up, email, or OAuth.
 
 **`/studio`:** Riyaz + full-session Stand (anchor → practice → reflect) + AI Coach.

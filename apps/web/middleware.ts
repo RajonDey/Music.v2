@@ -10,14 +10,14 @@ export async function middleware(request: NextRequest) {
 
   const password = process.env.MUSIC_OS_PASSWORD;
   if (!password) {
-    return NextResponse.redirect(new URL("/login?error=config", request.url));
+    return NextResponse.redirect(new URL("/os?error=config", request.url));
   }
 
   const expected = await authTokenEdge(password);
   const cookie = request.cookies.get(AUTH_COOKIE)?.value;
 
   if (cookie !== expected) {
-    const login = new URL("/login", request.url);
+    const login = new URL("/os", request.url);
     login.searchParams.set("next", pathname);
     return NextResponse.redirect(login);
   }

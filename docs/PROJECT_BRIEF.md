@@ -32,7 +32,7 @@ behind, scored, or judged.
 | Routes | `/`, `/about`, `/blog`, `/tools`, legal | `/studio`, `/songs`, `/skills`, `/report` |
 | App | `apps/web` — `(public)` | same app — `(private)` |
 | Purpose | Music home + utilities | Creative journal + AI coach |
-| Auth | None | Password gate at `/login` + middleware |
+| Auth | None | Password gate at `/os` + middleware |
 | Domain | music.rajondey.com | same domain, protected paths |
 
 One Next.js app, one Vercel deploy. Layout: `context/architecture.md`.

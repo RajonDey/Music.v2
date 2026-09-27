@@ -41,7 +41,7 @@ pnpm dev
 ```
 
 - Public: http://localhost:3000
-- Login: http://localhost:3000/login
+- Login: http://localhost:3000/os
 - After unlock: http://localhost:3000/studio
 
 ## 6. Verify
