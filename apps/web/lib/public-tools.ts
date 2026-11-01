@@ -24,6 +24,12 @@ const tools: PublicTool[] = [
     lede: "Look up a chord. See how it sits on the neck.",
     status: "live",
   },
+  {
+    slug: "scales",
+    name: "Scales",
+    lede: "Pick a key. See the scale on the neck.",
+    status: "live",
+  },
 ];
 
 export function getLiveTools(): PublicTool[] {

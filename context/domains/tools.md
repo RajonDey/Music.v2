@@ -24,8 +24,9 @@ Private metronome stays in Studio (`components/tools/Metronome.tsx`). Song Room 
 | Slug | Name | Notes |
 |---|---|---|
 | `chords` | Chords | Default `C`; `?q=` for a committed name. Type + letter/spelling/quality. Engine `@tombatossals/chords-db` via `lib/chords.ts`. Public `VoicingDiagram` is separate from Song Room `ChordDiagram`. |
+| `scales` | Scales | Default C major. `?q=` root, `?scale=` one of `major`, `minor`, `major-pent`, `minor-pent`, `blues`. Letter/spelling picker matches Chords. Neck (nut–12) and five fingered CAGED boxes (same dots in every key; minor parks them on the relative major). Engine `lib/scales.ts` (no chord library). |
 
-Work tickets (done): `specs/archive/12.54-tools-catalogue.md`, `specs/archive/12.55-chords.md`. Reference HTML (not the page): `_references/chord-finder.html`.
+Work tickets (done): `specs/archive/12.54-tools-catalogue.md`, `specs/archive/12.55-chords.md`, `specs/archive/14.57-scales.md`. Reference HTML (not the page): `_references/chord-finder.html`.
 
 ## How to ship another tool
 
@@ -37,6 +38,6 @@ Sitemap and `llms.txt` read `getLiveTools()`.
 
 ## Entry points
 
-- `lib/public-tools.ts`, `lib/chords.ts`
+- `lib/public-tools.ts`, `lib/chords.ts`, `lib/scales.ts`
 - `app/(public)/tools/`, `app/(public)/tools/[slug]/`
 - `components/public-tools/`

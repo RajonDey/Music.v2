@@ -156,6 +156,15 @@ data, no skill-improvement framing, no icon-tile grid.
 55. ✅ **Chords** — public `/tools/chords`; type + letter/spelling/quality navigator;
     standard-tuning diagrams; name locked (not Voicings). See `specs/archive/12.55-chords.md`.
 
+## Phase 14 — Scales
+
+Approved 2026-11-01 (see `context/decisions.md` and `specs/archive/14.57-scales.md`).
+Same public shelf as Chords. Five scales, the neck, and five CAGED boxes.
+CAGED chord variations and chord-tone highlighting stay unbuilt.
+
+57. ✅ **Scales** — `/tools/scales`; letter/spelling + major, natural minor, both
+    pentatonics, blues. See `specs/archive/14.57-scales.md`.
+
 ## Definition of done (every phase)
 - Mobile-first, warm, no habit-tracker patterns.
 - Middleware protects all private routes; no private data on `/`.

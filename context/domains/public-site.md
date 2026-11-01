@@ -1,6 +1,6 @@
 # Public site (as built)
 
-Public chrome: `PublicHeader` (Blog, Tools, About + theme toggle). Home is a splash over the banner video; scrolling pages add `SiteFooter`.
+Public chrome: `PublicHeader` (Blog, Tools, About + theme toggle). Home is a splash over the banner video; scrolling pages add `SiteFooter` (Explore / Listen / Legal columns + brand credit). Home keeps a slim © + legal line using the same `LEGAL_LINKS`.
 
 The original brief said “one page, no blog.” **As built there is a blog, about, tools, and legal pages.**
 

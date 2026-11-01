@@ -17,6 +17,14 @@ Current as-built: `context/`. Current step: `context/progress.md`. Specs: `specs
 
 ---
 
+## 2026-11-01 — Phase 14: Scales
+
+### 2026-11-01 — Scales tool, five scales, CAGED boxes
+- **Proposal:** A public Scales page beside Chords: key picker, five scales (major, natural minor, both pentatonics, blues), spelling, the neck, and five CAGED boxes. Later slices (CAGED on Chords, chord tones inside a scale) stay unbuilt.
+- **Gate:** Not on the roadmap until approved. Courage / habit-tracker / WeekOS / public-leak pass: lookup only, no drills, scores, or session data. Simpler theory library was refused. Rajon said go on Scales only.
+- **Decision:** `specs/archive/14.57-scales.md`. `/tools/scales`. Engine in `lib/scales.ts`. Same quiet frame as Chords.
+- **Roadmap:** Phase 14 step 57.
+
 ## 2026-09-27 — Phase 13: Notebook note + keep-alive
 
 ### 2026-09-27 — Weekly memory email instead of a practice reminder

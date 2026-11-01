@@ -99,7 +99,12 @@ function commitChord(value: string, setToken: (v: string) => void, setCommitted:
   setCommitted(value);
 }
 
-export function Chords({ initialQuery = "C" }: { initialQuery?: string }) {
+export function Chords({
+  initialQuery = "C",
+}: {
+  initialQuery?: string;
+  initialScale?: string;
+}) {
   const inputId = useId();
   const swipeX = useRef<number | null>(null);
 

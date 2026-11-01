@@ -11,6 +11,7 @@ import { SectionLabel } from "@music/ui";
 import { PUBLIC_SITE } from "@/lib/public-site-legacy";
 import { BannerVideo } from "@/components/public/BannerVideo";
 import { NewsletterEmbed } from "@/components/public/NewsletterEmbed";
+import { LEGAL_LINKS } from "@/components/public/SiteFooter";
 
 export const metadata: Metadata = {
   title: PUBLIC_SITE.title,
@@ -29,12 +30,6 @@ const socials = [
   { label: "SoundCloud", href: PUBLIC_SITE.social.soundcloud },
   { label: "YouTube", href: PUBLIC_SITE.social.youtube },
   { label: "Instagram", href: PUBLIC_SITE.social.instagram },
-];
-
-const legal = [
-  { label: "Privacy", href: "/privacy-policy" },
-  { label: "Terms", href: "/terms-of-use" },
-  { label: "Cookies", href: "/cookies-policy" },
 ];
 
 export default function PublicHomePage() {
@@ -111,12 +106,12 @@ export default function PublicHomePage() {
           </div>
         </div>
 
-        {/* Compact legal line — replaces the footer on this no-scroll page */}
+        {/* Compact legal line — replaces SiteFooter on this no-scroll page */}
         <div className="hero-copy mt-8 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-secondary">
           <span>© {new Date().getFullYear()} Rajon Dey</span>
-          {legal.map(({ label, href }) => (
+          {LEGAL_LINKS.map(({ label, href }) => (
             <Link
-              key={label}
+              key={href}
               href={href}
               className="transition-colors hover:text-primary"
             >

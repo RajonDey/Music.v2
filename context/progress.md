@@ -2,6 +2,7 @@
 
 ## Current phase
 
+- **Phase 14 step 57 done** — public **Scales** tool (`/tools/scales`).
 - **Phase 12 (Public tools shelf) — steps 54–55 done.** Catalogue + live **Chords** tool.
 - Private Music OS through Phase 11 (Drift + shared categories) is in production use.
 - Phase 10 notebook copy is in the app (Report download + cron email).
@@ -14,6 +15,7 @@
 
 ## Completed (recent)
 
+- 14.57 Scales — `specs/archive/14.57-scales.md`
 - 13.56 Notebook note + keep-alive — `specs/archive/13.56-notebook-note.md`
 - Agent layout: `AGENTS.md`, `context/`, `specs/`, `docs/` slimmed to brief / guardrails / getting started
 - 12.54 Catalogue shell — `specs/archive/12.54-tools-catalogue.md`
@@ -30,7 +32,7 @@ Full checklist: `context/roadmap-history.md` (do not treat early Journey / Relea
 
 ## Next up
 
-- Product: nothing until Rajon approves a spec.
+- Product: nothing until Rajon names the next slice. Agreed after Scales, still not started: CAGED shapes on Chords, then chord tones inside a scale.
 - Optional leftovers (not tickets): Hallmark 58-gate pass on nav; automate monthly radar snapshot; Web Audio pitch visualiser.
 
 ## Open questions
