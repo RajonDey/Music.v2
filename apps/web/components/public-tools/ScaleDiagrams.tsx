@@ -11,11 +11,14 @@ export function ScaleShapeDiagram({
   label,
   index,
   count,
+  bridge = [],
 }: {
   shape: ScaleShape;
   label: string;
   index: number;
   count: number;
+  /** Notes that also sit in the next shape, as `string:fret`. */
+  bridge?: readonly string[];
 }) {
   const atNut = shape.start === 0;
   const spaces = atNut ? shape.end : shape.end - shape.start + 1;
@@ -36,6 +39,7 @@ export function ScaleShapeDiagram({
     return top + (rel - 0.5) * fretGap;
   };
 
+  const bridgeKeys = new Set(bridge);
   const aria = `${label}, ${shape.form} shape, ${index + 1} of ${count}. R marks the root.`;
 
   return (
@@ -110,6 +114,7 @@ export function ScaleShapeDiagram({
           note={note}
           cx={xOf(note.string)}
           cy={atNut && note.fret === 0 ? top - 18 : yOf(note.fret)}
+          bridge={bridgeKeys.has(`${note.string}:${note.fret}`)}
         />
       ))}
 
@@ -129,12 +134,26 @@ export function ScaleShapeDiagram({
   );
 }
 
-function ScaleDot({ note, cx, cy }: { note: ScaleNote; cx: number; cy: number }) {
+function ScaleDot({
+  note,
+  cx,
+  cy,
+  bridge,
+}: {
+  note: ScaleNote;
+  cx: number;
+  cy: number;
+  bridge: boolean;
+}) {
   const label = degreeLabel(note.interval);
   const wide = label.length > 1;
+  const halo = bridge ? (
+    <circle cx={cx} cy={cy} r={16} fill="none" stroke="var(--accent-primary)" strokeWidth={1.5} />
+  ) : null;
   if (note.role === "blue") {
     return (
       <g>
+        {halo}
         <circle
           cx={cx}
           cy={cy}
@@ -152,6 +171,7 @@ function ScaleDot({ note, cx, cy }: { note: ScaleNote; cx: number; cy: number })
   if (note.role === "root") {
     return (
       <g>
+        {halo}
         <circle cx={cx} cy={cy} r={12} fill="var(--accent-primary)" />
         <DotText x={cx} y={cy} wide={wide} fill="var(--bg-base)">
           {label}
@@ -161,6 +181,7 @@ function ScaleDot({ note, cx, cy }: { note: ScaleNote; cx: number; cy: number })
   }
   return (
     <g>
+      {halo}
       <circle cx={cx} cy={cy} r={11} fill="var(--text-primary)" />
       <DotText x={cx} y={cy} wide={wide} fill="var(--bg-base)">
         {label}

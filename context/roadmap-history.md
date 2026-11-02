@@ -164,6 +164,8 @@ CAGED chord variations and chord-tone highlighting stay unbuilt.
 
 57. ✅ **Scales** — `/tools/scales`; letter/spelling + major, natural minor, both
     pentatonics, blues. See `specs/archive/14.57-scales.md`.
+58. ✅ **Modes and box links** — Dorian through Locrian on the major boxes, and
+    the line that joins one shape to the next. See `specs/archive/14.58-scale-modes.md`.
 
 ## Definition of done (every phase)
 - Mobile-first, warm, no habit-tracker patterns.

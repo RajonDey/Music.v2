@@ -17,6 +17,14 @@ Current as-built: `context/`. Current step: `context/progress.md`. Specs: `specs
 
 ---
 
+## 2026-11-02 — Phase 14: Modes on the same boxes
+
+### 2026-11-02 — Modes and how one scale box continues
+- **Proposal:** A mode row (Dorian, Phrygian, Lydian, Mixolydian, Locrian) on the existing major boxes, plus one line showing which shape comes next and which notes are shared. No new fingerings.
+- **Gate:** Passed. Courage: same dots, a moved root, no drills. Rajon said proceed.
+- **Decision:** `specs/archive/14.58-scale-modes.md`. Aeolian stays the minor button. 3-notes-per-string and 4-notes-per-string stay off the page.
+- **Roadmap:** Phase 14 step 58.
+
 ## 2026-11-01 — Phase 14: Scales
 
 ### 2026-11-01 — Scales tool, five scales, CAGED boxes

@@ -1,12 +1,17 @@
 /**
  * Public Scales engine. Standard tuning, low E → high e.
- * Shapes are the five CAGED boxes (major / minor) or the five pentatonic boxes.
+ * Shapes are the five CAGED boxes. Modes reuse the major boxes with a moved root.
  * No chord-database import — keep this off the Chords bundle path.
  */
 
 export const SCALE_IDS = [
   "major",
+  "dorian",
+  "phrygian",
+  "lydian",
+  "mixolydian",
   "minor",
+  "locrian",
   "major-pent",
   "minor-pent",
   "blues",
@@ -91,11 +96,45 @@ const OPEN = [4, 9, 2, 7, 11, 4] as const;
 
 const INTERVALS: Record<ScaleId, readonly number[]> = {
   major: [0, 2, 4, 5, 7, 9, 11],
+  dorian: [0, 2, 3, 5, 7, 9, 10],
+  phrygian: [0, 1, 3, 5, 7, 8, 10],
+  lydian: [0, 2, 4, 6, 7, 9, 11],
+  mixolydian: [0, 2, 4, 5, 7, 9, 10],
   minor: [0, 2, 3, 5, 7, 8, 10],
+  locrian: [0, 1, 3, 5, 6, 8, 10],
   "major-pent": [0, 2, 4, 7, 9],
   "minor-pent": [0, 3, 5, 7, 10],
   blues: [0, 3, 5, 6, 7, 10],
 };
+
+/**
+ * Semitones from the parent major up to this tonic.
+ * Phrygian is 4, the major 3rd. Lydian is 5, a fourth. Not the scale-degree count.
+ * Minor is Aeolian (9). The mode row does not repeat it.
+ */
+const PARENT_DEGREE: Partial<Record<ScaleId, number>> = {
+  major: 0,
+  dorian: 2,
+  phrygian: 4,
+  lydian: 5,
+  mixolydian: 7,
+  minor: 9,
+  locrian: 11,
+};
+
+/** Second row under Major. Ionian is the Major button. Aeolian is the minor button. */
+export const MODE_CHOICES: { id: ScaleId; label: string }[] = [
+  { id: "major", label: "Major" },
+  { id: "dorian", label: "Dorian" },
+  { id: "phrygian", label: "Phrygian" },
+  { id: "lydian", label: "Lydian" },
+  { id: "mixolydian", label: "Mixolydian" },
+  { id: "locrian", label: "Locrian" },
+];
+
+export function isMajorFamilyMode(scale: ScaleId): boolean {
+  return MODE_CHOICES.some((mode) => mode.id === scale);
+}
 
 const FLAT_MAJOR = new Set(["F", "Bb", "Eb", "Ab", "Db", "Gb"]);
 const FLAT_MINOR = new Set(["D", "G", "C", "F", "Bb", "Eb", "Ab"]);
@@ -239,9 +278,10 @@ export function buildScale(rootInput: string, scaleInput: ScaleId): ScaleResult 
   const intervals = INTERVALS[scale];
   const markBlue = scale === "blues";
 
+  const degree = PARENT_DEGREE[scale];
   const shapes =
-    scale === "major" || scale === "minor"
-      ? majorShapes(pitch, scale === "minor")
+    degree !== undefined
+      ? majorShapes(pitch, degree)
       : pentShapes(scale === "major-pent" ? (pitch + 9) % 12 : pitch, pitch, intervals, markBlue);
 
   const prettyRoot = prettyNote(root);
@@ -251,7 +291,7 @@ export function buildScale(rootInput: string, scaleInput: ScaleId): ScaleResult 
     scale,
     title: titleFor(prettyRoot, scale),
     spelling: spellScale(root, scale).map(prettyNote),
-    relative: relativeLine(pitch, scale, prefersFlats(root, scale)),
+    relative: relativeLine(root, pitch, scale, prefersFlats(root, scale)),
     neck: notesBetween(pitch, intervals, 0, 12, markBlue),
     shapes,
   };
@@ -261,8 +301,18 @@ function titleFor(root: string, scale: ScaleId): string {
   switch (scale) {
     case "major":
       return `${root} major`;
+    case "dorian":
+      return `${root} Dorian`;
+    case "phrygian":
+      return `${root} Phrygian`;
+    case "lydian":
+      return `${root} Lydian`;
+    case "mixolydian":
+      return `${root} Mixolydian`;
     case "minor":
       return `${root} natural minor`;
+    case "locrian":
+      return `${root} Locrian`;
     case "major-pent":
       return `${root} major pentatonic`;
     case "minor-pent":
@@ -272,7 +322,9 @@ function titleFor(root: string, scale: ScaleId): string {
   }
 }
 
-function relativeLine(pitch: number, scale: ScaleId, flats: boolean): string {
+function relativeLine(root: string, pitch: number, scale: ScaleId, flats: boolean): string {
+  const modeLine = modeParentLine(root, scale);
+  if (modeLine) return modeLine;
   const name = (pc: number) => prettyNote(flats ? FLAT_NAMES[pc]! : SHARP_NAMES[pc]!);
   if (scale === "major") return `Sits with ${name((pitch + 9) % 12)} minor`;
   if (scale === "minor") return `Sits with ${name((pitch + 3) % 12)} major`;
@@ -293,9 +345,39 @@ function prefersFlats(root: string, scale: ScaleId): boolean {
   return (minorFamily ? FLAT_MINOR : FLAT_MAJOR).has(root);
 }
 
+/** Dorian, Phrygian, Lydian, Mixolydian, Locrian: same boxes as their parent major. */
+function modeParentLine(root: string, scale: ScaleId): string | null {
+  if (!isMajorFamilyMode(scale) || scale === "major") return null;
+  const degree = PARENT_DEGREE[scale] ?? 0;
+  const parent = ((PITCH[root] ?? 0) - degree + 12) % 12;
+  const flats = spellByLetter(root, INTERVALS[scale]).some((note) => note.includes("b"));
+  const name = prettyNote((flats ? FLAT_NAMES : SHARP_NAMES)[parent] ?? "C");
+  return `Same notes as ${name} major`;
+}
+
+export function shapeContinuation(
+  shapes: readonly ScaleShape[],
+  index: number,
+): { line: string; bridge: string[] } | null {
+  if (shapes.length < 2 || index < 0 || index >= shapes.length) return null;
+  const current = shapes[index];
+  if (!current) return null;
+  const wrapped = index === shapes.length - 1;
+  const next = wrapped ? shapes[0] : shapes[index + 1];
+  if (!next) return null;
+  const shift = wrapped ? 12 : 0;
+  const nextKeys = new Set(next.notes.map((note) => `${note.string}:${note.fret + shift}`));
+  const bridge = current.notes
+    .filter((note) => nextKeys.has(`${note.string}:${note.fret}`))
+    .map((note) => `${note.string}:${note.fret}`);
+  const start = next.start + shift;
+  const place = start === 0 ? "at the nut" : `at fret ${start}`;
+  return { line: `Continues into the ${next.form} shape ${place}.`, bridge };
+}
+
 function spellScale(root: string, scale: ScaleId): string[] {
   const pitch = PITCH[root] ?? 0;
-  if (scale === "major" || scale === "minor") {
+  if (PARENT_DEGREE[scale] !== undefined) {
     return spellByLetter(root, INTERVALS[scale]);
   }
   const flats = prefersFlats(root, scale);
@@ -346,9 +428,9 @@ function withAccidental(letter: string, acc: number): string {
   return letter;
 }
 
-/** Relative major carries the fingering; `rootPitch` decides which dots are the tonic. */
-function majorShapes(rootPitch: number, minor: boolean): ScaleShape[] {
-  const patternPitch = minor ? (rootPitch + 3) % 12 : rootPitch;
+/** Parent major carries the fingering. `degree` is how far the tonic sits above that major. */
+function majorShapes(rootPitch: number, degree: number): ScaleShape[] {
+  const patternPitch = (rootPitch - degree + 12) % 12;
   return MAJOR_FINGERINGS.map((def) => placeFingering(patternPitch, rootPitch, def))
     .filter((shape) => shape.notes.some((note) => note.role === "root"))
     .sort((a, b) => a.start - b.start || a.end - b.end);

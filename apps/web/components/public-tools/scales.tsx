@@ -4,9 +4,12 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import Link from "next/link";
 import {
   buildScale,
+  isMajorFamilyMode,
+  MODE_CHOICES,
   parseScaleId,
   parseScaleRoot,
   prettyNote,
+  shapeContinuation,
   type ScaleForm,
   type ScaleId,
 } from "@/lib/scales";
@@ -32,6 +35,16 @@ const SCALES: { id: ScaleId; label: string }[] = [
   { id: "minor-pent", label: "min pent" },
   { id: "blues", label: "blues" },
 ];
+
+function legend(view: "shapes" | "neck", scale: ScaleId, bridge: boolean): string {
+  if (view === "neck") {
+    return scale === "blues" ? "Gold is the root. The ring is the blue note." : "Gold is the root.";
+  }
+  const parts = ["Numbers are scale degrees. R is the root."];
+  if (scale === "blues") parts.push("The ring is the blue note.");
+  if (bridge) parts.push("The outer ring is also in the next shape.");
+  return parts.join(" ");
+}
 
 function letterForRoot(root: string): (typeof LETTERS)[number] {
   const first = root[0] ?? "C";
@@ -143,6 +156,8 @@ export function Scales({
 
   const place =
     shape == null ? "" : shape.start === 0 ? "at the nut" : `fret ${shape.start}`;
+  const continuation = view === "shapes" ? shapeContinuation(shapes, safeIndex) : null;
+  const majorFamily = isMajorFamilyMode(scale);
 
   return (
     <div className="mx-auto max-w-xl">
@@ -164,6 +179,26 @@ export function Scales({
           {result.spelling.join("  ")}
         </p>
         <p className="mt-2 text-sm text-muted">{result.relative}</p>
+
+        {majorFamily ? (
+          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm" role="group" aria-label="Mode">
+            {MODE_CHOICES.map((mode) => (
+              <button
+                key={mode.id}
+                type="button"
+                aria-pressed={scale === mode.id}
+                onClick={() => setScale(mode.id)}
+                className={
+                  scale === mode.id
+                    ? "text-primary underline decoration-accent decoration-2 underline-offset-4"
+                    : "text-muted transition-colors hover:text-primary"
+                }
+              >
+                {mode.label}
+              </button>
+            ))}
+          </div>
+        ) : null}
 
         <div className="mt-6 flex gap-5 text-sm" role="group" aria-label="View">
           <button
@@ -228,6 +263,7 @@ export function Scales({
                     label={result.title}
                     index={safeIndex}
                     count={shapes.length}
+                    bridge={continuation?.bridge}
                   />
                 </div>
                 <button
@@ -240,6 +276,9 @@ export function Scales({
                   →
                 </button>
               </div>
+              {continuation ? (
+                <p className="px-4 pb-5 text-center text-sm text-secondary">{continuation.line}</p>
+              ) : null}
             </>
           ) : (
             <p className="px-4 py-8 text-sm text-secondary">No shape for that scale yet.</p>
@@ -247,13 +286,7 @@ export function Scales({
         </div>
 
         <p className="mt-4 text-center text-xs leading-relaxed text-muted">
-          {view === "shapes"
-            ? scale === "blues"
-              ? "Numbers are scale degrees. R is the root. The ring is the blue note."
-              : "Numbers are scale degrees. R is the root."
-            : scale === "blues"
-              ? "Gold is the root. The ring is the blue note."
-              : "Gold is the root."}
+          {legend(view, scale, (continuation?.bridge.length ?? 0) > 0)}
         </p>
 
         <div className="mt-12 space-y-3">
@@ -283,7 +316,7 @@ export function Scales({
             {SCALES.map((item) => (
               <Segment
                 key={item.id}
-                on={scale === item.id}
+                on={item.id === "major" ? majorFamily : scale === item.id}
                 onClick={() => setScale(item.id)}
               >
                 {item.label}
